@@ -1,7 +1,7 @@
 # Проект «Большое путешествие»
 
 * Студент: [Aleksander Kislov](https://up.htmlacademy.ru/ecmascript/24/user/2496617).
-* Наставник: `Сергей Андреев`.
+* Наставник: [Сергей Андреев](https://htmlacademy.ru/profile/id812127).
 
 ---
 
