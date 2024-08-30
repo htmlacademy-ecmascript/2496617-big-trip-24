@@ -1,4 +1,5 @@
 import { render } from '../render';
+import AddPointView from '../view/add-point-view';
 import EditPointView from '../view/edit-point-view';
 import FiltersView from '../view/filters-view';
 import SortView from '../view/sort-view';
@@ -7,8 +8,9 @@ import SortView from '../view/sort-view';
 
 const filtersElement = document.querySelector('.trip-controls__filters');
 const sortElement = document.querySelector('.trip-events');
-const pageBodyElement = document.querySelector('.page-body__page-main .page-body__container');
+// const pageBodyElement = document.querySelector('.page-body__page-main .page-body__container');
 
 render(new FiltersView(), filtersElement);
 render(new SortView(), sortElement);
-render(new EditPointView(), pageBodyElement);
+// render(new AddPointView(), pageBodyElement);
+// render(new EditPointView(), pageBodyElement);
