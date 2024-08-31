@@ -1,5 +1,9 @@
 // $======================== data ========================$ //
 
+const FILTER_TYPES = ['everything', 'future', 'present', 'past'];
+
+const SORT_TYPES = ['day', 'event', 'time', 'price', 'offers'];
+
 const EVENT_TYPE_ITEMS = [
   'taxi',
   'bus',
@@ -53,5 +57,63 @@ const PHOTOS_PATHS = [
   'img/photos/5.jpg',
 ];
 
+const PointIconSrc = {
+  TAXI: 'img/icons/taxi.png',
+  FLIGHT: 'img/icons/flight.png',
+  DRIVE: 'img/icons/drive.png',
+};
 
-export { EVENT_TYPE_ITEMS, OFFERS, PHOTOS_PATHS };
+const POINTS = [
+  {
+    date: 'MAR 18',
+    iconSrc: PointIconSrc.TAXI,
+    title: 'Taxi Amsterdam',
+    startTime: '10:30',
+    endTime: '11:00',
+    duration: '30M',
+    price: '20',
+    offers: [
+      {
+        offerTitle: 'Order Uber',
+        offerPrice: '20',
+      },
+    ]
+  },
+  {
+    date: 'MAR 18',
+    iconSrc: PointIconSrc.FLIGHT,
+    title: 'Flight Chamonix',
+    startTime: '12:25',
+    endTime: '13:35',
+    duration: '01H 10M',
+    price: '160',
+    offers: [
+      {
+        offerTitle: 'Add luggage',
+        offerPrice: '50',
+      },
+      {
+        offerTitle: 'Switch to comfort',
+        offerPrice: '80',
+      },
+    ]
+  },
+  {
+    date: 'MAR 18',
+    iconSrc: PointIconSrc.DRIVE,
+    title: 'Drive Chamonix',
+    startTime: '14:30',
+    endTime: '16:05',
+    duration: '01H 35M',
+    price: '160',
+    offers: [
+      {
+        offerTitle: 'Rent a car',
+        offerPrice: '200',
+      },
+    ]
+  },
+];
+
+
+export {FILTER_TYPES, SORT_TYPES, EVENT_TYPE_ITEMS, OFFERS, PHOTOS_PATHS, POINTS };
