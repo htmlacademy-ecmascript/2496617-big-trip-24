@@ -1,13 +1,14 @@
+import { OFFERS, PHOTOS_PATHS } from '../data';
 import { createElement } from '../render';
-import { OFFERS } from '../data';
 import {
   createEventTypeListTemplate,
   createOffersListTemplate,
-} from './add-and-edit-points-templates';
+  createPhotosContainerTemplate
+} from './forms-templates';
 
-// $======================== EditPointView ========================$ //
+// $======================== AddFormView ========================$ //
 
-const createEditPointTemplate = () => /*html*/`
+const createAddPointTemplate = () => /*html*/`
   <form class="event event--edit" action="#" method="post">
     <header class="event__header">
       <div class="event__type-wrapper">
@@ -25,7 +26,7 @@ const createEditPointTemplate = () => /*html*/`
         <label class="event__label  event__type-output" for="event-destination-1">
           Flight
         </label>
-        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="Chamonix" list="destination-list-1">
+        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="Geneva" list="destination-list-1">
         <datalist id="destination-list-1">
           <option value="Amsterdam"></option>
           <option value="Geneva"></option>
@@ -35,10 +36,10 @@ const createEditPointTemplate = () => /*html*/`
 
       <div class="event__field-group  event__field-group--time">
         <label class="visually-hidden" for="event-start-time-1">From</label>
-        <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="18/03/19 12:25">
+        <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="19/03/19 00:00">
         &mdash;
         <label class="visually-hidden" for="event-end-time-1">To</label>
-        <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="18/03/19 13:35">
+        <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="19/03/19 00:00">
       </div>
 
       <div class="event__field-group  event__field-group--price">
@@ -50,10 +51,8 @@ const createEditPointTemplate = () => /*html*/`
       </div>
 
       <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-      <button class="event__reset-btn" type="reset">Delete</button>
-      <button class="event__rollup-btn" type="button">
-        <span class="visually-hidden">Open event</span>
-      </button>
+      <button class="event__reset-btn" type="reset">Cancel</button>
+
     </header>
 
     <section class="event__details">
@@ -67,16 +66,19 @@ const createEditPointTemplate = () => /*html*/`
       <section class="event__section  event__section--destination">
         <h3 class="event__section-title  event__section-title--destination">Destination</h3>
         <p class="event__destination-description">
-          Chamonix-Mont-Blanc (usually shortened to Chamonix) is a resort area near the junction of France, Switzerland and Italy. At the base of Mont Blanc, the highest summit in the Alps, it's renowned for its skiing.
+          Geneva is a city in Switzerland that lies at the southern tip of expansive Lac Léman (Lake Geneva). Surrounded by the Alps and Jura mountains, the city has views of dramatic Mont Blanc.
         </p>
+
+        ${createPhotosContainerTemplate(PHOTOS_PATHS)}
+
       </section>
     </section>
   </form>
 `;
 
-export default class EditPointView {
+export default class AddFormView {
   getTemplate() {
-    return createEditPointTemplate();
+    return createAddPointTemplate();
   }
 
   getElement() {

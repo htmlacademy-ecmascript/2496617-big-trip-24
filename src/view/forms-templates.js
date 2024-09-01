@@ -2,6 +2,7 @@ import { capitalize } from '../util';
 import { EVENT_TYPE_ITEMS } from '../data';
 
 // $======================== createEventTypeList ========================$ //
+
 const createEventTypeItemTemplate = (eventTypeItem) => /*html*/`
   <div class="event__type-item">
     <input id="event-type-${eventTypeItem}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${eventTypeItem}">
@@ -50,4 +51,3 @@ export const createPhotosContainerTemplate = (photosPaths) => /*html*/`
     </div>
   </div>
 `;
-

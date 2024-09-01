@@ -10,7 +10,7 @@ const createSortItemTemplate = (sortType) => /*html*/`
   </div>
 `;
 
-const createSortTemplate = () => `
+const createSortTemplate = () => /*html*/`
   <form class="trip-events__trip-sort  trip-sort" action="#" method="get">
     ${SORT_TYPES.map((sortType) => createSortItemTemplate(sortType)).join('')}
   </form>
