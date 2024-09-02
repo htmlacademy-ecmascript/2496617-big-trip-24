@@ -1,5 +1,5 @@
 import { createElement } from '../render';
-import {SORT_TYPES} from '../data';
+import { SORT_TYPES } from '../const';
 
 // $======================== SortView ========================$ //
 

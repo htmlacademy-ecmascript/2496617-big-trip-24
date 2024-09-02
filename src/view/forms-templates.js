@@ -1,5 +1,5 @@
 import { capitalize } from '../util';
-import { EVENT_TYPE_ITEMS } from '../data';
+import { POINT_EVENT_TYPE_ITEMS } from '../const';
 
 // $======================== createEventTypeList ========================$ //
 
@@ -14,7 +14,7 @@ export const createEventTypeListTemplate = () => /*html*/`
   <div class="event__type-list">
     <fieldset class="event__type-group">
       <legend class="visually-hidden">Event type</legend>
-      ${EVENT_TYPE_ITEMS.map((eventTypeItem) => createEventTypeItemTemplate(eventTypeItem)).join('')}
+      ${POINT_EVENT_TYPE_ITEMS.map((eventTypeItem) => createEventTypeItemTemplate(eventTypeItem)).join('')}
     </fieldset>
   </div>
 `;

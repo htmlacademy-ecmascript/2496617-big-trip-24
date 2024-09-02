@@ -48,19 +48,12 @@ const createPointTemplate = ({date, iconSrc, title, startTime, endTime, duration
 
 export default class PointView {
 
-  constructor({ date, iconSrc, title, startTime, endTime, duration, price, offers }) {
-    this.date = date;
-    this.iconSrc = iconSrc;
-    this.title = title;
-    this.startTime = startTime;
-    this.endTime = endTime;
-    this.duration = duration;
-    this.price = price;
-    this.offers = offers;
+  constructor(point) {
+    this.point = point;
   }
 
   getTemplate() {
-    return createPointTemplate(this);
+    return createPointTemplate(this.point);
   }
 
   getElement() {

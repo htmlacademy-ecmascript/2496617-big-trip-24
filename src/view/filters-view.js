@@ -1,5 +1,5 @@
 import { createElement } from '../render';
-import {FILTER_TYPES} from '../data';
+import { FILTER_TYPES } from '../const';
 
 // $======================== FiltersView ========================$ //
 

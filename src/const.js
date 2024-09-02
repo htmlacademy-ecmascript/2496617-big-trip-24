@@ -4,7 +4,7 @@ const FILTER_TYPES = ['everything', 'future', 'present', 'past'];
 
 const SORT_TYPES = ['day', 'event', 'time', 'price', 'offers'];
 
-const EVENT_TYPE_ITEMS = [
+const POINT_EVENT_TYPE_ITEMS = [
   'taxi',
   'bus',
   'train',
@@ -116,4 +116,4 @@ const POINTS = [
 ];
 
 
-export {FILTER_TYPES, SORT_TYPES, EVENT_TYPE_ITEMS, OFFERS, PHOTOS_PATHS, POINTS };
+export {FILTER_TYPES, SORT_TYPES, POINT_EVENT_TYPE_ITEMS, OFFERS, PHOTOS_PATHS, POINTS };
