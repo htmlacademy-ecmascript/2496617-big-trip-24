@@ -4,23 +4,27 @@ import FiltersView from '../view/filters-view';
 import PointView from '../view/point-view';
 import PointsListView from '../view/points-list-view';
 import SortView from '../view/sort-view';
-import { POINTS } from '../const';
 
 // $======================== MainPresenter ========================$ //
 
 export default class MainPresenter {
   pointsListElement = new PointsListView();
 
-  constructor({ tripEventsContainer, filtersContainer }) {
-    this.tripEventsContainer = tripEventsContainer;
+  constructor({ pointsContainer, filtersContainer, pointsModel }) {
+    this.pointsContainer = pointsContainer;
     this.filtersContainer = filtersContainer;
+    this.pointsModel = pointsModel;
   }
 
   init() {
     render(new FiltersView(), this.filtersContainer);
-    render(new SortView(), this.tripEventsContainer);
-    render(new EditFormView(), this.tripEventsContainer);
-    render(this.pointsListElement, this.tripEventsContainer);
-    POINTS.forEach((point) => render(new PointView(point), this.pointsListElement.getElement()));
+    render(new SortView(), this.pointsContainer);
+    render(new EditFormView(), this.pointsContainer);
+    render(this.pointsListElement, this.pointsContainer);
+
+    this.points = [...this.pointsModel.getPoints()];
+    for (let i = 0; i < this.points.length; i++) {
+      render(new PointView({ point: this.points[i] }), this.pointsContainer);
+    }
   }
 }
