@@ -5,7 +5,7 @@ import { getRandomInt } from '../util';
 const mockDestinations = [
   {
     id: '',
-    description: 'Chamonix, is a beautiful city, a true asian pearl, with crowded streets.',
+    description: 'Chamonix-Mont-Blanc (usually shortened to Chamonix) is a resort area near the junction of France, Switzerland and Italy. At the base of Mont Blanc, the highest summit in the Alps, it\'s renowned for its skiing.',
     name: 'Chamonix',
     pictures: [
       {
@@ -16,7 +16,7 @@ const mockDestinations = [
   },
   {
     id: '',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet varius magna, non porta ligula feugiat eget. Fusce tristique felis at fermentum pharetra.',
+    description: 'Nestled along the shores of Lake Geneva, this cosmopolitan city is known for its stunning alpine views, international organizations, and rich cultural scene. Visitors can enjoy world-class museums, tranquil parks, and the iconic Jet d\'Eau fountain.',
     name: 'Geneva',
     pictures: [
       {
@@ -27,7 +27,7 @@ const mockDestinations = [
   },
   {
     id: '',
-    description: 'Aliquam id orci ut lectus varius viverra. Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante. Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum.',
+    description: 'Famed for its picturesque canals, historic architecture, and vibrant cultural life, Amsterdam offers a blend of art, history, and modernity. Explore its world-renowned museums, bike-friendly streets, and charming neighborhoods like Jordaan and the Red Light District',
     name: 'Amsterdam',
     pictures: [
       {

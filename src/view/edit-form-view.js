@@ -1,5 +1,5 @@
 import { createElement } from '../render';
-import { OFFERS, PHOTOS_PATHS } from '../const';
+import { OFFERS } from '../const';
 import {
   createEventTypeListTemplate,
   createOffersListTemplate,
@@ -71,8 +71,8 @@ const createEditPointTemplate = () => /*html*/`
           Chamonix-Mont-Blanc (usually shortened to Chamonix) is a resort area near the junction of France, Switzerland and Italy. At the base of Mont Blanc, the highest summit in the Alps, it's renowned for its skiing.
         </p>
 
-        ${createPhotosContainerTemplate(PHOTOS_PATHS)}
-        
+        ${createPhotosContainerTemplate([])}
+
       </section>
     </section>
   </form>

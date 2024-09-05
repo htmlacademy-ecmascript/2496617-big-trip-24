@@ -36,6 +36,31 @@ const mockOffers = [
       },
     ]
   },
+  {
+    type: 'Check-in',
+    offers: [
+      {
+        id: '',
+        title: 'Add breakfast',
+        price: 50,
+      },
+    ]
+  },
+  {
+    type: 'Sightseeing',
+    offers: [
+      {
+        id: '',
+        title: 'Book tickets',
+        price: 40,
+      },
+      {
+        id: '',
+        title: 'Lunch in city',
+        price: 30,
+      },
+    ]
+  },
 ];
 
 export { mockOffers };
