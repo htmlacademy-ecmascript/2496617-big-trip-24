@@ -8,9 +8,11 @@ const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) +
 
 const DATE_FORMAT = 'D MMMM';
 const TIME_FORMAT = 'HH : mm';
+const DATE_AND_TIME_FORMAT = 'DD/MM/YY HH:mm';
 
-const humanizePointDate = (date) => date ? dayjs(date).format(DATE_FORMAT) : '';
-const humanizePointTime = (time) => time ? dayjs(time).format(TIME_FORMAT) : '';
+const humanizeDate = (date) => date ? dayjs(date).format(DATE_FORMAT) : '';
+const humanizeTime = (time) => time ? dayjs(time).format(TIME_FORMAT) : '';
+const humanizeDateAndTime = (dateAndTime) => dateAndTime ? dayjs(dateAndTime).format(DATE_AND_TIME_FORMAT) : '';
 
 const getDuration = (startTime, endTime) => {
   const date1 = dayjs(startTime);
@@ -18,4 +20,4 @@ const getDuration = (startTime, endTime) => {
   return date2.diff(date1);
 };
 
-export { capitalize, getRandomInt, humanizePointDate, humanizePointTime, getDuration };
+export { capitalize, getRandomInt, humanizeDate, humanizeTime, humanizeDateAndTime, getDuration };

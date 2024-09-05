@@ -4,6 +4,7 @@ import FiltersView from '../view/filters-view';
 import PointView from '../view/point-view';
 import PointsListView from '../view/points-list-view';
 import SortView from '../view/sort-view';
+import { BLANK_POINT } from '../const';
 
 // $======================== MainPresenter ========================$ //
 
@@ -19,9 +20,10 @@ export default class MainPresenter {
   init() {
     render(new FiltersView(), this.filtersContainer);
     render(new SortView(), this.pointsContainer);
-    render(new EditFormView(), this.pointsContainer);
+    render(new EditFormView(BLANK_POINT), this.pointsContainer);
     render(this.pointsListElement, this.pointsContainer);
 
+    //? вот тут вообще не очень понимаю, что происходит
     this.points = [...this.pointsModel.getPoints()];
     for (let i = 0; i < this.points.length; i++) {
       render(new PointView({ point: this.points[i] }), this.pointsListElement.getElement());

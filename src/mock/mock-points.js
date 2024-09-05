@@ -3,6 +3,7 @@
 const mockPoints = [
   {
     id: '',
+    type: 'taxi',
     basePrice: 20,
     dateFrom: '2019-03-18T10:30',
     dateTo: '2019-03-18T11:00',
@@ -11,10 +12,10 @@ const mockPoints = [
     offers: [
       'taxi'
     ],
-    type: 'taxi'
   },
   {
     id: '',
+    type: 'flight',
     basePrice: 1100,
     dateFrom: '2019-03-18T12:25',
     dateTo: '2019-03-18T13:35',
@@ -23,10 +24,10 @@ const mockPoints = [
     offers: [
       'flight'
     ],
-    type: 'flight',
   },
   {
     id: '',
+    type: 'drive',
     basePrice: 160,
     dateFrom: '2019-03-18T14:30',
     dateTo: '2019-03-18T16:05',
@@ -35,10 +36,10 @@ const mockPoints = [
     offers: [
       'drive'
     ],
-    type: 'drive',
   },
   {
     id: '',
+    type: 'Check-in',
     basePrice: 600,
     dateFrom: '2019-03-18T16:20',
     dateTo: '2019-03-18T17:00',
@@ -47,10 +48,10 @@ const mockPoints = [
     offers: [
       'Check-in'
     ],
-    type: 'Check-in',
   },
   {
     id: '',
+    type: 'Sightseeing',
     basePrice: 50,
     dateFrom: '2019-03-18T18:20',
     dateTo: '2019-03-18T20:30',
@@ -59,7 +60,6 @@ const mockPoints = [
     offers: [
       'Sightseeing'
     ],
-    type: 'Sightseeing',
   },
 ];
 

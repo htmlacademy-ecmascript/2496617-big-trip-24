@@ -1,4 +1,4 @@
-// $======================== data ========================$ //
+// $======================== const ========================$ //
 
 const FILTER_TYPES = ['everything', 'future', 'present', 'past'];
 
@@ -18,36 +18,93 @@ const POINT_EVENT_TYPE_ITEMS = [
 
 const OFFERS = [
   {
-    name: 'luggage',
-    text: 'Add luggage',
-    price: '50',
-    isCheckedByDefault: true,
+    type: 'flight',
+    offers: [
+      {
+        id: 'luggage',
+        title: 'Add luggage',
+        price: 50,
+      },
+      {
+        id: 'comfort',
+        title: 'Switch to comfort',
+        price: 80,
+      },
+      {
+        id: 'meal',
+        title: 'Add meal',
+        price: 15,
+      },
+      {
+        id: 'seats',
+        title: 'Choose seats',
+        price: '5',
+      },
+      {
+        id: 'train',
+        title: 'Travel by train',
+        price: '40',
+      },
+    ]
   },
   {
-    name: 'comfort',
-    text: 'Switch to comfort',
-    price: '80',
-    isCheckedByDefault: true,
+    type: 'taxi',
+    offers: [
+      {
+        id: 'uber',
+        title: 'Order Uber',
+        price: 20
+      }
+    ]
   },
   {
-    name: 'meal',
-    text: 'Add meal',
-    price: '15',
-    isCheckedByDefault: false,
+    type: 'drive',
+    offers: [
+      {
+        id: 'car',
+        title: 'Rent a car',
+        price: 200,
+      },
+    ]
   },
   {
-    name: 'seats',
-    text: 'Choose seats',
-    price: '5',
-    isCheckedByDefault: false,
+    type: 'Check-in',
+    offers: [
+      {
+        id: 'breakfast',
+        title: 'Add breakfast',
+        price: 50,
+      },
+    ]
   },
   {
-    name: 'train',
-    text: 'Travel by train',
-    price: '40',
-    isCheckedByDefault: false,
+    type: 'Sightseeing',
+    offers: [
+      {
+        id: 'tickets',
+        title: 'Book tickets',
+        price: 40,
+      },
+      {
+        id: 'lunch',
+        title: 'Lunch in city',
+        price: 30,
+      },
+    ]
   },
 ];
 
+const BLANK_POINT = {
+  id: '',
+  basePrice: 0,
+  dateFrom: '',
+  dateTo: '',
+  destination: '',
+  isFavorite: false,
+  offers: [
+    'flight'
+  ],
+  type: 'flight'
+};
 
-export {FILTER_TYPES, SORT_TYPES, POINT_EVENT_TYPE_ITEMS, OFFERS};
+export { FILTER_TYPES, SORT_TYPES, POINT_EVENT_TYPE_ITEMS, OFFERS, BLANK_POINT };
