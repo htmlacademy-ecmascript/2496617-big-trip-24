@@ -20,13 +20,18 @@ export default class MainPresenter {
   init() {
     render(new FiltersView(), this.filtersContainer);
     render(new SortView(), this.pointsContainer);
-    render(new EditFormView(BLANK_POINT), this.pointsContainer);
+    // render(new EditFormView(BLANK_POINT), this.pointsContainer);
     render(this.pointsListElement, this.pointsContainer);
 
-    //? вот тут вообще не очень понимаю, что происходит
     this.points = [...this.pointsModel.getPoints()];
+
     for (let i = 0; i < this.points.length; i++) {
-      render(new PointView({ point: this.points[i] }), this.pointsListElement.getElement());
+      const point = new PointView({
+        point: this.points[i],
+        offers: [...this.pointsModel.getOffersById(this.points[i].type, this.points[i].offers)],
+        destination: this.pointsModel.getDestinationById(this.points[i].destination).name
+      });
+      render(point, this.pointsListElement.getElement());
     }
   }
 }

@@ -20,7 +20,7 @@ const createEditPointTemplate = (blankPoint) => {
   return /*html*/`
     <form class="event event--edit" action="#" method="post">
       <header class="event__header">
-      
+
           ${pointTypeTemplate}
 
         <div class="event__field-group  event__field-group--destination">

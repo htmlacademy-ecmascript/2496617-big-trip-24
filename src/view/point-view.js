@@ -1,11 +1,9 @@
-import { mockOffers } from '../mock/mock-offers';
 import { createElement } from '../render';
 import { getDuration, humanizeDate, humanizeTime } from '../util';
 
 // $======================== PointView ========================$ //
 
-const createOffersTemplate = (type) => {
-  const offers = mockOffers.find((item) => item.type === type[0]).offers;
+function createOffersTemplate (offers) {
 
   return (offers.map(({ title, price }) => /*html*/`
     <li class="event__offer">
@@ -14,10 +12,10 @@ const createOffersTemplate = (type) => {
       <span class="event__offer-price">${price}</span>
     </li>
   `).join(''));
-};
+}
 
-const createPointTemplate = ({ point }) => {
-  const { basePrice, dateFrom, dateTo, destination, isFavorite, offers, type } = point;
+const createPointTemplate = ({ point, offers, destination }) => {
+  const { basePrice, dateFrom, dateTo, isFavorite, type } = point;
 
   const date = humanizeDate(dateFrom);
   const duration = humanizeTime(getDuration(dateFrom, dateTo));
