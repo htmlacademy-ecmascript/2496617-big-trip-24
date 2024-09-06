@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import { DATE_FORMAT, TIME_FORMAT, DATE_AND_TIME_FORMAT } from '';
 
 // $======================== util ========================$ //
 
@@ -6,10 +7,7 @@ const capitalize = (string) => string[0].toUpperCase() + string.slice(1);
 
 const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
-const DATE_FORMAT = 'D MMMM';
-const TIME_FORMAT = 'HH : mm';
-const DATE_AND_TIME_FORMAT = 'DD/MM/YY HH:mm';
-
+//$ date and time functions
 const humanizeDate = (date) => date ? dayjs(date).format(DATE_FORMAT) : '';
 const humanizeTime = (time) => time ? dayjs(time).format(TIME_FORMAT) : '';
 const humanizeDateAndTime = (dateAndTime) => dateAndTime ? dayjs(dateAndTime).format(DATE_AND_TIME_FORMAT) : '';
