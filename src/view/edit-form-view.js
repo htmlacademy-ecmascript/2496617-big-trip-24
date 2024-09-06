@@ -2,20 +2,21 @@ import { createElement } from '../render';
 import {
   createPointTypeTemplate,
   createOffersContainerTemplate,
-  createDestinationTemplate
+  createDestinationTemplate,
+  createDestinationsListTemplate
 } from './forms-templates';
 import { capitalize, humanizeDateAndTime } from '../util';
-import { mockDestinations } from '../mock/mock-destinations';
 
 // $======================== EditFormView ========================$ //
 
-const createEditPointTemplate = (blankPoint) => {
+const createEditPointTemplate = (point, allOffers, pointDestination, allDestinations) => {
 
-  const { basePrice, dateFrom, dateTo, destination, type } = blankPoint;
+  const { basePrice, dateFrom, dateTo, type } = point;
 
-  const pointTypeTemplate = createPointTypeTemplate();
-  const destinationTemplate = createDestinationTemplate(mockDestinations[0]);
-  const offersContainerTemplate = createOffersContainerTemplate(type);
+  const pointTypeTemplate = createPointTypeTemplate(type);
+  const destinationsListTemplate = createDestinationsListTemplate(allDestinations);
+  const destinationTemplate = createDestinationTemplate(pointDestination);
+  const offersContainerTemplate = createOffersContainerTemplate(allOffers);
 
   return /*html*/`
     <form class="event event--edit" action="#" method="post">
@@ -27,12 +28,10 @@ const createEditPointTemplate = (blankPoint) => {
           <label class="event__label  event__type-output" for="event-destination-1">
             ${capitalize(type)}
           </label>
-          <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination}" list="destination-list-1">
-          <datalist id="destination-list-1">
-            <option value="Amsterdam"></option>
-            <option value="Geneva"></option>
-            <option value="Chamonix"></option>
-          </datalist>
+          <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${pointDestination.name}" list="destination-list-1">
+
+          ${destinationsListTemplate}
+
         </div>
 
         <div class="event__field-group  event__field-group--time">
@@ -68,12 +67,15 @@ const createEditPointTemplate = (blankPoint) => {
 
 export default class EditFormView {
 
-  constructor(point) {
+  constructor({ point, allOffers, pointDestination, allDestinations }) {
     this.point = point;
+    this.allOffers = allOffers;
+    this.pointDestination = pointDestination;
+    this.allDestinations = allDestinations;
   }
 
   getTemplate() {
-    return createEditPointTemplate(this.point);
+    return createEditPointTemplate(this.point, this.allOffers, this.pointDestination, this.allDestinations);
   }
 
   getElement() {

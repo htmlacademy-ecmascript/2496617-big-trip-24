@@ -1,5 +1,5 @@
 import { capitalize } from '../util';
-import { POINT_EVENT_TYPE_ITEMS, OFFERS } from '../const';
+import { POINT_EVENT_TYPE_ITEMS } from '../const';
 
 // $======================== form templates ========================$ //
 
@@ -12,11 +12,11 @@ const createPointTypeItemTemplate = (eventTypeItem) => /*html*/`
   </div>
 `;
 
-export const createPointTypeTemplate = () => /*html*/`
+export const createPointTypeTemplate = (type) => /*html*/`
   <div class="event__type-wrapper">
     <label class="event__type  event__type-btn" for="event-type-toggle-1">
       <span class="visually-hidden">Choose event type</span>
-      <img class="event__type-icon" width="17" height="17" src="img/icons/flight.png" alt="Event type icon">
+      <img class="event__type-icon" width="17" height="17" src="img/icons/${type}.png" alt="Event type icon">
     </label>
     <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
 
@@ -27,6 +27,18 @@ export const createPointTypeTemplate = () => /*html*/`
       </fieldset>
     </div>
   </div>
+`;
+
+// $------------ createDestinationsListTemplate ------------$ //
+
+const createDestinationOptionTemplate = (destination) => `
+  <option value="${destination.name}"></option>
+`;
+
+export const createDestinationsListTemplate = (allDestinations) => /*html*/`
+  <datalist id="destination-list-1">
+    ${allDestinations.map((destination) => createDestinationOptionTemplate(destination)).join('')}
+  </datalist>
 `;
 
 
@@ -43,18 +55,14 @@ const createOfferTemplate = ({ id, title, price }) => /*html*/`
   </div>
 `;
 
-export const createOffersContainerTemplate = (type) => {
-  const offers = OFFERS.find((item) => item.type === type).offers;
-
-  return /*html*/`
-    <section class="event__section  event__section--offers">
-      <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-        <div class="event__available-offers">
-          ${offers.map((offer) => createOfferTemplate(offer)).join('')}
-        </div>
-    </section>
-  `;
-};
+export const createOffersContainerTemplate = ({ offers }) =>/*html*/`
+  <section class="event__section  event__section--offers">
+    <h3 class="event__section-title  event__section-title--offers">Offers</h3>
+      <div class="event__available-offers">
+        ${offers.map((offer) => createOfferTemplate(offer)).join('')}
+      </div>
+  </section>
+`;
 
 
 // $------------ createPhotosContainerTemplate ------------$ //

@@ -91,10 +91,10 @@ const BLANK_POINT = {
   basePrice: 0,
   dateFrom: '',
   dateTo: '',
-  destination: '',
+  destination: 'blank-destination',
   isFavorite: false,
   offers: [
-    'flight'
+    ''
   ],
   type: 'flight'
 };
