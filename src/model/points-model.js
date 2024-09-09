@@ -3,9 +3,9 @@ import { getRandomInt } from '../util';
 // $======================== PointsModel ========================$ //
 
 export default class PointsModel {
-  points = Array.from({ length: getRandomInt(1, mockPoints.length - 1) }, getRandomPoint);
+  #points = Array.from({ length: getRandomInt(1, mockPoints.length - 1) }, getRandomPoint);
 
   getPoints() {
-    return this.points;
+    return this.#points;
   }
 }

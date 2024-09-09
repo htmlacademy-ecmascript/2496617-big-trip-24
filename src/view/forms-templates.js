@@ -83,6 +83,10 @@ export const createPhotosContainerTemplate = (photosPaths) => /*html*/`
 // $------------ createDestinationTemplate ------------$ //
 
 export const createDestinationTemplate = (destination) => {
+
+  if (!destination) {
+    return '';
+  }
   const { description, pictures: photoPaths } = destination;
 
   return /*html*/`

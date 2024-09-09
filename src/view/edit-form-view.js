@@ -9,7 +9,7 @@ import { capitalize, humanizeDateAndTime } from '../util';
 
 // $======================== EditFormView ========================$ //
 
-const createEditPointTemplate = (point, allOffers, pointDestination, allDestinations) => {
+const createEditPointTemplate = (point, allOffers, pointDestination = null, allDestinations) => {
 
   const { basePrice, dateFrom, dateTo, type } = point;
 
@@ -28,7 +28,8 @@ const createEditPointTemplate = (point, allOffers, pointDestination, allDestinat
           <label class="event__label  event__type-output" for="event-destination-1">
             ${capitalize(type)}
           </label>
-          <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${pointDestination.name}" list="destination-list-1">
+          <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination"
+          value="${pointDestination ? pointDestination.name : ''}" list="destination-list-1">
 
           ${destinationsListTemplate}
 

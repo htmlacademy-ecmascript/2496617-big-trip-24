@@ -25,23 +25,25 @@ export default class MainPresenter {
 
     this.points = [...this.pointsModel.getPoints()];
 
-    const editForm = new EditFormView({
+    const createForm = new EditFormView({
       point: BLANK_POINT,
       allOffers: this.offersModel.getOffersByType(BLANK_POINT.type),
       pointDestination: this.destinationsModel.getDestinationById(BLANK_POINT.destination),
       allDestinations: this.destinationsModel.getDestinations(),
     });
-    render(editForm, this.pointsContainer);
+    render(createForm, this.pointsContainer);
 
     render(this.pointsListElement, this.pointsContainer);
 
-    for (let i = 0; i < this.points.length; i++) {
-      const point = new PointView({
-        point: this.points[i],
-        offers: [...this.offersModel.getOffersById(this.points[i].type, this.points[i].offers)],
-        destination: this.destinationsModel.getDestinationById(this.points[i].destination)
-      });
-      render(point, this.pointsListElement.getElement());
-    }
+    this.points.forEach((point) => {
+      render(
+        new PointView({
+          point: point,
+          offers: [...this.offersModel.getOffersById(point.type, point.offers)],
+          destination: this.destinationsModel.getDestinationById(point.destination)
+        }),
+        this.pointsListElement.getElement()
+      );
+    });
   }
 }
