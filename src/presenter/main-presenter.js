@@ -25,6 +25,11 @@ export default class MainPresenter {
 
   #pointsListElement = new PointsListView();
 
+  #renderPoint(point) {
+    const pointComponent = new PointView(point);
+    render(pointComponent, this.#pointsListElement.element);
+  }
+
   init() {
     render(new FiltersView(), this.#filtersContainer);
     render(new SortView(), this.#pointsContainer);
@@ -42,14 +47,11 @@ export default class MainPresenter {
     render(this.#pointsListElement, this.#pointsContainer);
 
     this.points.forEach((point) => {
-      render(
-        new PointView({
-          point: point,
-          offers: [...this.#offersModel.getOffersById(point.type, point.offers)],
-          destination: this.#destinationsModel.getDestinationById(point.destination)
-        }),
-        this.#pointsListElement.element
-      );
+      this.#renderPoint({
+        point: point,
+        offers: [...this.#offersModel.getOffersById(point.type, point.offers)],
+        destination: this.#destinationsModel.getDestinationById(point.destination)
+      });
     });
   }
 }
