@@ -1,4 +1,4 @@
-import { createElement } from '../render';
+import AbstractView from '../framework/view/abstract-view';
 import {
   createPointTypeTemplate,
   createOffersContainerTemplate,
@@ -66,27 +66,22 @@ const createEditPointTemplate = (point, allOffers, pointDestination = null, allD
   `;
 };
 
-export default class EditFormView {
+export default class EditFormView extends AbstractView {
+
+  #point;
+  #allOffers;
+  #pointDestination;
+  #allDestinations;
 
   constructor({ point, allOffers, pointDestination, allDestinations }) {
-    this.point = point;
-    this.allOffers = allOffers;
-    this.pointDestination = pointDestination;
-    this.allDestinations = allDestinations;
+    super();
+    this.#point = point;
+    this.#allOffers = allOffers;
+    this.#pointDestination = pointDestination;
+    this.#allDestinations = allDestinations;
   }
 
-  getTemplate() {
-    return createEditPointTemplate(this.point, this.allOffers, this.pointDestination, this.allDestinations);
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
+  get template() {
+    return createEditPointTemplate(this.#point, this.#allOffers, this.#pointDestination, this.#allDestinations);
   }
 }

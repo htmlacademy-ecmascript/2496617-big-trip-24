@@ -1,4 +1,4 @@
-import { render } from '../render';
+import { render } from '../framework/render';
 import EditFormView from '../view/edit-form-view';
 import FiltersView from '../view/filters-view';
 import PointView from '../view/point-view';
@@ -42,7 +42,7 @@ export default class MainPresenter {
           offers: [...this.offersModel.getOffersById(point.type, point.offers)],
           destination: this.destinationsModel.getDestinationById(point.destination)
         }),
-        this.pointsListElement.getElement()
+        this.pointsListElement.element
       );
     });
   }

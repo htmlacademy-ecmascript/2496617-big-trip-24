@@ -1,18 +1,15 @@
-import { createElement } from '../render';
+import AbstractView from '../framework/view/abstract-view';
 import { getDuration, humanizeDate, humanizeTime } from '../util';
 
 // $======================== PointView ========================$ //
 
-function createOffersTemplate (offers) {
-
-  return (offers.map(({ title, price }) => /*html*/`
+const createOffersTemplate = (offers) => (offers.map(({ title, price }) => /*html*/`
     <li class="event__offer">
       <span class="event__offer-title">${title}</span>
       &plus;&euro;&nbsp;
       <span class="event__offer-price">${price}</span>
     </li>
   `).join(''));
-}
 
 const createPointTemplate = ({ point, offers, destination }) => {
   const { basePrice, dateFrom, dateTo, isFavorite, type } = point;
@@ -67,24 +64,14 @@ const createPointTemplate = ({ point, offers, destination }) => {
   `;
 };
 
-export default class PointView {
+export default class PointView extends AbstractView {
 
   constructor(point) {
+    super();
     this.point = point;
   }
 
-  getTemplate() {
+  get template() {
     return createPointTemplate(this.point);
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
   }
 }
