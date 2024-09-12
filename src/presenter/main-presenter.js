@@ -1,10 +1,10 @@
-import { render } from '../framework/render';
+import { render, replace } from '../framework/render';
 import EditFormView from '../view/edit-form-view';
 import FiltersView from '../view/filters-view';
 import PointView from '../view/point-view';
 import PointsListView from '../view/points-list-view';
 import SortView from '../view/sort-view';
-import { BLANK_POINT } from '../const';
+import { isEscapeKey } from '../utils/common';
 
 // $======================== MainPresenter ========================$ //
 
@@ -26,23 +26,48 @@ export default class MainPresenter {
   #pointsListElement = new PointsListView();
 
   #renderPoint(point) {
-    const pointComponent = new PointView(point);
+
+    const escKeyDownHandler = (e) => {
+      if (isEscapeKey) {
+        e.preventDefault();
+        replaceFormToPoint();
+        document.removeEventListener('keydown', escKeyDownHandler);
+      }
+    };
+
+    const pointComponent = new PointView({
+      point,
+      onEditClick: () => {
+        replacePointToForm();
+        document.addEventListener('keydown', escKeyDownHandler);
+      }
+    });
+
+    const editFormComponent = new EditFormView({
+      point: point.point,
+      allOffers: this.#offersModel.getOffersByType(point.point.type),
+      pointDestination: this.#destinationsModel.getDestinationById(point.point.destination),
+      allDestinations: this.#destinationsModel.destinations,
+
+      onFormSubmit: () => {
+        replaceFormToPoint();
+      }
+    });
+
+
+    function replacePointToForm() {
+      replace(editFormComponent, pointComponent);
+    }
+    function replaceFormToPoint() {
+      replace(pointComponent, editFormComponent);
+    }
+
     render(pointComponent, this.#pointsListElement.element);
   }
 
-  init() {
+  #renderBoard() {
     render(new FiltersView(), this.#filtersContainer);
     render(new SortView(), this.#pointsContainer);
-
-    this.points = [...this.#pointsModel.points];
-
-    const createForm = new EditFormView({
-      point: BLANK_POINT,
-      allOffers: this.#offersModel.getOffersByType(BLANK_POINT.type),
-      pointDestination: this.#destinationsModel.getDestinationById(BLANK_POINT.destination),
-      allDestinations: this.#destinationsModel.destinations,
-    });
-    render(createForm, this.#pointsContainer);
 
     render(this.#pointsListElement, this.#pointsContainer);
 
@@ -53,5 +78,11 @@ export default class MainPresenter {
         destination: this.#destinationsModel.getDestinationById(point.destination)
       });
     });
+  }
+
+  init() {
+    this.points = [...this.#pointsModel.points];
+
+    this.#renderBoard();
   }
 }

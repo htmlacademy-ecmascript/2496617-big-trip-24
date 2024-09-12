@@ -5,7 +5,8 @@ import {
   createDestinationTemplate,
   createDestinationsListTemplate
 } from './forms-templates';
-import { capitalize, humanizeDateAndTime } from '../util';
+import { capitalize } from '../utils/common';
+import { humanizeDateAndTime } from '../utils/point';
 
 // $======================== EditFormView ========================$ //
 
@@ -73,15 +74,26 @@ export default class EditFormView extends AbstractView {
   #pointDestination;
   #allDestinations;
 
-  constructor({ point, allOffers, pointDestination, allDestinations }) {
+  #handleFormSubmit;
+
+  constructor({ point, allOffers, pointDestination, allDestinations, onFormSubmit }) {
     super();
     this.#point = point;
     this.#allOffers = allOffers;
     this.#pointDestination = pointDestination;
     this.#allDestinations = allDestinations;
+    this.#handleFormSubmit = onFormSubmit;
+
+    this.element.querySelector('.event__rollup-btn')
+      .addEventListener('click', this.#formSubmitHandler);
   }
 
   get template() {
     return createEditPointTemplate(this.#point, this.#allOffers, this.#pointDestination, this.#allDestinations);
   }
+
+  #formSubmitHandler = (e) => {
+    e.preventDefault();
+    this.#handleFormSubmit();
+  };
 }

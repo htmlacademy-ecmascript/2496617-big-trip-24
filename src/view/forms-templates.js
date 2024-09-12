@@ -1,4 +1,4 @@
-import { capitalize } from '../util';
+import { capitalize } from '../utils/common';
 import { POINT_EVENT_TYPE_ITEMS } from '../const';
 
 // $======================== form templates ========================$ //

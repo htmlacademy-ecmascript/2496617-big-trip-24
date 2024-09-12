@@ -1,5 +1,5 @@
 import { mockPoints, getRandomPoint } from '../mock/mock-points';
-import { getRandomInt } from '../util';
+import { getRandomInt } from '../utils/common';
 // $======================== PointsModel ========================$ //
 
 export default class PointsModel {

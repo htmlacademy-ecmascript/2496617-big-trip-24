@@ -1,5 +1,5 @@
 import AbstractView from '../framework/view/abstract-view';
-import { getDuration, humanizeDate, humanizeTime } from '../util';
+import { getDuration, humanizeDate, humanizeTime } from '../utils/point';
 
 // $======================== PointView ========================$ //
 
@@ -65,13 +65,23 @@ const createPointTemplate = ({ point, offers, destination }) => {
 };
 
 export default class PointView extends AbstractView {
+  #point;
+  #handleEditClick;
 
-  constructor(point) {
+  constructor({ point, onEditClick }) {
     super();
-    this.point = point;
+    this.#point = point;
+    this.#handleEditClick = onEditClick;
+    this.element.querySelector('.event__rollup-btn')
+      .addEventListener('click', this.#editClickHandler);
   }
 
   get template() {
-    return createPointTemplate(this.point);
+    return createPointTemplate(this.#point);
   }
+
+  #editClickHandler = (e) => {
+    e.preventDefault();
+    this.#handleEditClick();
+  };
 }
