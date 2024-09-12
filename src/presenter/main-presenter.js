@@ -51,6 +51,7 @@ export default class MainPresenter {
 
       onFormSubmit: () => {
         replaceFormToPoint();
+        document.removeEventListener('keydown', escKeyDownHandler);
       }
     });
 
