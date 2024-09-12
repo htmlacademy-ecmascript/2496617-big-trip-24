@@ -9,40 +9,46 @@ import { BLANK_POINT } from '../const';
 // $======================== MainPresenter ========================$ //
 
 export default class MainPresenter {
-  pointsListElement = new PointsListView();
+  #pointsContainer;
+  #filtersContainer;
+  #pointsModel;
+  #destinationsModel;
+  #offersModel;
 
   constructor({ pointsContainer, filtersContainer, pointsModel, destinationsModel, offersModel }) {
-    this.pointsContainer = pointsContainer;
-    this.filtersContainer = filtersContainer;
-    this.pointsModel = pointsModel;
-    this.destinationsModel = destinationsModel;
-    this.offersModel = offersModel;
+    this.#pointsContainer = pointsContainer;
+    this.#filtersContainer = filtersContainer;
+    this.#pointsModel = pointsModel;
+    this.#destinationsModel = destinationsModel;
+    this.#offersModel = offersModel;
   }
 
-  init() {
-    render(new FiltersView(), this.filtersContainer);
-    render(new SortView(), this.pointsContainer);
+  #pointsListElement = new PointsListView();
 
-    this.points = [...this.pointsModel.getPoints()];
+  init() {
+    render(new FiltersView(), this.#filtersContainer);
+    render(new SortView(), this.#pointsContainer);
+
+    this.points = [...this.#pointsModel.points];
 
     const createForm = new EditFormView({
       point: BLANK_POINT,
-      allOffers: this.offersModel.getOffersByType(BLANK_POINT.type),
-      pointDestination: this.destinationsModel.getDestinationById(BLANK_POINT.destination),
-      allDestinations: this.destinationsModel.getDestinations(),
+      allOffers: this.#offersModel.getOffersByType(BLANK_POINT.type),
+      pointDestination: this.#destinationsModel.getDestinationById(BLANK_POINT.destination),
+      allDestinations: this.#destinationsModel.destinations,
     });
-    render(createForm, this.pointsContainer);
+    render(createForm, this.#pointsContainer);
 
-    render(this.pointsListElement, this.pointsContainer);
+    render(this.#pointsListElement, this.#pointsContainer);
 
     this.points.forEach((point) => {
       render(
         new PointView({
           point: point,
-          offers: [...this.offersModel.getOffersById(point.type, point.offers)],
-          destination: this.destinationsModel.getDestinationById(point.destination)
+          offers: [...this.#offersModel.getOffersById(point.type, point.offers)],
+          destination: this.#destinationsModel.getDestinationById(point.destination)
         }),
-        this.pointsListElement.element
+        this.#pointsListElement.element
       );
     });
   }

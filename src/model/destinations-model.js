@@ -5,11 +5,11 @@ import { mockDestinations } from '../mock/mock-destinations';
 export default class DestinationsModel {
   #destinations = mockDestinations;
 
-  getDestinations() {
+  get destinations() {
     return this.#destinations;
   }
 
   getDestinationById(id) {
-    return this.getDestinations().find((destination) => destination.id === id);
+    return this.#destinations.find((destination) => destination.id === id);
   }
 }
