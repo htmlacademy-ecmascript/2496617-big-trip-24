@@ -14,4 +14,17 @@ const getDuration = (startTime, endTime) => {
   return date2.diff(date1);
 };
 
-export { humanizeDate, humanizeTime, humanizeDateAndTime, getDuration, };
+const isFuturePoint = (point) => dayjs(point.dateFrom).isAfter(dayjs());
+const isPastPoint = (point) => dayjs(point.dateTo).isBefore(dayjs());
+const isPresentPoint = (point) => dayjs(point.dateFrom).isBefore(dayjs()) && dayjs(point.dateTo).isAfter(dayjs());
+
+
+export {
+  humanizeDate,
+  humanizeTime,
+  humanizeDateAndTime,
+  getDuration,
+  isFuturePoint,
+  isPastPoint,
+  isPresentPoint
+};

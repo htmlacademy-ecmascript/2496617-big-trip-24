@@ -22,6 +22,13 @@ const createFiltersTemplate = () => /*html*/`
 `;
 
 export default class FiltersView extends AbstractView {
+  #filters = null;
+
+  constructor({ filters }) {
+    super();
+    this.#filters = filters;
+  }
+
   get template() {
     return createFiltersTemplate();
   }

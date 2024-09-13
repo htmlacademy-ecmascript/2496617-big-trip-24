@@ -58,7 +58,6 @@ export default class MainPresenter {
       }
     });
 
-
     function replacePointToForm() {
       replace(editFormComponent, pointComponent);
     }
@@ -70,7 +69,7 @@ export default class MainPresenter {
   }
 
   #renderBoard() {
-    render(new FiltersView(), this.#filtersContainer);
+    render(new FiltersView({}), this.#filtersContainer);
     render(new SortView(), this.#pointsContainer);
 
     render(this.#pointsListElement, this.#pointsContainer);
