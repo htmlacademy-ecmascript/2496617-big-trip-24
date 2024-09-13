@@ -1,5 +1,5 @@
-import { createElement } from '../render';
 import { SORT_TYPES } from '../const';
+import AbstractView from '../framework/view/abstract-view';
 
 // $======================== SortView ========================$ //
 
@@ -16,19 +16,8 @@ const createSortTemplate = () => /*html*/`
   </form>
 `;
 
-export default class SortView {
-  getTemplate() {
+export default class SortView extends AbstractView {
+  get template() {
     return createSortTemplate();
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
   }
 }

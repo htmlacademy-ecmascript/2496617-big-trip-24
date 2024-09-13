@@ -5,12 +5,12 @@ import { mockOffers } from '../mock/mock-offers';
 export default class OffersModel {
   #offers = mockOffers;
 
-  getOffers() {
+  get offers() {
     return this.#offers;
   }
 
   getOffersByType(type) {
-    return this.getOffers().find((offer) => offer.type === type);
+    return this.#offers.find((offer) => offer.type === type);
   }
 
   getOffersById(type, pointOffersIds) {

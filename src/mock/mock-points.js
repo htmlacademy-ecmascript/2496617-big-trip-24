@@ -1,6 +1,6 @@
 // $======================== mockPoints ========================$ //
 
-import { getRandomArrayItem } from '../util';
+import { getRandomArrayItem } from '../utils/common';
 
 const mockPoints = [
   {
