@@ -5,6 +5,7 @@ import PointView from '../view/point-view';
 import PointsListView from '../view/points-list-view';
 import SortView from '../view/sort-view';
 import { isEscapeKey } from '../utils/common';
+import NoPointsView from '../view/no-points-view';
 
 // $======================== MainPresenter ========================$ //
 
@@ -12,8 +13,10 @@ export default class MainPresenter {
   #pointsContainer = null;
   #filtersContainer = null;
   #pointsModel = null;
-  #destinationsModel = null;
   #offersModel = null;
+  #destinationsModel = null;
+  #points = null;
+  #pointsListElement = new PointsListView();
 
   constructor({ pointsContainer, filtersContainer, pointsModel, destinationsModel, offersModel }) {
     this.#pointsContainer = pointsContainer;
@@ -22,8 +25,6 @@ export default class MainPresenter {
     this.#destinationsModel = destinationsModel;
     this.#offersModel = offersModel;
   }
-
-  #pointsListElement = new PointsListView();
 
   #renderPoint({ point, offers, destination }) {
 
@@ -74,7 +75,12 @@ export default class MainPresenter {
 
     render(this.#pointsListElement, this.#pointsContainer);
 
-    this.points.forEach((pointItem) => {
+    if (this.#points.length === 0) {
+      render(new NoPointsView(), this.#pointsContainer);
+      return;
+    }
+
+    this.#points.forEach((pointItem) => {
       this.#renderPoint({
         point: pointItem,
         offers: [...this.#offersModel.getOffersById(pointItem.type, pointItem.offers)],
@@ -84,7 +90,7 @@ export default class MainPresenter {
   }
 
   init() {
-    this.points = [...this.#pointsModel.points];
+    this.#points = [...this.#pointsModel.points];
 
     this.#renderBoard();
   }
