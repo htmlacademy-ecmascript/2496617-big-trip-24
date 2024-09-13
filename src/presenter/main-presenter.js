@@ -9,11 +9,11 @@ import { isEscapeKey } from '../utils/common';
 // $======================== MainPresenter ========================$ //
 
 export default class MainPresenter {
-  #pointsContainer;
-  #filtersContainer;
-  #pointsModel;
-  #destinationsModel;
-  #offersModel;
+  #pointsContainer = null;
+  #filtersContainer = null;
+  #pointsModel = null;
+  #destinationsModel = null;
+  #offersModel = null;
 
   constructor({ pointsContainer, filtersContainer, pointsModel, destinationsModel, offersModel }) {
     this.#pointsContainer = pointsContainer;
