@@ -11,7 +11,7 @@ const createOffersTemplate = (offers) => (offers.map(({ title, price }) => /*htm
     </li>
   `).join(''));
 
-const createPointTemplate = ({ point, offers, destination }) => {
+const createPointTemplate = (point, offers, destination) => {
   const { basePrice, dateFrom, dateTo, isFavorite, type } = point;
 
   const date = humanizeDate(dateFrom);
@@ -66,18 +66,22 @@ const createPointTemplate = ({ point, offers, destination }) => {
 
 export default class PointView extends AbstractView {
   #point = null;
+  #offers = null;
+  #destination = null;
   #handleEditClick = null;
 
-  constructor({ point, onEditClick }) {
+  constructor({ point, offers, destination, onEditClick }) {
     super();
     this.#point = point;
+    this.#offers = offers;
+    this.#destination = destination;
     this.#handleEditClick = onEditClick;
     this.element.querySelector('.event__rollup-btn')
       .addEventListener('click', this.#editClickHandler);
   }
 
   get template() {
-    return createPointTemplate(this.#point);
+    return createPointTemplate(this.#point, this.#offers, this.#destination);
   }
 
   #editClickHandler = (e) => {

@@ -25,7 +25,7 @@ export default class MainPresenter {
 
   #pointsListElement = new PointsListView();
 
-  #renderPoint(point) {
+  #renderPoint({ point, offers, destination }) {
 
     const escKeyDownHandler = (e) => {
       if (isEscapeKey) {
@@ -37,6 +37,8 @@ export default class MainPresenter {
 
     const pointComponent = new PointView({
       point,
+      offers,
+      destination,
       onEditClick: () => {
         replacePointToForm();
         document.addEventListener('keydown', escKeyDownHandler);
@@ -44,9 +46,9 @@ export default class MainPresenter {
     });
 
     const editFormComponent = new EditFormView({
-      point: point.point,
-      allOffers: this.#offersModel.getOffersByType(point.point.type),
-      pointDestination: this.#destinationsModel.getDestinationById(point.point.destination),
+      point: point,
+      allOffers: this.#offersModel.getOffersByType(point.type),
+      pointDestination: this.#destinationsModel.getDestinationById(point.destination),
       allDestinations: this.#destinationsModel.destinations,
 
       onFormSubmit: () => {
@@ -72,11 +74,11 @@ export default class MainPresenter {
 
     render(this.#pointsListElement, this.#pointsContainer);
 
-    this.points.forEach((point) => {
+    this.points.forEach((pointItem) => {
       this.#renderPoint({
-        point: point,
-        offers: [...this.#offersModel.getOffersById(point.type, point.offers)],
-        destination: this.#destinationsModel.getDestinationById(point.destination)
+        point: pointItem,
+        offers: [...this.#offersModel.getOffersById(pointItem.type, pointItem.offers)],
+        destination: this.#destinationsModel.getDestinationById(pointItem.destination)
       });
     });
   }
