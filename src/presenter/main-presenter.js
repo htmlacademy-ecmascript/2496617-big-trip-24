@@ -1,10 +1,11 @@
 import { render, replace } from '../framework/render';
+import { filters } from '../main';
+import { isEscapeKey } from '../utils/common';
 import EditFormView from '../view/edit-form-view';
 import FiltersView from '../view/filters-view';
 import PointView from '../view/point-view';
 import PointsListView from '../view/points-list-view';
 import SortView from '../view/sort-view';
-import { isEscapeKey } from '../utils/common';
 import NoPointsView from '../view/no-points-view';
 
 // $======================== MainPresenter ========================$ //
@@ -69,7 +70,7 @@ export default class MainPresenter {
   }
 
   #renderBoard() {
-    render(new FiltersView({}), this.#filtersContainer);
+    render(new FiltersView({ filters }), this.#filtersContainer);
     render(new SortView(), this.#pointsContainer);
 
     render(this.#pointsListElement, this.#pointsContainer);
