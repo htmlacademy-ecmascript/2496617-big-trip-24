@@ -10,6 +10,7 @@ const pointsModel = new PointsModel();
 const destinationsModel = new DestinationsModel();
 const offersModel = new OffersModel();
 
+
 const mainPresenter = new MainPresenter({
   pointsContainer: pointsElement,
   filtersContainer: filtersElement,
@@ -19,3 +20,4 @@ const mainPresenter = new MainPresenter({
 });
 
 mainPresenter.init();
+
