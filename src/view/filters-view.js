@@ -32,7 +32,7 @@ const createFiltersTemplate = (filters) => /*html*/`
 `;
 
 export default class FiltersView extends AbstractView {
-  #filters = null;
+  #filters = [];
 
   constructor({ filters }) {
     super();

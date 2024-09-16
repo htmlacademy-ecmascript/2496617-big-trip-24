@@ -1,6 +1,6 @@
 import { render, replace } from '../framework/render';
-import { filters } from '../main';
 import { isEscapeKey } from '../utils/common';
+import { generateFilter } from '../mock/mock-filter';
 import EditFormView from '../view/edit-form-view';
 import FiltersView from '../view/filters-view';
 import PointView from '../view/point-view';
@@ -70,6 +70,7 @@ export default class MainPresenter {
   }
 
   #renderBoard() {
+    const filters = generateFilter(this.#points);
     render(new FiltersView({ filters }), this.#filtersContainer);
     render(new SortView(), this.#pointsContainer);
 
@@ -80,11 +81,11 @@ export default class MainPresenter {
       return;
     }
 
-    this.#points.forEach((pointItem) => {
+    this.#points.forEach((point) => {
       this.#renderPoint({
-        point: pointItem,
-        offers: [...this.#offersModel.getOffersById(pointItem.type, pointItem.offers)],
-        destination: this.#destinationsModel.getDestinationById(pointItem.destination)
+        point: point,
+        offers: [...this.#offersModel.getOffersById(point.type, point.offers)],
+        destination: this.#destinationsModel.getDestinationById(point.destination)
       });
     });
   }
