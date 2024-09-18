@@ -18,6 +18,7 @@ export default class MainPresenter {
   #destinationsModel = null;
   #points = null;
   #pointsListElement = new PointsListView();
+  #sortComponent = new SortView();
 
   constructor({ pointsContainer, filtersContainer, pointsModel, destinationsModel, offersModel }) {
     this.#pointsContainer = pointsContainer;
@@ -69,15 +70,14 @@ export default class MainPresenter {
     render(pointComponent, this.#pointsListElement.element);
   }
 
-  #renderBoard() {
-    const filters = generateFilter(this.#points);
-    render(new FiltersView({ filters }), this.#filtersContainer);
-    render(new SortView(), this.#pointsContainer);
+  #renderPoints() {
 
-    render(this.#pointsListElement, this.#pointsContainer);
+    this.#renderSort();
+
+    this.#renderPointsList();
 
     if (this.#points.length === 0) {
-      render(new NoPointsView(), this.#pointsContainer);
+      this.#renderNoPoints();
       return;
     }
 
@@ -90,9 +90,25 @@ export default class MainPresenter {
     });
   }
 
+  #renderSort() {
+    render(this.#sortComponent, this.#pointsContainer);
+  }
+
+  #renderNoPoints() {
+    render(new NoPointsView(), this.#pointsContainer);
+  }
+
+  #renderPointsList() {
+    render(this.#pointsListElement, this.#pointsContainer);
+  }
+
   init() {
     this.#points = [...this.#pointsModel.points];
 
-    this.#renderBoard();
+    const filters = generateFilter(this.#points);
+    render(new FiltersView({ filters }), this.#filtersContainer);
+
+    this.#renderPoints();
   }
+
 }
