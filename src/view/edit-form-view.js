@@ -70,11 +70,10 @@ const createEditPointTemplate = (point, allOffers, pointDestination = null, allD
 };
 
 export default class EditFormView extends AbstractView {
-
   #point = null;
-  #allOffers = null;
   #pointDestination = null;
-  #allDestinations = null;
+  #allOffers = [];
+  #allDestinations = [];
 
   #handleFormSubmit = null;
 
