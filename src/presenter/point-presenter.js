@@ -1,4 +1,4 @@
-import { replace, render } from '../framework/render';
+import { replace, render, remove } from '../framework/render';
 import { isEscapeKey } from '../utils/common';
 import PointView from '../view/point-view';
 import EditFormView from '../view/edit-form-view';
@@ -35,6 +35,7 @@ export default class PointPresenter {
     }
   };
 
+  //@ обработчики редактирования
   #handleEditClick = () => {
     this.#replacePointToForm();
     document.addEventListener('keydown', this.#escKeyDownHandler);
@@ -45,6 +46,7 @@ export default class PointPresenter {
     document.removeEventListener('keydown', this.#escKeyDownHandler);
   };
 
+  //@ функции замены точки на форму и обратно
   #replacePointToForm() {
     replace(this.#editFormComponent, this.#pointComponent);
   }
@@ -57,6 +59,10 @@ export default class PointPresenter {
     this.#point = point;
     this.#offers = offers;
     this.#destination = destination;
+
+    const prevPointComponent = this.#pointComponent;
+    const prevEditFormComponent = this.#editFormComponent;
+
 
     this.#pointComponent = new PointView({
       point: this.#point,
@@ -74,6 +80,22 @@ export default class PointPresenter {
 
       onFormSubmit: this.#handleFormSubmit,
     });
+
+    if (prevPointComponent === null || prevEditFormComponent === null) {
+      render(this.#pointComponent, this.#pointsListComponent);
+      return;
+    }
+
+    if (this.#pointsListComponent.contains(prevPointComponent.element)) {
+      replace(this.#pointComponent, prevPointComponent);
+    }
+
+    if (this.#pointsListComponent.contains(prevEditFormComponent)) {
+      replace(this.#editFormComponent, prevEditFormComponent);
+    }
+
+    remove(prevPointComponent);
+    remove(prevEditFormComponent);
 
     render(this.#pointComponent, this.#pointsListComponent);
   }

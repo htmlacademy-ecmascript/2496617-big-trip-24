@@ -10,7 +10,7 @@ import { humanizeDateAndTime } from '../utils/point';
 
 // $======================== EditFormView ========================$ //
 
-const createEditPointTemplate = (point, allOffers, pointDestination = null, allDestinations) => {
+const createEditFormTemplate = (point, allOffers, pointDestination = null, allDestinations) => {
 
   const { basePrice, dateFrom, dateTo, type } = point;
 
@@ -90,7 +90,7 @@ export default class EditFormView extends AbstractView {
   }
 
   get template() {
-    return createEditPointTemplate(this.#point, this.#allOffers, this.#pointDestination, this.#allDestinations);
+    return createEditFormTemplate(this.#point, this.#allOffers, this.#pointDestination, this.#allDestinations);
   }
 
   #formSubmitHandler = (e) => {
