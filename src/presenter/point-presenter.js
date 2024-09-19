@@ -27,23 +27,24 @@ export default class PointPresenter {
     this.#allDestinations = allDestinations;
   }
 
-  #escKeyDownHandler = (e) => {
+  //@ обработчик нажатия на esc
+  #handleEscKeyDown = (e) => {
     if (isEscapeKey(e)) {
       e.preventDefault();
       this.#replaceFormToPoint();
-      document.removeEventListener('keydown', this.#escKeyDownHandler);
+      document.removeEventListener('keydown', this.#handleEscKeyDown);
     }
   };
 
   //@ обработчики редактирования
   #handleEditClick = () => {
     this.#replacePointToForm();
-    document.addEventListener('keydown', this.#escKeyDownHandler);
+    document.addEventListener('keydown', this.#handleEscKeyDown);
   };
 
   #handleFormSubmit = () => {
     this.#replaceFormToPoint();
-    document.removeEventListener('keydown', this.#escKeyDownHandler);
+    document.removeEventListener('keydown', this.#handleEscKeyDown);
   };
 
   //@ функции замены точки на форму и обратно
@@ -55,6 +56,7 @@ export default class PointPresenter {
     replace(this.#pointComponent, this.#editFormComponent);
   }
 
+  //@ инициализация
   init({ point, offers, destination }) {
     this.#point = point;
     this.#offers = offers;
@@ -69,7 +71,7 @@ export default class PointPresenter {
       offers: this.#offers,
       destination: this.#destination,
 
-      onEditClick: this.#handleEditClick,
+      handleEditClick: this.#handleEditClick,
     });
 
     this.#editFormComponent = new EditFormView({
@@ -78,7 +80,7 @@ export default class PointPresenter {
       pointDestination: this.#pointDestination,
       allDestinations: this.#allDestinations,
 
-      onFormSubmit: this.#handleFormSubmit,
+      handleFormSubmit: this.#handleFormSubmit,
     });
 
     if (prevPointComponent === null || prevEditFormComponent === null) {
