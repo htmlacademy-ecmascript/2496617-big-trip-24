@@ -56,6 +56,11 @@ export default class PointPresenter {
     replace(this.#pointComponent, this.#editFormComponent);
   }
 
+  destroy() {
+    remove(this.#pointComponent);
+    remove(this.#editFormComponent);
+  }
+
   //@ инициализация
   init({ point, offers, destination }) {
     this.#point = point;
