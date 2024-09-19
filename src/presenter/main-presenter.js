@@ -36,7 +36,7 @@ export default class MainPresenter {
       allDestinations: this.#destinationsModel.destinations
     });
 
-    pointPresenter.init({ point, offers, destination });
+    pointPresenter.init(point, offers, destination);
   }
 
   #renderPoints() {

@@ -62,7 +62,7 @@ export default class PointPresenter {
   }
 
   //@ инициализация
-  init({ point, offers, destination }) {
+  init(point, offers, destination) {
     this.#point = point;
     this.#offers = offers;
     this.#destination = destination;
