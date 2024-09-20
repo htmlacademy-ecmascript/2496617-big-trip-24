@@ -5,6 +5,7 @@ import PointsListView from '../view/points-list-view';
 import SortView from '../view/sort-view';
 import NoPointsView from '../view/no-points-view';
 import PointPresenter from './point-presenter';
+import { updateItem } from '../utils/common';
 
 // $======================== MainPresenter ========================$ //
 
@@ -17,6 +18,8 @@ export default class MainPresenter {
   #points = [];
   #pointsListComponent = new PointsListView();
   #sortComponent = new SortView();
+
+  #pointPresenters = new Map();
 
   constructor({ pointsContainer, filtersContainer, pointsModel, destinationsModel, offersModel }) {
     this.#pointsContainer = pointsContainer;
@@ -33,10 +36,12 @@ export default class MainPresenter {
       destination: destination,
       allOffers: this.#offersModel.getOffersByType(point.type),
       pointDestination: this.#destinationsModel.getDestinationById(point.destination),
-      allDestinations: this.#destinationsModel.destinations
+      allDestinations: this.#destinationsModel.destinations,
+      handleDataChange: this.#handlePointChange,
     });
 
     pointPresenter.init(point, offers, destination);
+    this.#pointPresenters.set(point.id, pointPresenter);
   }
 
   #renderPoints() {
@@ -69,6 +74,16 @@ export default class MainPresenter {
   #renderPointsList() {
     render(this.#pointsListComponent, this.#pointsContainer);
   }
+
+  #handlePointChange = (updatedPoint) => {
+    this.#points = updateItem(this.#points, updatedPoint);
+    //? сюда же в init() нужно передавать ещё и соответствующие оферы и направления:
+    this.#pointPresenters.get(updatedPoint.id).init(
+      updatedPoint,
+      [...this.#offersModel.getOffersById(updatedPoint.type, updatedPoint.offers)],
+      this.#destinationsModel.getDestinationById(updatedPoint.destination)
+    );
+  };
 
   init() {
     this.#points = [...this.#pointsModel.points];

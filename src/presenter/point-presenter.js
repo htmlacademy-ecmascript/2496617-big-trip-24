@@ -18,13 +18,17 @@ export default class PointPresenter {
   #allOffers = [];
   #allDestinations = [];
 
-  constructor({ pointsListComponent, offers, destination, allOffers, pointDestination, allDestinations }) {
+  #handleDataChange = null;
+
+  constructor({ pointsListComponent, offers, destination, allOffers, pointDestination, allDestinations, handleDataChange }) {
     this.#pointsListComponent = pointsListComponent.element;
     this.#offers = offers;
     this.#destination = destination;
     this.#allOffers = allOffers;
     this.#pointDestination = pointDestination;
     this.#allDestinations = allDestinations;
+
+    this.#handleDataChange = handleDataChange;
   }
 
   //@ обработчик нажатия на esc
@@ -61,6 +65,10 @@ export default class PointPresenter {
     remove(this.#editFormComponent);
   }
 
+  #handleFavoriteClick = () => {
+    this.#handleDataChange({ ...this.#point, isFavorite: !this.#point.isFavorite });
+  };
+
   //@ инициализация
   init(point, offers, destination) {
     this.#point = point;
@@ -77,6 +85,7 @@ export default class PointPresenter {
       destination: this.#destination,
 
       handleEditClick: this.#handleEditClick,
+      handleFavoriteClick: this.#handleFavoriteClick,
     });
 
     this.#editFormComponent = new EditFormView({
@@ -97,7 +106,7 @@ export default class PointPresenter {
       replace(this.#pointComponent, prevPointComponent);
     }
 
-    if (this.#pointsListComponent.contains(prevEditFormComponent)) {
+    if (this.#pointsListComponent.contains(prevEditFormComponent.element)) {
       replace(this.#editFormComponent, prevEditFormComponent);
     }
 
