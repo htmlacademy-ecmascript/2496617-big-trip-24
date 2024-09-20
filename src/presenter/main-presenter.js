@@ -12,10 +12,13 @@ import { updateItem } from '../utils/common';
 export default class MainPresenter {
   #pointsContainer = null;
   #filtersContainer = null;
+
   #pointsModel = null;
   #offersModel = null;
   #destinationsModel = null;
+
   #points = [];
+
   #pointsListComponent = new PointsListView();
   #sortComponent = new SortView();
 
@@ -24,23 +27,23 @@ export default class MainPresenter {
   constructor({ pointsContainer, filtersContainer, pointsModel, destinationsModel, offersModel }) {
     this.#pointsContainer = pointsContainer;
     this.#filtersContainer = filtersContainer;
+
     this.#pointsModel = pointsModel;
     this.#destinationsModel = destinationsModel;
     this.#offersModel = offersModel;
   }
 
-  #renderPoint({ point, offers, destination }) {
+  #renderPoint(point) {
     const pointPresenter = new PointPresenter({
       pointsListComponent: this.#pointsListComponent,
-      offers: offers,
-      destination: destination,
-      allOffers: this.#offersModel.getOffersByType(point.type),
-      pointDestination: this.#destinationsModel.getDestinationById(point.destination),
-      allDestinations: this.#destinationsModel.destinations,
+
+      offersModel: this.#offersModel,
+      destinationsModel: this.#destinationsModel,
+
       handleDataChange: this.#handlePointChange,
     });
 
-    pointPresenter.init(point, offers, destination);
+    pointPresenter.init(point);
     this.#pointPresenters.set(point.id, pointPresenter);
   }
 
@@ -55,11 +58,7 @@ export default class MainPresenter {
     }
 
     this.#points.forEach((point) => {
-      this.#renderPoint({
-        point: point,
-        offers: [...this.#offersModel.getOffersById(point.type, point.offers)],
-        destination: this.#destinationsModel.getDestinationById(point.destination)
-      });
+      this.#renderPoint(point);
     });
   }
 
@@ -77,12 +76,7 @@ export default class MainPresenter {
 
   #handlePointChange = (updatedPoint) => {
     this.#points = updateItem(this.#points, updatedPoint);
-    //? сюда же в init() нужно передавать ещё и соответствующие оферы и направления:
-    this.#pointPresenters.get(updatedPoint.id).init(
-      updatedPoint,
-      [...this.#offersModel.getOffersById(updatedPoint.type, updatedPoint.offers)],
-      this.#destinationsModel.getDestinationById(updatedPoint.destination)
-    );
+    this.#pointPresenters.get(updatedPoint.id).init(updatedPoint);
   };
 
   init() {

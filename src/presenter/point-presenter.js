@@ -11,27 +11,21 @@ export default class PointPresenter {
   #editFormComponent = null;
 
   #point = null;
-  #destination = null;
-  #offers = [];
 
-  #pointDestination = null;
-  #allOffers = [];
-  #allDestinations = [];
+  #offersModel = null;
+  #destinationsModel = null;
 
   #handleDataChange = null;
 
-  constructor({ pointsListComponent, offers, destination, allOffers, pointDestination, allDestinations, handleDataChange }) {
+  constructor({ pointsListComponent, offersModel, destinationsModel, handleDataChange }) {
     this.#pointsListComponent = pointsListComponent.element;
-    this.#offers = offers;
-    this.#destination = destination;
-    this.#allOffers = allOffers;
-    this.#pointDestination = pointDestination;
-    this.#allDestinations = allDestinations;
+    this.#offersModel = offersModel;
+    this.#destinationsModel = destinationsModel;
 
     this.#handleDataChange = handleDataChange;
   }
 
-  //@ обработчик нажатия на esc
+  // @------------ обработчики ------------@ //
   #handleEscKeyDown = (e) => {
     if (isEscapeKey(e)) {
       e.preventDefault();
@@ -40,7 +34,6 @@ export default class PointPresenter {
     }
   };
 
-  //@ обработчики редактирования
   #handleEditClick = () => {
     this.#replacePointToForm();
     document.addEventListener('keydown', this.#handleEscKeyDown);
@@ -49,6 +42,10 @@ export default class PointPresenter {
   #handleFormSubmit = () => {
     this.#replaceFormToPoint();
     document.removeEventListener('keydown', this.#handleEscKeyDown);
+  };
+
+  #handleFavoriteClick = () => {
+    this.#handleDataChange({ ...this.#point, isFavorite: !this.#point.isFavorite });
   };
 
   //@ функции замены точки на форму и обратно
@@ -60,20 +57,15 @@ export default class PointPresenter {
     replace(this.#pointComponent, this.#editFormComponent);
   }
 
+  //@ удаление точки
   destroy() {
     remove(this.#pointComponent);
     remove(this.#editFormComponent);
   }
 
-  #handleFavoriteClick = () => {
-    this.#handleDataChange({ ...this.#point, isFavorite: !this.#point.isFavorite });
-  };
-
   //@ инициализация
-  init(point, offers, destination) {
+  init(point) {
     this.#point = point;
-    this.#offers = offers;
-    this.#destination = destination;
 
     const prevPointComponent = this.#pointComponent;
     const prevEditFormComponent = this.#editFormComponent;
@@ -81,8 +73,8 @@ export default class PointPresenter {
 
     this.#pointComponent = new PointView({
       point: this.#point,
-      offers: this.#offers,
-      destination: this.#destination,
+      offers: [...this.#offersModel.getOffersById(point.type, point.offers)],
+      destination: this.#destinationsModel.getDestinationById(point.destination),
 
       handleEditClick: this.#handleEditClick,
       handleFavoriteClick: this.#handleFavoriteClick,
@@ -90,9 +82,9 @@ export default class PointPresenter {
 
     this.#editFormComponent = new EditFormView({
       point: this.#point,
-      allOffers: this.#allOffers,
-      pointDestination: this.#pointDestination,
-      allDestinations: this.#allDestinations,
+      allOffers: this.#offersModel.getOffersByType(point.type),
+      pointDestination: this.#destinationsModel.getDestinationById(point.destination),
+      allDestinations: this.#destinationsModel.destinations,
 
       handleFormSubmit: this.#handleFormSubmit,
     });
