@@ -5,24 +5,32 @@ import EditFormView from '../view/edit-form-view';
 
 // $======================== PointPresenter ========================$ //
 
+const Mode = {
+  DEFAULT: 'DEFAULT',
+  EDITING: 'EDITING'
+};
+
 export default class PointPresenter {
   #pointsListComponent = null;
   #pointComponent = null;
   #editFormComponent = null;
 
   #point = null;
+  #mode = Mode.DEFAULT;
 
   #offersModel = null;
   #destinationsModel = null;
 
   #handleDataChange = null;
+  #handleModeChange = null;
 
-  constructor({ pointsListComponent, offersModel, destinationsModel, handleDataChange }) {
+  constructor({ pointsListComponent, offersModel, destinationsModel, handleDataChange, handleModeChange }) {
     this.#pointsListComponent = pointsListComponent.element;
     this.#offersModel = offersModel;
     this.#destinationsModel = destinationsModel;
 
     this.#handleDataChange = handleDataChange;
+    this.#handleModeChange = handleModeChange;
   }
 
   // @------------ обработчики ------------@ //
@@ -51,16 +59,29 @@ export default class PointPresenter {
   //@ функции замены точки на форму и обратно
   #replacePointToForm() {
     replace(this.#editFormComponent, this.#pointComponent);
+
+    document.addEventListener('keydown', this.#handleEscKeyDown);
+    this.#handleModeChange();
+    this.#mode = Mode.EDITING;
   }
 
   #replaceFormToPoint() {
     replace(this.#pointComponent, this.#editFormComponent);
+
+    document.removeEventListener('keydown', this.#handleEscKeyDown);
+    this.#mode = Mode.DEFAULT;
   }
 
   //@ удаление точки
   destroy() {
     remove(this.#pointComponent);
     remove(this.#editFormComponent);
+  }
+
+  resetView() {
+    if (this.#mode !== Mode.DEFAULT) {
+      this.#replaceFormToPoint();
+    }
   }
 
   //@ инициализация
@@ -94,11 +115,11 @@ export default class PointPresenter {
       return;
     }
 
-    if (this.#pointsListComponent.contains(prevPointComponent.element)) {
+    if (this.#mode === Mode.DEFAULT) {
       replace(this.#pointComponent, prevPointComponent);
     }
 
-    if (this.#pointsListComponent.contains(prevEditFormComponent.element)) {
+    if (this.#mode === Mode.EDITING) {
       replace(this.#editFormComponent, prevEditFormComponent);
     }
 

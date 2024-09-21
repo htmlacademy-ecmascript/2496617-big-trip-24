@@ -41,6 +41,7 @@ export default class MainPresenter {
       destinationsModel: this.#destinationsModel,
 
       handleDataChange: this.#handlePointChange,
+      handleModeChange: this.#handleModeChange,
     });
 
     pointPresenter.init(point);
@@ -77,6 +78,12 @@ export default class MainPresenter {
   #handlePointChange = (updatedPoint) => {
     this.#points = updateItem(this.#points, updatedPoint);
     this.#pointPresenters.get(updatedPoint.id).init(updatedPoint);
+  };
+
+  #handleModeChange = () => {
+    this.#pointPresenters.forEach((pointPresenter) => {
+      pointPresenter.resetView();
+    });
   };
 
   init() {
