@@ -3,7 +3,7 @@
 const SORT_TYPES = ['day', 'event', 'time', 'price', 'offers'];
 const POINT_EVENT_TYPE_ITEMS = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
 
-const DATE_FORMAT = 'D MMMM';
+const DATE_FORMAT = 'MMM D';
 const TIME_FORMAT = 'HH : mm';
 const DATE_AND_TIME_FORMAT = 'DD/MM/YY HH:mm';
 
