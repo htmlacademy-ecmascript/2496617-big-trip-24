@@ -2,13 +2,9 @@ import { replace, render, remove } from '../framework/render';
 import { isEscapeKey } from '../utils/common';
 import PointView from '../view/point-view';
 import EditFormView from '../view/edit-form-view';
+import { Mode } from '../const';
 
 // $======================== PointPresenter ========================$ //
-
-const Mode = {
-  DEFAULT: 'DEFAULT',
-  EDITING: 'EDITING'
-};
 
 export default class PointPresenter {
   #pointsListComponent = null;
@@ -25,7 +21,7 @@ export default class PointPresenter {
   #handleModeChange = null;
 
   constructor({ pointsListComponent, offersModel, destinationsModel, handleDataChange, handleModeChange }) {
-    this.#pointsListComponent = pointsListComponent.element;
+    this.#pointsListComponent = pointsListComponent;
     this.#offersModel = offersModel;
     this.#destinationsModel = destinationsModel;
 
@@ -111,7 +107,7 @@ export default class PointPresenter {
     });
 
     if (prevPointComponent === null || prevEditFormComponent === null) {
-      render(this.#pointComponent, this.#pointsListComponent);
+      render(this.#pointComponent, this.#pointsListComponent.element);
       return;
     }
 

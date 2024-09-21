@@ -49,10 +49,6 @@ export default class MainPresenter {
   }
 
   #renderPoints() {
-    this.#renderSort();
-
-    this.#renderPointsList();
-
     if (this.#points.length === 0) {
       this.#renderNoPoints();
       return;
@@ -63,16 +59,22 @@ export default class MainPresenter {
     });
   }
 
+  #renderPointsList() {
+    render(this.#pointsListComponent, this.#pointsContainer);
+    this.#renderPoints();
+  }
+
+  #renderFilters() {
+    const filters = generateFilter(this.#points);
+    render(new FiltersView({ filters }), this.#filtersContainer);
+  }
+
   #renderSort() {
     render(this.#sortComponent, this.#pointsContainer);
   }
 
   #renderNoPoints() {
     render(new NoPointsView(), this.#pointsContainer);
-  }
-
-  #renderPointsList() {
-    render(this.#pointsListComponent, this.#pointsContainer);
   }
 
   #handlePointChange = (updatedPoint) => {
@@ -89,10 +91,9 @@ export default class MainPresenter {
   init() {
     this.#points = [...this.#pointsModel.points];
 
-    const filters = generateFilter(this.#points);
-    render(new FiltersView({ filters }), this.#filtersContainer);
-
-    this.#renderPoints();
+    this.#renderFilters();
+    this.#renderSort();
+    this.#renderPointsList();
   }
 
 }
