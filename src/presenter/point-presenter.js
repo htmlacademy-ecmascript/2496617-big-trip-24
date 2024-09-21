@@ -126,6 +126,5 @@ export default class PointPresenter {
     remove(prevPointComponent);
     remove(prevEditFormComponent);
 
-    render(this.#pointComponent, this.#pointsListComponent);
   }
 }
