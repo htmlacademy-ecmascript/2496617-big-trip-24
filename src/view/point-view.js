@@ -1,5 +1,5 @@
 import AbstractView from '../framework/view/abstract-view';
-import { getDuration, humanizeDate, humanizeTime } from '../utils/point';
+import { getDuration, humanizeDate, humanizeTime, humanizeDuration } from '../utils/point';
 
 // $======================== PointView ========================$ //
 
@@ -15,7 +15,7 @@ const createPointTemplate = (point, offers, destination) => {
   const { basePrice, dateFrom, dateTo, isFavorite, type } = point;
 
   const date = humanizeDate(dateFrom);
-  const duration = humanizeTime(getDuration(dateFrom, dateTo));
+  const duration = humanizeDuration(getDuration(dateFrom, dateTo));
 
   const offersTemplate = createOffersTemplate(offers);
 

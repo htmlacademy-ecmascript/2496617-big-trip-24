@@ -1,5 +1,6 @@
 import { render } from '../framework/render';
 import { updateItem } from '../utils/common';
+import { sortByDay, sortByTime, sortByPrice } from '../utils/point';
 
 import DestinationsModel from '../model/destinations-model';
 import OffersModel from '../model/offers-model';
@@ -9,6 +10,7 @@ import SortView from '../view/sort-view';
 import NoPointsView from '../view/no-points-view';
 
 import PointPresenter from './point-presenter';
+import { SortType } from '../const';
 
 // $====================== PointsListPresenter ======================$ //
 
@@ -18,12 +20,15 @@ export default class PointsListPresenter {
   #offersModel = new OffersModel();
   #destinationsModel = new DestinationsModel();
 
-  #sortComponent = new SortView();
+  #sortComponent = null;
   #pointsListComponent = new PointsListView();
 
   #points = [];
 
   #pointPresenters = new Map();
+
+  #currentSortType = SortType.DAY;
+  #sourcedListPoints = [];
 
   constructor({ pointsContainer, points }) {
     this.#pointsContainer = pointsContainer;
@@ -65,8 +70,38 @@ export default class PointsListPresenter {
     this.#renderPoints();
   }
 
+  #clearPointsList() {
+    this.#pointPresenters.forEach((presenter) => presenter.destroy());
+    this.#pointPresenters.clear();
+  }
+
   #renderSort() {
+    this.#sortComponent = new SortView({
+      handleSortTypeChange: this.#handleSortTypeChange
+    });
+
     render(this.#sortComponent, this.#pointsContainer);
+  }
+
+  #sortPoints(sortType) {
+    switch (sortType) {
+      case SortType.DAY:
+        this.#points.sort(sortByDay);
+        break;
+      case SortType.EVENT:
+        return;
+      case SortType.TIME:
+        this.#points.sort(sortByTime);
+        break;
+      case SortType.PRICE:
+        this.#points.sort(sortByPrice);
+        break;
+      case SortType.OFFERS:
+        return;
+      default:
+        this.#points = [...this.#sourcedListPoints];
+    }
+    this.#currentSortType = sortType;
   }
 
   // @------------ обработчики ------------@ //
@@ -81,9 +116,25 @@ export default class PointsListPresenter {
     });
   };
 
+  #handleSortTypeChange = (sortType) => {
+    if (this.#currentSortType === sortType) {
+      return;
+    }
+    if (sortType === SortType.EVENT || sortType === SortType.OFFERS) {
+      return;
+    }
+
+    this.#sortPoints(sortType);
+
+    this.#clearPointsList();
+    this.#renderPointsList();
+  };
+
   //@ инициализация
   init() {
+    this.#sourcedListPoints = [...this.#points];
     this.#renderSort();
+    this.#sortPoints(SortType.DAY);
     this.#renderPointsList();
   }
 

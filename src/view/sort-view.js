@@ -1,4 +1,4 @@
-import { SORT_TYPES } from '../const';
+import { SortType } from '../const';
 import AbstractView from '../framework/view/abstract-view';
 
 // $======================== SortView ========================$ //
@@ -11,7 +11,8 @@ const createSortItemTemplate = (sortType) => /*html*/`
       type="radio"
       name="trip-sort"
       value="sort-${sortType}"
-      ${sortType === 'offers' ? 'disabled' : ''}
+      ${(sortType === 'offers' || sortType === 'event') ? 'disabled' : ''}
+      ${sortType === 'day' ? 'checked' : ''}
       data-sort-type="${sortType}"
     >
     <label class="trip-sort__btn" for="sort-${sortType}">${sortType}</label>
@@ -20,12 +21,30 @@ const createSortItemTemplate = (sortType) => /*html*/`
 
 const createSortTemplate = () => /*html*/`
   <form class="trip-events__trip-sort  trip-sort" action="#" method="get">
-    ${SORT_TYPES.map((sortType) => createSortItemTemplate(sortType)).join('')}
+    ${Object.values(SortType).map((sortType) => createSortItemTemplate(sortType)).join('')}
   </form>
 `;
 
 export default class SortView extends AbstractView {
+  #handleSortTypeChange = null;
+
+  constructor({ handleSortTypeChange }) {
+    super();
+    this.#handleSortTypeChange = handleSortTypeChange;
+
+    this.element.addEventListener('click', this.#onSortTypeChange);
+  }
+
   get template() {
     return createSortTemplate();
   }
+
+  #onSortTypeChange = (e) => {
+    if (e.target.tagName !== 'LABEL') {
+      return;
+    }
+    const targetsParentElement = e.target.closest('label').parentElement;
+    const nearestInput = targetsParentElement.querySelector('input');
+    this.#handleSortTypeChange(nearestInput.dataset.sortType);
+  };
 }
