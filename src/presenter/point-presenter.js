@@ -1,8 +1,8 @@
 import { replace, render, remove } from '../framework/render';
 import { isEscapeKey } from '../utils/common';
+import { Mode } from '../const';
 import PointView from '../view/point-view';
 import EditFormView from '../view/edit-form-view';
-import { Mode } from '../const';
 
 // $======================== PointPresenter ========================$ //
 
@@ -52,6 +52,7 @@ export default class PointPresenter {
     this.#handleDataChange({ ...this.#point, isFavorite: !this.#point.isFavorite });
   };
 
+
   //@ функции замены точки на форму и обратно
   #replacePointToForm() {
     replace(this.#editFormComponent, this.#pointComponent);
@@ -68,6 +69,7 @@ export default class PointPresenter {
     this.#mode = Mode.DEFAULT;
   }
 
+
   //@ удаление точки
   destroy() {
     remove(this.#pointComponent);
@@ -80,6 +82,7 @@ export default class PointPresenter {
     }
   }
 
+
   //@ инициализация
   init(point) {
     this.#point = point;
@@ -88,6 +91,7 @@ export default class PointPresenter {
     const prevEditFormComponent = this.#editFormComponent;
 
 
+    //@ создание точки
     this.#pointComponent = new PointView({
       point: this.#point,
       offers: [...this.#offersModel.getOffersById(point.type, point.offers)],
@@ -97,6 +101,7 @@ export default class PointPresenter {
       handleFavoriteClick: this.#handleFavoriteClick,
     });
 
+    //@ создание формы
     this.#editFormComponent = new EditFormView({
       point: this.#point,
       allOffers: this.#offersModel.getOffersByType(point.type),
@@ -111,6 +116,7 @@ export default class PointPresenter {
       return;
     }
 
+    //@ проверки режима
     if (this.#mode === Mode.DEFAULT) {
       replace(this.#pointComponent, prevPointComponent);
     }
@@ -121,6 +127,5 @@ export default class PointPresenter {
 
     remove(prevPointComponent);
     remove(prevEditFormComponent);
-
   }
 }
