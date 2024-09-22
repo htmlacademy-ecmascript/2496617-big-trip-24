@@ -10,7 +10,7 @@ import { humanizeDateAndTime } from '../utils/point';
 
 // $======================== EditFormView ========================$ //
 
-const createEditPointTemplate = (point, allOffers, pointDestination = null, allDestinations) => {
+const createEditFormTemplate = (point, allOffers, pointDestination = null, allDestinations) => {
 
   const { basePrice, dateFrom, dateTo, type } = point;
 
@@ -70,31 +70,33 @@ const createEditPointTemplate = (point, allOffers, pointDestination = null, allD
 };
 
 export default class EditFormView extends AbstractView {
-
   #point = null;
-  #allOffers = null;
   #pointDestination = null;
-  #allDestinations = null;
+  #allOffers = [];
+  #allDestinations = [];
 
   #handleFormSubmit = null;
 
-  constructor({ point, allOffers, pointDestination, allDestinations, onFormSubmit }) {
+  constructor({ point, allOffers, pointDestination, allDestinations, handleFormSubmit }) {
     super();
     this.#point = point;
     this.#allOffers = allOffers;
     this.#pointDestination = pointDestination;
     this.#allDestinations = allDestinations;
-    this.#handleFormSubmit = onFormSubmit;
+    this.#handleFormSubmit = handleFormSubmit;
 
     this.element.querySelector('.event__rollup-btn')
-      .addEventListener('click', this.#formSubmitHandler);
+      .addEventListener('click', this.#onFormSubmit);
+
+    this.element.querySelector('.event__save-btn')
+      .addEventListener('click', this.#onFormSubmit);
   }
 
   get template() {
-    return createEditPointTemplate(this.#point, this.#allOffers, this.#pointDestination, this.#allDestinations);
+    return createEditFormTemplate(this.#point, this.#allOffers, this.#pointDestination, this.#allDestinations);
   }
 
-  #formSubmitHandler = (e) => {
+  #onFormSubmit = (e) => {
     e.preventDefault();
     this.#handleFormSubmit();
   };
