@@ -131,10 +131,10 @@ export default class MainPresenter {
   };
 
   #handleSortTypeChange = (sortType) => {
-    if (this.#currentSortType === sortType) {
-      return;
-    }
-    if (sortType === SortType.EVENT || sortType === SortType.OFFERS) {
+    if (
+      this.#currentSortType === sortType
+      && (sortType === SortType.EVENT || sortType === SortType.OFFERS)
+    ) {
       return;
     }
 
