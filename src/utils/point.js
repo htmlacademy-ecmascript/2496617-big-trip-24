@@ -12,19 +12,22 @@ const humanizeDateAndTime = (dateAndTime) => dateAndTime ? dayjs(dateAndTime).fo
 
 const humanizeDuration = (duration) => {
   const totalMinutes = Math.floor(duration / 1000 / 60);
-  const hours = Math.floor(totalMinutes / 60);
+  const days = Math.floor(totalMinutes / 1440);
+  const hours = Math.floor((totalMinutes % 1440) / 60);
   const minutes = totalMinutes % 60;
+
   const formattedHours = String(hours).padStart(2, '0');
   const formattedMinutes = String(minutes).padStart(2, '0');
-  return `${formattedHours} : ${formattedMinutes}`;
+
+  if (days === 0) {
+    return `${formattedHours}H ${formattedMinutes}M`;
+  }
+
+  const formattedDays = String(days).padStart(2, '0');
+  return `${formattedDays}D ${formattedHours}H ${formattedMinutes}M`;
 };
 
-const getDuration = (startTime, endTime) => {
-  const date1 = dayjs(startTime);
-  const date2 = dayjs(endTime);
-  const duration = date2.diff(date1);
-  return duration;
-};
+const getDuration = (startTime, endTime) => dayjs(endTime).diff(dayjs(startTime));
 
 const isFuturePoint = (point) => dayjs(point.dateFrom).isAfter(dayjs());
 const isPastPoint = (point) => dayjs(point.dateTo).isBefore(dayjs());
