@@ -79,7 +79,9 @@ export default class EditFormView extends AbstractStatefulView {
   #handleFormSubmit = null;
   #handleFormClose = null;
 
-  constructor({ point, offers, allOffers, pointDestination, allDestinations, handleFormSubmit, handleFormClose }) {
+  #offersModel = null;
+
+  constructor({ point, offers, allOffers, pointDestination, allDestinations, handleFormSubmit, handleFormClose, offersModel }) {
     super();
     this.#point = point;
     this.#offers = offers;
@@ -89,13 +91,22 @@ export default class EditFormView extends AbstractStatefulView {
     this.#handleFormSubmit = handleFormSubmit;
     this.#handleFormClose = handleFormClose;
 
+    this.#offersModel = offersModel;
+
     this._setState(EditFormView.parsePointToState(point));
 
     this._restoreHandlers();
   }
 
   get template() {
-    return createEditFormTemplate(this._state, this.#offers, this.#allOffers, this.#pointDestination, this.#allDestinations);
+    return createEditFormTemplate(
+      this._state,
+      //? потому что тут нужно получить оферы по типу стейта
+      [...this.#offersModel.getOffersById(this._state.type, this._state.offers)],
+      this.#offersModel.getOffersByType(this._state.type),
+      this.#pointDestination,
+      this.#allDestinations
+    );
   }
 
   #onFormSubmit = (e) => {
@@ -112,8 +123,13 @@ export default class EditFormView extends AbstractStatefulView {
     e.preventDefault(); //?
     const targetsParentElement = e.target.parentElement;
     const nearestInput = targetsParentElement.querySelector('input');
+    //? если выбираешь тип, который и так уже выбран (это вообще надо?)
+    if (this._state.type === nearestInput.value) {
+      return;
+    }
     this.updateElement({
-      type: nearestInput.value
+      type: nearestInput.value,
+      offers: [],
     });
   };
 

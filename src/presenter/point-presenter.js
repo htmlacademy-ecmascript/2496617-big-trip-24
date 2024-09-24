@@ -120,6 +120,7 @@ export default class PointPresenter {
 
       handleFormSubmit: this.#handleFormSubmit,
       handleFormClose: this.#handleFormClose,
+      offersModel: this.#offersModel,
     });
 
     if (prevPointComponent === null || prevEditFormComponent === null) {
