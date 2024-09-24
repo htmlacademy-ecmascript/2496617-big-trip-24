@@ -1,4 +1,4 @@
-import { render, RenderPosition, remove } from '../framework/render';
+import { render, remove } from '../framework/render';
 import { generateFilter } from '../mock/mock-filter';
 
 //@ utils
@@ -95,7 +95,7 @@ export default class MainPresenter {
       currentSortType: this.#currentSortType,
     });
 
-    render(this.#sortComponent, this.#pointsContainer, RenderPosition.AFTERBEGIN);
+    render(this.#sortComponent, this.#pointsContainer);
   }
 
   #removeSort() {
@@ -145,11 +145,11 @@ export default class MainPresenter {
 
     this.#sortPoints(sortType);
 
-    this.#clearPointsList();
-    this.#renderPointsList();
-
     this.#removeSort();
     this.#renderSort();
+
+    this.#clearPointsList();
+    this.#renderPointsList();
   };
 
   // @------------ инициализация ------------@ //
