@@ -33,6 +33,7 @@ export default class PointPresenter {
   #handleEscKeyDown = (e) => {
     if (isEscapeKey(e)) {
       e.preventDefault();
+      this.#editFormComponent.reset(this.#point);
       this.#replaceFormToPoint();
       document.removeEventListener('keydown', this.#handleEscKeyDown);
     }
@@ -44,6 +45,12 @@ export default class PointPresenter {
   };
 
   #handleFormSubmit = () => {
+    this.#replaceFormToPoint();
+    document.removeEventListener('keydown', this.#handleEscKeyDown);
+  };
+
+  #handleFormClose = () => {
+    this.#editFormComponent.reset(this.#point);
     this.#replaceFormToPoint();
     document.removeEventListener('keydown', this.#handleEscKeyDown);
   };
@@ -67,6 +74,8 @@ export default class PointPresenter {
 
     document.removeEventListener('keydown', this.#handleEscKeyDown);
     this.#mode = Mode.DEFAULT;
+
+    // this.#editFormComponent.reset(this.#point);
   }
 
 
@@ -110,6 +119,7 @@ export default class PointPresenter {
       allDestinations: this.#destinationsModel.destinations,
 
       handleFormSubmit: this.#handleFormSubmit,
+      handleFormClose: this.#handleFormClose,
     });
 
     if (prevPointComponent === null || prevEditFormComponent === null) {

@@ -1,4 +1,4 @@
-import AbstractView from '../framework/view/abstract-view';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view';
 import {
   createPointTypeTemplate,
   createOffersContainerTemplate,
@@ -69,7 +69,7 @@ const createEditFormTemplate = (point, offers, allOffers, pointDestination = nul
   `;
 };
 
-export default class EditFormView extends AbstractView {
+export default class EditFormView extends AbstractStatefulView {
   #point = null;
   #offers = null;
   #pointDestination = null;
@@ -77,8 +77,9 @@ export default class EditFormView extends AbstractView {
   #allDestinations = [];
 
   #handleFormSubmit = null;
+  #handleFormClose = null;
 
-  constructor({ point, offers, allOffers, pointDestination, allDestinations, handleFormSubmit }) {
+  constructor({ point, offers, allOffers, pointDestination, allDestinations, handleFormSubmit, handleFormClose }) {
     super();
     this.#point = point;
     this.#offers = offers;
@@ -86,20 +87,68 @@ export default class EditFormView extends AbstractView {
     this.#pointDestination = pointDestination;
     this.#allDestinations = allDestinations;
     this.#handleFormSubmit = handleFormSubmit;
+    this.#handleFormClose = handleFormClose;
 
-    this.element.querySelector('.event__rollup-btn')
-      .addEventListener('click', this.#onFormSubmit);
+    this._setState(EditFormView.parsePointToState(point));
 
-    this.element.querySelector('.event__save-btn')
-      .addEventListener('click', this.#onFormSubmit);
+    this._restoreHandlers();
   }
 
   get template() {
-    return createEditFormTemplate(this.#point, this.#offers, this.#allOffers, this.#pointDestination, this.#allDestinations);
+    return createEditFormTemplate(this._state, this.#offers, this.#allOffers, this.#pointDestination, this.#allDestinations);
   }
 
   #onFormSubmit = (e) => {
     e.preventDefault();
     this.#handleFormSubmit();
   };
+
+  #onFormClose = (e) => {
+    e.preventDefault();
+    this.#handleFormClose();
+  };
+
+  #onTypeChange = (e) => {
+    e.preventDefault(); //?
+    const targetsParentElement = e.target.parentElement;
+    const nearestInput = targetsParentElement.querySelector('input');
+    this.updateElement({
+      type: nearestInput.value
+    });
+  };
+
+  _restoreHandlers() {
+    this.element.querySelector('.event__rollup-btn')
+      .addEventListener('click', this.#onFormClose);
+
+    this.element.querySelector('.event__save-btn')
+      .addEventListener('click', this.#onFormSubmit);
+
+    this.element.querySelector('.event__type-group')
+      .addEventListener('change', this.#onTypeChange);
+  }
+
+  static parsePointToState(point) {
+    return {
+      ...point,
+    };
+  }
+
+  static parseStateToPoint(state) {
+    const point = { ...state };
+
+    if (!point.isPointType) {
+      point.type = null;
+    }
+
+    delete point.isPointType;
+
+    return point;
+  }
+
+  reset(point) {
+    this.updateElement(
+      EditFormView.parsePointToState(point)
+    );
+  }
 }
