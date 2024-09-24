@@ -156,6 +156,7 @@ export default class MainPresenter {
   init() {
     this.#points = [...this.#pointsModel.points];
     this.#sourcedListPoints = [...this.#points];
+
     this.#sortPoints(SortType.DAY);
 
     this.#renderFilters();

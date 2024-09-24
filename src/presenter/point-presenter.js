@@ -104,6 +104,7 @@ export default class PointPresenter {
     //@ создание формы
     this.#editFormComponent = new EditFormView({
       point: this.#point,
+      offers: [...this.#offersModel.getOffersById(point.type, point.offers)],
       allOffers: this.#offersModel.getOffersByType(point.type),
       pointDestination: this.#destinationsModel.getDestinationById(point.destination),
       allDestinations: this.#destinationsModel.destinations,

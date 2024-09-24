@@ -10,14 +10,14 @@ import { humanizeDateAndTime } from '../utils/point';
 
 // $======================== EditFormView ========================$ //
 
-const createEditFormTemplate = (point, allOffers, pointDestination = null, allDestinations) => {
+const createEditFormTemplate = (point, offers, allOffers, pointDestination = null, allDestinations) => {
 
   const { basePrice, dateFrom, dateTo, type } = point;
 
   const pointTypeTemplate = createPointTypeTemplate(type);
   const destinationsListTemplate = createDestinationsListTemplate(allDestinations);
   const destinationTemplate = createDestinationTemplate(pointDestination);
-  const offersContainerTemplate = createOffersContainerTemplate(allOffers);
+  const offersContainerTemplate = createOffersContainerTemplate(allOffers, offers);
 
   return /*html*/`
     <li class="trip-events__item">
@@ -71,15 +71,17 @@ const createEditFormTemplate = (point, allOffers, pointDestination = null, allDe
 
 export default class EditFormView extends AbstractView {
   #point = null;
+  #offers = null;
   #pointDestination = null;
   #allOffers = [];
   #allDestinations = [];
 
   #handleFormSubmit = null;
 
-  constructor({ point, allOffers, pointDestination, allDestinations, handleFormSubmit }) {
+  constructor({ point, offers, allOffers, pointDestination, allDestinations, handleFormSubmit }) {
     super();
     this.#point = point;
+    this.#offers = offers;
     this.#allOffers = allOffers;
     this.#pointDestination = pointDestination;
     this.#allDestinations = allDestinations;
@@ -93,7 +95,7 @@ export default class EditFormView extends AbstractView {
   }
 
   get template() {
-    return createEditFormTemplate(this.#point, this.#allOffers, this.#pointDestination, this.#allDestinations);
+    return createEditFormTemplate(this.#point, this.#offers, this.#allOffers, this.#pointDestination, this.#allDestinations);
   }
 
   #onFormSubmit = (e) => {
