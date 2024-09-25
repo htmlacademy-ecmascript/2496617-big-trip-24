@@ -148,7 +148,7 @@ export default class EditFormView extends AbstractStatefulView {
     const destinationByName = this.#destinationsModel.getDestinationByName(e.target.value);
     if (destinationByName) {
       this.updateElement({
-        destination: this.#destinationsModel.getDestinationByName(e.target.value).id,
+        destination: destinationByName.id,
       });
     }
   };
