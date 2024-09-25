@@ -80,8 +80,9 @@ export default class EditFormView extends AbstractStatefulView {
   #handleFormClose = null;
 
   #offersModel = null;
+  #destinationsModel = null;
 
-  constructor({ point, offers, allOffers, pointDestination, allDestinations, handleFormSubmit, handleFormClose, offersModel }) {
+  constructor({ point, offers, allOffers, pointDestination, allDestinations, handleFormSubmit, handleFormClose, offersModel, destinationsModel }) {
     super();
     this.#point = point;
     this.#offers = offers;
@@ -92,6 +93,8 @@ export default class EditFormView extends AbstractStatefulView {
     this.#handleFormClose = handleFormClose;
 
     this.#offersModel = offersModel;
+    this.#destinationsModel = destinationsModel;
+
 
     this._setState(EditFormView.parsePointToState(point));
 
@@ -104,11 +107,18 @@ export default class EditFormView extends AbstractStatefulView {
       //? потому что тут нужно получить оферы по типу стейта
       [...this.#offersModel.getOffersById(this._state.type, this._state.offers)],
       this.#offersModel.getOffersByType(this._state.type),
-      this.#pointDestination,
+      this.#destinationsModel.getDestinationById(this._state.destination),
       this.#allDestinations
     );
   }
 
+  reset(point) {
+    this.updateElement(
+      EditFormView.parsePointToState(point)
+    );
+  }
+
+  // @------------ обработчики ------------@ //
   #onFormSubmit = (e) => {
     e.preventDefault();
     this.#handleFormSubmit();
@@ -133,6 +143,16 @@ export default class EditFormView extends AbstractStatefulView {
     });
   };
 
+  #onDestinationChange = (e) => {
+    e.preventDefault();
+    const destinationByName = this.#destinationsModel.getDestinationByName(e.target.value);
+    if (destinationByName) {
+      this.updateElement({
+        destination: this.#destinationsModel.getDestinationByName(e.target.value).id,
+      });
+    }
+  };
+
   _restoreHandlers() {
     this.element.querySelector('.event__rollup-btn')
       .addEventListener('click', this.#onFormClose);
@@ -142,6 +162,9 @@ export default class EditFormView extends AbstractStatefulView {
 
     this.element.querySelector('.event__type-group')
       .addEventListener('change', this.#onTypeChange);
+
+    this.element.querySelector('.event__input--destination')
+      .addEventListener('change', this.#onDestinationChange);
   }
 
   static parsePointToState(point) {
@@ -160,11 +183,5 @@ export default class EditFormView extends AbstractStatefulView {
     delete point.isPointType;
 
     return point;
-  }
-
-  reset(point) {
-    this.updateElement(
-      EditFormView.parsePointToState(point)
-    );
   }
 }

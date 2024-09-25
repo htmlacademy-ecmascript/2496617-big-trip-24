@@ -74,8 +74,6 @@ export default class PointPresenter {
 
     document.removeEventListener('keydown', this.#handleEscKeyDown);
     this.#mode = Mode.DEFAULT;
-
-    // this.#editFormComponent.reset(this.#point);
   }
 
 
@@ -121,6 +119,7 @@ export default class PointPresenter {
       handleFormSubmit: this.#handleFormSubmit,
       handleFormClose: this.#handleFormClose,
       offersModel: this.#offersModel,
+      destinationsModel: this.#destinationsModel,
     });
 
     if (prevPointComponent === null || prevEditFormComponent === null) {
