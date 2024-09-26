@@ -113,14 +113,12 @@ export default class PointPresenter {
     this.#editFormComponent = new EditFormView({
       point: this.#point,
       offers: [...this.#offersModel.getOffersById(point.type, point.offers)],
-      allOffers: this.#offersModel.getOffersByType(point.type),
+      allOffers: this.#offersModel.offers,
       pointDestination: this.#destinationsModel.getDestinationById(point.destination),
       allDestinations: this.#destinationsModel.destinations,
 
       handleFormSubmit: this.#handleFormSubmit,
       handleFormClose: this.#handleFormClose,
-      offersModel: this.#offersModel,
-      destinationsModel: this.#destinationsModel,
     });
 
     if (prevPointComponent === null || prevEditFormComponent === null) {

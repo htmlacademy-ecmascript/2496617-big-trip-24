@@ -6,7 +6,7 @@ import {
   createDestinationsListTemplate
 } from './forms-templates';
 import { capitalize } from '../utils/common';
-import { humanizeDateAndTime } from '../utils/point';
+import { getDestinationById, getDestinationByName, getOffersById, getOffersByType, humanizeDateAndTime } from '../utils/point';
 
 // $======================== EditFormView ========================$ //
 
@@ -79,10 +79,7 @@ export default class EditFormView extends AbstractStatefulView {
   #handleFormSubmit = null;
   #handleFormClose = null;
 
-  #offersModel = null;
-  #destinationsModel = null;
-
-  constructor({ point, offers, allOffers, pointDestination, allDestinations, handleFormSubmit, handleFormClose, offersModel, destinationsModel }) {
+  constructor({ point, offers, allOffers, pointDestination, allDestinations, handleFormSubmit, handleFormClose,}) {
     super();
     this.#point = point;
     this.#offers = offers;
@@ -92,10 +89,6 @@ export default class EditFormView extends AbstractStatefulView {
     this.#handleFormSubmit = handleFormSubmit;
     this.#handleFormClose = handleFormClose;
 
-    this.#offersModel = offersModel;
-    this.#destinationsModel = destinationsModel;
-
-
     this._setState(EditFormView.parsePointToState(point));
 
     this._restoreHandlers();
@@ -104,10 +97,9 @@ export default class EditFormView extends AbstractStatefulView {
   get template() {
     return createEditFormTemplate(
       this._state,
-      //? потому что тут нужно получить оферы по типу стейта
-      [...this.#offersModel.getOffersById(this._state.type, this._state.offers)],
-      this.#offersModel.getOffersByType(this._state.type),
-      this.#destinationsModel.getDestinationById(this._state.destination),
+      getOffersById(this.#allOffers, this._state.type, this._state.offers),
+      getOffersByType(this.#allOffers, this._state.type),
+      getDestinationById(this.#allDestinations, this._state.destination),
       this.#allDestinations
     );
   }
@@ -133,7 +125,6 @@ export default class EditFormView extends AbstractStatefulView {
     e.preventDefault(); //?
     const targetsParentElement = e.target.parentElement;
     const nearestInput = targetsParentElement.querySelector('input');
-    //? если выбираешь тип, который и так уже выбран (это вообще надо?)
     if (this._state.type === nearestInput.value) {
       return;
     }
@@ -145,7 +136,8 @@ export default class EditFormView extends AbstractStatefulView {
 
   #onDestinationChange = (e) => {
     e.preventDefault();
-    const destinationByName = this.#destinationsModel.getDestinationByName(e.target.value);
+    const destinationByName = getDestinationByName(this.#allDestinations, e.target.value);
+
     if (destinationByName) {
       this.updateElement({
         destination: destinationByName.id,

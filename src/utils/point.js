@@ -42,6 +42,18 @@ const sortByTime = (pointA, pointB) => {
 };
 const sortByPrice = (pointA, pointB) => pointB.basePrice - pointA.basePrice;
 
+const getOffersByType = (offers, type) => offers.find((offer) => offer.type === type);
+
+const getOffersById = (offers, type, pointOffersIds) => {
+  const offersByType = offers.find((offer) => offer.type === type);
+  const offerItems = offersByType.offers;
+  return offerItems.filter((offerItem) => pointOffersIds.find((id) => offerItem.id === id));
+};
+
+const getDestinationById = (destinations, id) => destinations.find((destination) => destination.id === id);
+
+const getDestinationByName = (destinations, name) => destinations.find((destination) => destination.name === name);
+
 
 export {
   humanizeDate,
@@ -55,4 +67,8 @@ export {
   sortByDay,
   sortByTime,
   sortByPrice,
+  getDestinationById,
+  getDestinationByName,
+  getOffersByType,
+  getOffersById
 };
