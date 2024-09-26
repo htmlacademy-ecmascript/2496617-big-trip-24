@@ -43,6 +43,7 @@ export default class MainPresenter {
     this.#destinationsModel = destinationsModel;
   }
 
+
   #renderFilters() {
     const filters = generateFilter(this.#points);
     render(new FiltersView({ filters }), this.#filtersContainer);
@@ -126,6 +127,7 @@ export default class MainPresenter {
   // @------------ обработчики ------------@ //
   #handlePointChange = (updatedPoint) => {
     this.#points = updateItem(this.#points, updatedPoint);
+    this.#sourcedListPoints = updateItem(this.#sourcedListPoints, updatedPoint);
     this.#pointPresenters.get(updatedPoint.id).init(updatedPoint);
   };
 

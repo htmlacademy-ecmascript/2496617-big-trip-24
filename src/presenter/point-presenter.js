@@ -33,6 +33,7 @@ export default class PointPresenter {
   #handleEscKeyDown = (e) => {
     if (isEscapeKey(e)) {
       e.preventDefault();
+      this.#editFormComponent.reset(this.#point);
       this.#replaceFormToPoint();
       document.removeEventListener('keydown', this.#handleEscKeyDown);
     }
@@ -43,7 +44,14 @@ export default class PointPresenter {
     document.addEventListener('keydown', this.#handleEscKeyDown);
   };
 
-  #handleFormSubmit = () => {
+  #handleFormSubmit = (point) => {
+    this.#handleDataChange(point);
+    this.#replaceFormToPoint();
+    document.removeEventListener('keydown', this.#handleEscKeyDown);
+  };
+
+  #handleFormClose = () => {
+    this.#editFormComponent.reset(this.#point);
     this.#replaceFormToPoint();
     document.removeEventListener('keydown', this.#handleEscKeyDown);
   };
@@ -94,8 +102,8 @@ export default class PointPresenter {
     //@ создание точки
     this.#pointComponent = new PointView({
       point: this.#point,
-      offers: [...this.#offersModel.getOffersById(point.type, point.offers)],
-      destination: this.#destinationsModel.getDestinationById(point.destination),
+      allOffers: this.#offersModel.offers,
+      allDestinations: this.#destinationsModel.destinations,
 
       handleEditClick: this.#handleEditClick,
       handleFavoriteClick: this.#handleFavoriteClick,
@@ -104,12 +112,11 @@ export default class PointPresenter {
     //@ создание формы
     this.#editFormComponent = new EditFormView({
       point: this.#point,
-      offers: [...this.#offersModel.getOffersById(point.type, point.offers)],
-      allOffers: this.#offersModel.getOffersByType(point.type),
-      pointDestination: this.#destinationsModel.getDestinationById(point.destination),
+      allOffers: this.#offersModel.offers,
       allDestinations: this.#destinationsModel.destinations,
 
       handleFormSubmit: this.#handleFormSubmit,
+      handleFormClose: this.#handleFormClose,
     });
 
     if (prevPointComponent === null || prevEditFormComponent === null) {

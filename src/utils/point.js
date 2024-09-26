@@ -3,7 +3,7 @@ import { DATE_FORMAT, TIME_FORMAT, DATE_AND_TIME_FORMAT } from '../const';
 
 // $======================== point utils ========================$ //
 
-//$ date and time functions
+// $------------ date and time functions ------------$ //
 const humanizeDate = (date) => date ? dayjs(date).format(DATE_FORMAT) : '';
 
 const humanizeTime = (time) => time ? dayjs(time).format(TIME_FORMAT) : '';
@@ -33,6 +33,7 @@ const isFuturePoint = (point) => dayjs(point.dateFrom).isAfter(dayjs());
 const isPastPoint = (point) => dayjs(point.dateTo).isBefore(dayjs());
 const isPresentPoint = (point) => dayjs(point.dateFrom).isBefore(dayjs()) && dayjs(point.dateTo).isAfter(dayjs());
 
+// $------------ sorting functions ------------$ //
 const sortByDay = (pointA, pointB) => dayjs(pointA.dateFrom).diff(dayjs(pointB.dateFrom));
 
 const sortByTime = (pointA, pointB) => {
@@ -40,9 +41,23 @@ const sortByTime = (pointA, pointB) => {
   const pointBDuration = getDuration(pointB.dateFrom, pointB.dateTo);
   return pointBDuration - pointADuration;
 };
+
 const sortByPrice = (pointA, pointB) => pointB.basePrice - pointA.basePrice;
 
+// $------------ data getters ------------$ //
+const getOffersByType = (offers, type) => offers.find((offer) => offer.type === type);
 
+const getOffersById = (offers, type, pointOffersIds) => {
+  const offersByType = offers.find((offer) => offer.type === type);
+  const offerItems = offersByType.offers;
+  return offerItems.filter((offerItem) => pointOffersIds.find((id) => offerItem.id === id));
+};
+
+const getDestinationById = (destinations, id) => destinations.find((destination) => destination.id === id);
+
+const getDestinationByName = (destinations, name) => destinations.find((destination) => destination.name === name);
+
+// &======================== export ========================& //
 export {
   humanizeDate,
   humanizeTime,
@@ -55,4 +70,8 @@ export {
   sortByDay,
   sortByTime,
   sortByPrice,
+  getDestinationById,
+  getDestinationByName,
+  getOffersByType,
+  getOffersById
 };
