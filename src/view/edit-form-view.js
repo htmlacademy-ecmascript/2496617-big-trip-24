@@ -10,14 +10,18 @@ import { getDestinationById, getDestinationByName, getOffersById, getOffersByTyp
 
 // $======================== EditFormView ========================$ //
 
-const createEditFormTemplate = (point, offers, allOffers, pointDestination = null, allDestinations) => {
+const createEditFormTemplate = (point, allOffers, allDestinations) => {
 
   const { basePrice, dateFrom, dateTo, type } = point;
+
+  const offersById = getOffersById(allOffers, point.type, point.offers);
+  const offersByType = getOffersByType(allOffers, point.type);
+  const pointDestination = getDestinationById(allDestinations, point.destination);
 
   const pointTypeTemplate = createPointTypeTemplate(type);
   const destinationsListTemplate = createDestinationsListTemplate(allDestinations);
   const destinationTemplate = createDestinationTemplate(pointDestination);
-  const offersContainerTemplate = createOffersContainerTemplate(allOffers, offers);
+  const offersContainerTemplate = createOffersContainerTemplate(offersByType, offersById);
 
   return /*html*/`
     <li class="trip-events__item">
@@ -70,22 +74,17 @@ const createEditFormTemplate = (point, offers, allOffers, pointDestination = nul
 };
 
 export default class EditFormView extends AbstractStatefulView {
-  #point = null;
-  #offers = null;
-  #pointDestination = null;
   #allOffers = [];
   #allDestinations = [];
 
   #handleFormSubmit = null;
   #handleFormClose = null;
 
-  constructor({ point, offers, allOffers, pointDestination, allDestinations, handleFormSubmit, handleFormClose,}) {
+  constructor({ point, allOffers, allDestinations, handleFormSubmit, handleFormClose, }) {
     super();
-    this.#point = point;
-    this.#offers = offers;
     this.#allOffers = allOffers;
-    this.#pointDestination = pointDestination;
     this.#allDestinations = allDestinations;
+
     this.#handleFormSubmit = handleFormSubmit;
     this.#handleFormClose = handleFormClose;
 
@@ -95,13 +94,7 @@ export default class EditFormView extends AbstractStatefulView {
   }
 
   get template() {
-    return createEditFormTemplate(
-      this._state,
-      getOffersById(this.#allOffers, this._state.type, this._state.offers),
-      getOffersByType(this.#allOffers, this._state.type),
-      getDestinationById(this.#allDestinations, this._state.destination),
-      this.#allDestinations
-    );
+    return createEditFormTemplate(this._state, this.#allOffers, this.#allDestinations);
   }
 
   reset(point) {
@@ -122,7 +115,6 @@ export default class EditFormView extends AbstractStatefulView {
   };
 
   #onTypeChange = (e) => {
-    e.preventDefault(); //?
     const targetsParentElement = e.target.parentElement;
     const nearestInput = targetsParentElement.querySelector('input');
     if (this._state.type === nearestInput.value) {

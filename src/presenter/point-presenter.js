@@ -102,8 +102,8 @@ export default class PointPresenter {
     //@ создание точки
     this.#pointComponent = new PointView({
       point: this.#point,
-      offers: [...this.#offersModel.getOffersById(point.type, point.offers)],
-      destination: this.#destinationsModel.getDestinationById(point.destination),
+      allOffers: this.#offersModel.offers,
+      allDestinations: this.#destinationsModel.destinations,
 
       handleEditClick: this.#handleEditClick,
       handleFavoriteClick: this.#handleFavoriteClick,
@@ -112,9 +112,7 @@ export default class PointPresenter {
     //@ создание формы
     this.#editFormComponent = new EditFormView({
       point: this.#point,
-      offers: [...this.#offersModel.getOffersById(point.type, point.offers)],
       allOffers: this.#offersModel.offers,
-      pointDestination: this.#destinationsModel.getDestinationById(point.destination),
       allDestinations: this.#destinationsModel.destinations,
 
       handleFormSubmit: this.#handleFormSubmit,
