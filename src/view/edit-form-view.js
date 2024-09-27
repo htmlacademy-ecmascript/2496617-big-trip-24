@@ -8,6 +8,10 @@ import {
 import { capitalize } from '../utils/common';
 import { getDestinationById, getDestinationByName, getOffersById, getOffersByType, humanizeDateAndTime } from '../utils/point';
 
+import flatpickr from 'flatpickr';
+
+import 'flatpickr/dist/flatpickr.min.css';
+
 // $======================== EditFormView ========================$ //
 
 const createEditFormTemplate = (point, allOffers, allDestinations) => {
