@@ -22,6 +22,9 @@ const humanizeDuration = (duration) => {
   if (days === 0) {
     return `${formattedHours}H ${formattedMinutes}M`;
   }
+  if (hours === 0) {
+    return `${formattedMinutes}M`;
+  }
 
   const formattedDays = String(days).padStart(2, '0');
   return `${formattedDays}D ${formattedHours}H ${formattedMinutes}M`;
