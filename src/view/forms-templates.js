@@ -5,9 +5,16 @@ import { POINT_EVENT_TYPE_ITEMS } from '../const';
 
 // $------------ createPointTypeTemplate ------------$ //
 
-const createPointTypeItemTemplate = (eventTypeItem) => /*html*/`
+const createPointTypeItemTemplate = (eventTypeItem, currentType) => /*html*/`
   <div class="event__type-item">
-    <input id="event-type-${eventTypeItem}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${eventTypeItem}">
+    <input
+      id="event-type-${eventTypeItem}-1"
+      class="event__type-input  visually-hidden"
+      type="radio"
+      name="event-type"
+      value="${eventTypeItem}"
+      ${eventTypeItem === currentType ? 'checked' : ''}
+    >
     <label class="event__type-label  event__type-label--${eventTypeItem}" for="event-type-${eventTypeItem}-1">${capitalize(eventTypeItem)}</label>
   </div>
 `;
@@ -23,7 +30,7 @@ export const createPointTypeTemplate = (type) => /*html*/`
     <div class="event__type-list">
       <fieldset class="event__type-group">
         <legend class="visually-hidden">Event type</legend>
-        ${POINT_EVENT_TYPE_ITEMS.map((eventTypeItem) => createPointTypeItemTemplate(eventTypeItem)).join('')}
+        ${POINT_EVENT_TYPE_ITEMS.map((eventTypeItem) => createPointTypeItemTemplate(eventTypeItem, type)).join('')}
       </fieldset>
     </div>
   </div>
