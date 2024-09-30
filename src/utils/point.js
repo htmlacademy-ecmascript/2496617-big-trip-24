@@ -22,7 +22,7 @@ const humanizeDuration = (duration) => {
   if (days === 0) {
     return `${formattedHours}H ${formattedMinutes}M`;
   }
-  if (hours === 0) {
+  if (days === 0 && hours === 0) {
     return `${formattedMinutes}M`;
   }
 
