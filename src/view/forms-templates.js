@@ -69,19 +69,14 @@ const createOfferTemplate = ({ id, title, price }, offers) => /*html*/`
 `;
 
 
-export const createOffersContainerTemplate = (allOffers, offers) => {
-  const { offers: offersByType } = allOffers;
-
-  return /*html*/`
+export const createOffersContainerTemplate = (allOffers, offers) => /*html*/`
   <section class="event__section  event__section--offers">
     <h3 class="event__section-title  event__section-title--offers">Offers</h3>
       <div class="event__available-offers">
-        ${offersByType.map((offer) => createOfferTemplate(offer, offers)).join('')}
+        ${allOffers.map((offer) => createOfferTemplate(offer, offers)).join('')}
       </div>
   </section>
 `;
-};
-
 
 // $------------ createPhotosContainerTemplate ------------$ //
 

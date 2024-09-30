@@ -59,6 +59,10 @@ export default class PointPresenter {
     }
   }
 
+  #removeEscKeydownEventListener() {
+    document.removeEventListener('keydown', this.#handleEscKeyDown);
+  }
+
 
   //@ инициализация
   init(point) {
@@ -113,7 +117,7 @@ export default class PointPresenter {
       e.preventDefault();
       this.#editFormComponent.reset(this.#point);
       this.#replaceFormToPoint();
-      document.removeEventListener('keydown', this.#handleEscKeyDown);
+      this.#removeEscKeydownEventListener();
     }
   };
 
@@ -125,13 +129,13 @@ export default class PointPresenter {
   #handleFormSubmit = (point) => {
     this.#handleDataChange(point);
     this.#replaceFormToPoint();
-    document.removeEventListener('keydown', this.#handleEscKeyDown);
+    this.#removeEscKeydownEventListener();
   };
 
   #handleFormClose = () => {
     this.#editFormComponent.reset(this.#point);
     this.#replaceFormToPoint();
-    document.removeEventListener('keydown', this.#handleEscKeyDown);
+    this.#removeEscKeydownEventListener();
   };
 
   #handleFavoriteClick = () => {

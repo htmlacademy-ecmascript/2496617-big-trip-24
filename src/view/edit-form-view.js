@@ -69,7 +69,7 @@ const createEditFormTemplate = (point, allOffers, allDestinations) => {
           </button>
         </header>
 
-          ${offersByType.offers.length !== 0 ? offersContainerTemplate : ''}
+          ${offersByType.length !== 0 ? offersContainerTemplate : ''}
 
           ${destinationTemplate}
 
@@ -148,7 +148,7 @@ export default class EditFormView extends AbstractStatefulView {
       enableTime: true,
       'time_24hr': true,
       minuteIncrement: 1,
-      disableMobile: 'true',
+      disableMobile: true,
       minDate: minDate,
       maxDate: maxDate,
       onChange: (selectedDates) => this.#onDateChange(selectedDates, dateType),
