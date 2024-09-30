@@ -105,10 +105,41 @@ export default class EditFormView extends AbstractStatefulView {
     return createEditFormTemplate(this._state, this.#allOffers, this.#allDestinations);
   }
 
+  removeElement() {
+    super.removeElement();
+
+    if (this.#dateStartPicker) {
+      this.#dateStartPicker.destroy();
+      this.#dateStartPicker = null;
+    }
+    if (this.#dateEndPicker) {
+      this.#dateEndPicker.destroy();
+      this.#dateEndPicker = null;
+    }
+  }
+
   reset(point) {
     this.updateElement(
       EditFormView.parsePointToState(point)
     );
+  }
+
+  _restoreHandlers() {
+    this.element.querySelector('.event__rollup-btn')
+      .addEventListener('click', this.#onFormClose);
+
+    this.element.querySelector('.event__save-btn')
+      .addEventListener('click', this.#onFormSubmit);
+
+    this.element.querySelector('.event__type-group')
+      .addEventListener('change', this.#onTypeChange);
+
+    this.element.querySelector('.event__input--destination')
+      .addEventListener('change', this.#onDestinationChange);
+
+    this.element.querySelectorAll('.event__input--time').forEach((input) => {
+      this.#setDatePicker(input);
+    });
   }
 
   #setDatePicker(input) {
@@ -132,19 +163,6 @@ export default class EditFormView extends AbstractStatefulView {
         input,
         createFlatpickrConfig(DateType.END, new Date(this._state.dateFrom))
       );
-    }
-  }
-
-  removeElement() {
-    super.removeElement();
-
-    if (this.#dateStartPicker) {
-      this.#dateStartPicker.destroy();
-      this.#dateStartPicker = null;
-    }
-    if (this.#dateEndPicker) {
-      this.#dateEndPicker.destroy();
-      this.#dateEndPicker = null;
     }
   }
 
@@ -192,24 +210,7 @@ export default class EditFormView extends AbstractStatefulView {
     }
   };
 
-  _restoreHandlers() {
-    this.element.querySelector('.event__rollup-btn')
-      .addEventListener('click', this.#onFormClose);
-
-    this.element.querySelector('.event__save-btn')
-      .addEventListener('click', this.#onFormSubmit);
-
-    this.element.querySelector('.event__type-group')
-      .addEventListener('change', this.#onTypeChange);
-
-    this.element.querySelector('.event__input--destination')
-      .addEventListener('change', this.#onDestinationChange);
-
-    this.element.querySelectorAll('.event__input--time').forEach((input) => {
-      this.#setDatePicker(input);
-    });
-  }
-
+  // @------------ статические методы ------------@ //
   static parsePointToState(point) {
     return { ...point };
   }

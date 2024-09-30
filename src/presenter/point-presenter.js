@@ -29,37 +29,6 @@ export default class PointPresenter {
     this.#handleModeChange = handleModeChange;
   }
 
-  // @------------ обработчики ------------@ //
-  #handleEscKeyDown = (e) => {
-    if (isEscapeKey(e)) {
-      e.preventDefault();
-      this.#editFormComponent.reset(this.#point);
-      this.#replaceFormToPoint();
-      document.removeEventListener('keydown', this.#handleEscKeyDown);
-    }
-  };
-
-  #handleEditClick = () => {
-    this.#replacePointToForm();
-    document.addEventListener('keydown', this.#handleEscKeyDown);
-  };
-
-  #handleFormSubmit = (point) => {
-    this.#handleDataChange(point);
-    this.#replaceFormToPoint();
-    document.removeEventListener('keydown', this.#handleEscKeyDown);
-  };
-
-  #handleFormClose = () => {
-    this.#editFormComponent.reset(this.#point);
-    this.#replaceFormToPoint();
-    document.removeEventListener('keydown', this.#handleEscKeyDown);
-  };
-
-  #handleFavoriteClick = () => {
-    this.#handleDataChange({ ...this.#point, isFavorite: !this.#point.isFavorite });
-  };
-
 
   //@ функции замены точки на форму и обратно
   #replacePointToForm() {
@@ -136,4 +105,36 @@ export default class PointPresenter {
     remove(prevPointComponent);
     remove(prevEditFormComponent);
   }
+
+
+  // @------------ обработчики ------------@ //
+  #handleEscKeyDown = (e) => {
+    if (isEscapeKey(e)) {
+      e.preventDefault();
+      this.#editFormComponent.reset(this.#point);
+      this.#replaceFormToPoint();
+      document.removeEventListener('keydown', this.#handleEscKeyDown);
+    }
+  };
+
+  #handleEditClick = () => {
+    this.#replacePointToForm();
+    document.addEventListener('keydown', this.#handleEscKeyDown);
+  };
+
+  #handleFormSubmit = (point) => {
+    this.#handleDataChange(point);
+    this.#replaceFormToPoint();
+    document.removeEventListener('keydown', this.#handleEscKeyDown);
+  };
+
+  #handleFormClose = () => {
+    this.#editFormComponent.reset(this.#point);
+    this.#replaceFormToPoint();
+    document.removeEventListener('keydown', this.#handleEscKeyDown);
+  };
+
+  #handleFavoriteClick = () => {
+    this.#handleDataChange({ ...this.#point, isFavorite: !this.#point.isFavorite });
+  };
 }
