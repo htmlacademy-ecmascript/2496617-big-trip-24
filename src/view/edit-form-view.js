@@ -143,7 +143,7 @@ export default class EditFormView extends AbstractStatefulView {
   }
 
   #setDatePicker(input) {
-    const createFlatpickrConfig = (dateType, minDate = null, maxDate = null) => ({
+    const createFlatpickrConfig = (dateType, defaultDate = null, minDate = null, maxDate = null) => ({
       dateFormat: 'd/m/y H:i',
       enableTime: true,
       'time_24hr': true,
@@ -151,18 +151,19 @@ export default class EditFormView extends AbstractStatefulView {
       disableMobile: true,
       minDate: minDate,
       maxDate: maxDate,
+      defaultDate: defaultDate,
       onChange: (selectedDates) => this.#onDateChange(selectedDates, dateType),
     });
 
     if (input.name === 'event-start-time') {
       this.#dateStartPicker = flatpickr(
         input,
-        createFlatpickrConfig(DateType.START, null, new Date(this._state.dateTo))
+        createFlatpickrConfig(DateType.START, new Date(this._state.dateFrom), null, null)
       );
     } else if (input.name === 'event-end-time') {
       this.#dateEndPicker = flatpickr(
         input,
-        createFlatpickrConfig(DateType.END, new Date(this._state.dateFrom))
+        createFlatpickrConfig(DateType.END, new Date(this._state.dateTo), new Date(this._state.dateFrom))
       );
     }
   }
@@ -204,9 +205,17 @@ export default class EditFormView extends AbstractStatefulView {
 
   #onDateChange = ([userDate], dateType) => {
     switch (dateType) {
-      case (DateType.START): this._setState({ dateFrom: userDate });
+      case (DateType.START):
+        this._setState({ dateFrom: userDate });
+        if (new Date(this._state.dateFrom) > new Date(this._state.dateTo)) {
+          this._setState({ dateTo: userDate });
+          this.#dateEndPicker.set('defaultDate', this._state.dateFrom);
+        }
+        this.#dateEndPicker.set('minDate', userDate);
         break;
-      case (DateType.END): this._setState({ dateTo: userDate });
+      case (DateType.END):
+        this.#dateStartPicker.set('maxDate', userDate);
+        this._setState({ dateTo: userDate });
         break;
     }
   };
