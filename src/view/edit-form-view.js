@@ -69,7 +69,7 @@ const createEditFormTemplate = (point, allOffers, allDestinations) => {
           </button>
         </header>
 
-          ${offersContainerTemplate}
+          ${offersByType.offers.length !== 0 ? offersContainerTemplate : ''}
 
           ${destinationTemplate}
 
