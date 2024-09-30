@@ -143,20 +143,21 @@ export default class EditFormView extends AbstractStatefulView {
   }
 
   #setDatePicker(input) {
-    const createFlatpickrConfig = (dateType, minDate = null) => ({
+    const createFlatpickrConfig = (dateType, minDate = null, maxDate = null) => ({
       dateFormat: 'd/m/y H:i',
       enableTime: true,
       'time_24hr': true,
       minuteIncrement: 1,
       disableMobile: 'true',
       minDate: minDate,
+      maxDate: maxDate,
       onChange: (selectedDates) => this.#onDateChange(selectedDates, dateType),
     });
 
     if (input.name === 'event-start-time') {
       this.#dateStartPicker = flatpickr(
         input,
-        createFlatpickrConfig(DateType.START)
+        createFlatpickrConfig(DateType.START, null, new Date(this._state.dateTo))
       );
     } else if (input.name === 'event-end-time') {
       this.#dateEndPicker = flatpickr(
