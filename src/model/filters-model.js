@@ -3,7 +3,7 @@ import { FilterType } from '../utils/filter';
 
 // $======================== FilterModel ========================$ //
 
-export default class FilterModel extends Observable {
+export default class FiltersModel extends Observable {
   #filter = FilterType.EVERYTHING;
 
   get filter() {

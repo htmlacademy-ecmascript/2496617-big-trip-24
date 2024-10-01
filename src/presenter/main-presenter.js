@@ -4,13 +4,12 @@ import { render, remove } from '../framework/render';
 import { sortByDay, sortByTime, sortByPrice } from '../utils/point';
 
 //@ views
-import FiltersView from '../view/filters-view';
 import PointsListView from '../view/points-list-view';
 import SortView from '../view/sort-view';
 import NoPointsView from '../view/no-points-view';
 
 import PointPresenter from './point-presenter';
-import { SortType, UpdateType, UserAction, filters } from '../const';
+import { SortType, UpdateType, UserAction } from '../const';
 
 // $======================== MainPresenter ========================$ //
 
@@ -53,15 +52,6 @@ export default class MainPresenter {
     }
 
     return this.#pointsModel.points;
-  }
-
-
-  #renderFilters() {
-    render(new FiltersView({
-      filters,
-      currentFilterType: 'everything',
-      onFilterTypeChange: () => { }
-    }), this.#filtersContainer);
   }
 
 
@@ -128,7 +118,6 @@ export default class MainPresenter {
 
   // @------------ инициализация ------------@ //
   init() {
-    this.#renderFilters();
     this.#renderSort();
     this.#renderPointsList();
   }

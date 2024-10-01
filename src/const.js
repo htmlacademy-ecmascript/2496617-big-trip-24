@@ -50,13 +50,6 @@ const UserAction = {
   DELETE_POINT: 'DELETE_POINT'
 };
 
-const filters = [
-  {
-    type: 'everything',
-    count: 0
-  }
-];
-
 export {
-  POINT_EVENT_TYPE_ITEMS, BLANK_POINT, DATE_FORMAT, TIME_FORMAT, DATE_AND_TIME_FORMAT, DURATION_FORMAT, Mode, SortType, DateType, UpdateType, UserAction, filters
+  POINT_EVENT_TYPE_ITEMS, BLANK_POINT, DATE_FORMAT, TIME_FORMAT, DATE_AND_TIME_FORMAT, DURATION_FORMAT, Mode, SortType, DateType, UpdateType, UserAction,
 };
