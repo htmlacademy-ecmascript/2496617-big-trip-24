@@ -84,17 +84,19 @@ export default class EditFormView extends AbstractStatefulView {
 
   #handleFormSubmit = null;
   #handleFormClose = null;
+  #handleDeleteClick = null;
 
   #dateStartPicker = null;
   #dateEndPicker = null;
 
-  constructor({ point, allOffers, allDestinations, handleFormSubmit, handleFormClose, }) {
+  constructor({ point, allOffers, allDestinations, handleFormSubmit, handleFormClose, handleDeleteClick }) {
     super();
     this.#allOffers = allOffers;
     this.#allDestinations = allDestinations;
 
     this.#handleFormSubmit = handleFormSubmit;
     this.#handleFormClose = handleFormClose;
+    this.#handleDeleteClick = handleDeleteClick;
 
     this._setState(EditFormView.parsePointToState(point));
 
@@ -140,6 +142,9 @@ export default class EditFormView extends AbstractStatefulView {
     this.element.querySelectorAll('.event__input--time').forEach((input) => {
       this.#setDatePicker(input);
     });
+
+    this.element.querySelector('.event__reset-btn')
+      .addEventListener('click', this.#onDeleteClick);
   }
 
   #setDatePicker(input) {
@@ -218,6 +223,11 @@ export default class EditFormView extends AbstractStatefulView {
         this._setState({ dateTo: userDate });
         break;
     }
+  };
+
+  #onDeleteClick = (e) => {
+    e.preventDefault();
+    this.#handleDeleteClick(EditFormView.parseStateToPoint(this._state));
   };
 
   // @------------ статические методы ------------@ //

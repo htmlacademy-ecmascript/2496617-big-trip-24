@@ -1,6 +1,6 @@
 import { replace, render, remove } from '../framework/render';
 import { isEscapeKey } from '../utils/common';
-import { Mode } from '../const';
+import { Mode, UserAction, UpdateType } from '../const';
 import PointView from '../view/point-view';
 import EditFormView from '../view/edit-form-view';
 
@@ -90,6 +90,7 @@ export default class PointPresenter {
 
       handleFormSubmit: this.#handleFormSubmit,
       handleFormClose: this.#handleFormClose,
+      handleDeleteClick: this.#handleDeleteClick,
     });
 
     if (prevPointComponent === null || prevEditFormComponent === null) {
@@ -126,8 +127,12 @@ export default class PointPresenter {
     document.addEventListener('keydown', this.#handleEscKeyDown);
   };
 
-  #handleFormSubmit = (point) => {
-    this.#handleDataChange(point);
+  #handleFormSubmit = (update) => {
+    this.#handleDataChange(
+      UserAction.UPDATE_POINT,
+      UpdateType.MINOR,
+      update
+    );
     this.#replaceFormToPoint();
     this.#removeEscKeydownEventListener();
   };
@@ -139,6 +144,18 @@ export default class PointPresenter {
   };
 
   #handleFavoriteClick = () => {
-    this.#handleDataChange({ ...this.#point, isFavorite: !this.#point.isFavorite });
+    this.#handleDataChange(
+      UserAction.UPDATE_POINT,
+      UpdateType.MINOR,
+      { ...this.#point, isFavorite: !this.#point.isFavorite }
+    );
+  };
+
+  #handleDeleteClick = (point) => {
+    this.#handleDataChange(
+      UserAction.DELETE_POINT,
+      UpdateType.MINOR,
+      point
+    );
   };
 }
