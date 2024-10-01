@@ -44,6 +44,11 @@ export default class MainPresenter {
   }
 
 
+  get points() {
+    return this.#pointsModel.points;
+  }
+
+
   #renderFilters() {
     const filters = generateFilter(this.#points);
     render(new FiltersView({ filters }), this.#filtersContainer);
