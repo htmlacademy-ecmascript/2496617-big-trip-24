@@ -41,11 +41,11 @@ export default class SortView extends AbstractView {
     return createSortTemplate(this.#currentSortType);
   }
 
-  #onSortTypeChange = (e) => {
-    if (e.target.tagName !== 'LABEL') {
+  #onSortTypeChange = (evt) => {
+    if (evt.target.tagName !== 'LABEL') {
       return;
     }
-    const targetsParentElement = e.target.closest('label').parentElement;
+    const targetsParentElement = evt.target.closest('label').parentElement;
     const nearestInput = targetsParentElement.querySelector('input');
     this.#handleSortTypeChange(nearestInput.dataset.sortType);
   };

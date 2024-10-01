@@ -113,9 +113,9 @@ export default class PointPresenter {
 
 
   // @------------ обработчики ------------@ //
-  #handleEscKeyDown = (e) => {
-    if (isEscapeKey(e)) {
-      e.preventDefault();
+  #handleEscKeyDown = (evt) => {
+    if (isEscapeKey(evt)) {
+      evt.preventDefault();
       this.#editFormComponent.reset(this.#point);
       this.#replaceFormToPoint();
       this.#removeEscKeydownEventListener();

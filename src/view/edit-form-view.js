@@ -174,19 +174,19 @@ export default class EditFormView extends AbstractStatefulView {
   }
 
   // @------------ обработчики ------------@ //
-  #onFormSubmit = (e) => {
-    e.preventDefault();
+  #onFormSubmit = (evt) => {
+    evt.preventDefault();
     this.#handleFormSubmit(EditFormView.parseStateToPoint(this._state));
   };
 
-  #onFormClose = (e) => {
-    e.preventDefault();
+  #onFormClose = (evt) => {
+    evt.preventDefault();
     this.#handleFormClose();
   };
 
-  #onTypeChange = (e) => {
-    e.preventDefault();
-    const targetsParentElement = e.target.parentElement;
+  #onTypeChange = (evt) => {
+    evt.preventDefault();
+    const targetsParentElement = evt.target.parentElement;
     const nearestInput = targetsParentElement.querySelector('input');
     if (this._state.type === nearestInput.value) {
       return;
@@ -197,9 +197,9 @@ export default class EditFormView extends AbstractStatefulView {
     });
   };
 
-  #onDestinationChange = (e) => {
-    e.preventDefault();
-    const destinationByName = getDestinationByName(this.#allDestinations, e.target.value);
+  #onDestinationChange = (evt) => {
+    evt.preventDefault();
+    const destinationByName = getDestinationByName(this.#allDestinations, evt.target.value);
 
     if (destinationByName) {
       this.updateElement({
@@ -225,8 +225,8 @@ export default class EditFormView extends AbstractStatefulView {
     }
   };
 
-  #onDeleteClick = (e) => {
-    e.preventDefault();
+  #onDeleteClick = (evt) => {
+    evt.preventDefault();
     this.#handleDeleteClick(EditFormView.parseStateToPoint(this._state));
   };
 

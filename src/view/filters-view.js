@@ -49,8 +49,8 @@ export default class FiltersView extends AbstractView {
     return createFiltersTemplate(this.#filters);
   }
 
-  #onFilterTypeChange = (e) => {
-    e.preventDefault();
-    this.#handleFilterTypeChange(e.target.value);
+  #onFilterTypeChange = (evt) => {
+    evt.preventDefault();
+    this.#handleFilterTypeChange(evt.target.value);
   };
 }
