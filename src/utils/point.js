@@ -22,6 +22,9 @@ const humanizeDuration = (duration) => {
   if (days === 0) {
     return `${formattedHours}H ${formattedMinutes}M`;
   }
+  if (days === 0 && hours === 0) {
+    return `${formattedMinutes}M`;
+  }
 
   const formattedDays = String(days).padStart(2, '0');
   return `${formattedDays}D ${formattedHours}H ${formattedMinutes}M`;
@@ -45,12 +48,11 @@ const sortByTime = (pointA, pointB) => {
 const sortByPrice = (pointA, pointB) => pointB.basePrice - pointA.basePrice;
 
 // $------------ data getters ------------$ //
-const getOffersByType = (offers, type) => offers.find((offer) => offer.type === type);
+const getOffersByType = (allOffers, type) => allOffers.find((offer) => offer.type === type).offers;
 
-const getOffersById = (offers, type, pointOffersIds) => {
-  const offersByType = offers.find((offer) => offer.type === type);
-  const offerItems = offersByType.offers;
-  return offerItems.filter((offerItem) => pointOffersIds.find((id) => offerItem.id === id));
+const getOffersById = (allOffers, type, pointOffersIds) => {
+  const offersByType = getOffersByType(allOffers, type);
+  return offersByType.filter((offerItem) => pointOffersIds.find((id) => offerItem.id === id));
 };
 
 const getDestinationById = (destinations, id) => destinations.find((destination) => destination.id === id);

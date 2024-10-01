@@ -33,6 +33,11 @@ const SortType = {
   OFFERS: 'offers',
 };
 
+const DateType = {
+  START: 'start',
+  END: 'end'
+};
+
 export {
-  POINT_EVENT_TYPE_ITEMS, BLANK_POINT, DATE_FORMAT, TIME_FORMAT, DATE_AND_TIME_FORMAT, DURATION_FORMAT, Mode, SortType
+  POINT_EVENT_TYPE_ITEMS, BLANK_POINT, DATE_FORMAT, TIME_FORMAT, DATE_AND_TIME_FORMAT, DURATION_FORMAT, Mode, SortType, DateType
 };

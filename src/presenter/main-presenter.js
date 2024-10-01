@@ -89,6 +89,7 @@ export default class MainPresenter {
     this.#pointPresenters.clear();
   }
 
+
   // @------------ сортировка ------------@ //
   #renderSort() {
     this.#sortComponent = new SortView({
@@ -124,6 +125,20 @@ export default class MainPresenter {
     this.#currentSortType = sortType;
   }
 
+
+  // @------------ инициализация ------------@ //
+  init() {
+    this.#points = [...this.#pointsModel.points];
+    this.#sourcedListPoints = [...this.#points];
+
+    this.#sortPoints(SortType.DAY);
+
+    this.#renderFilters();
+    this.#renderSort();
+    this.#renderPointsList();
+  }
+
+
   // @------------ обработчики ------------@ //
   #handlePointChange = (updatedPoint) => {
     this.#points = updateItem(this.#points, updatedPoint);
@@ -153,16 +168,4 @@ export default class MainPresenter {
     this.#clearPointsList();
     this.#renderPointsList();
   };
-
-  // @------------ инициализация ------------@ //
-  init() {
-    this.#points = [...this.#pointsModel.points];
-    this.#sourcedListPoints = [...this.#points];
-
-    this.#sortPoints(SortType.DAY);
-
-    this.#renderFilters();
-    this.#renderSort();
-    this.#renderPointsList();
-  }
 }

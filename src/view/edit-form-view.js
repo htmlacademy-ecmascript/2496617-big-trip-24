@@ -1,3 +1,6 @@
+import flatpickr from 'flatpickr';
+import 'flatpickr/dist/flatpickr.min.css';
+
 import AbstractStatefulView from '../framework/view/abstract-stateful-view';
 import {
   createPointTypeTemplate,
@@ -5,8 +8,10 @@ import {
   createDestinationTemplate,
   createDestinationsListTemplate
 } from './forms-templates';
+import { DateType } from '../const';
 import { capitalize } from '../utils/common';
 import { getDestinationById, getDestinationByName, getOffersById, getOffersByType, humanizeDateAndTime } from '../utils/point';
+
 
 // $======================== EditFormView ========================$ //
 
@@ -64,7 +69,7 @@ const createEditFormTemplate = (point, allOffers, allDestinations) => {
           </button>
         </header>
 
-          ${offersContainerTemplate}
+          ${offersByType.length !== 0 ? offersContainerTemplate : ''}
 
           ${destinationTemplate}
 
@@ -79,6 +84,9 @@ export default class EditFormView extends AbstractStatefulView {
 
   #handleFormSubmit = null;
   #handleFormClose = null;
+
+  #dateStartPicker = null;
+  #dateEndPicker = null;
 
   constructor({ point, allOffers, allDestinations, handleFormSubmit, handleFormClose, }) {
     super();
@@ -97,10 +105,67 @@ export default class EditFormView extends AbstractStatefulView {
     return createEditFormTemplate(this._state, this.#allOffers, this.#allDestinations);
   }
 
+  removeElement() {
+    super.removeElement();
+
+    if (this.#dateStartPicker) {
+      this.#dateStartPicker.destroy();
+      this.#dateStartPicker = null;
+    }
+    if (this.#dateEndPicker) {
+      this.#dateEndPicker.destroy();
+      this.#dateEndPicker = null;
+    }
+  }
+
   reset(point) {
     this.updateElement(
       EditFormView.parsePointToState(point)
     );
+  }
+
+  _restoreHandlers() {
+    this.element.querySelector('.event__rollup-btn')
+      .addEventListener('click', this.#onFormClose);
+
+    this.element.querySelector('.event__save-btn')
+      .addEventListener('click', this.#onFormSubmit);
+
+    this.element.querySelector('.event__type-group')
+      .addEventListener('change', this.#onTypeChange);
+
+    this.element.querySelector('.event__input--destination')
+      .addEventListener('change', this.#onDestinationChange);
+
+    this.element.querySelectorAll('.event__input--time').forEach((input) => {
+      this.#setDatePicker(input);
+    });
+  }
+
+  #setDatePicker(input) {
+    const createFlatpickrConfig = (dateType, defaultDate = null, minDate = null, maxDate = null) => ({
+      dateFormat: 'd/m/y H:i',
+      enableTime: true,
+      'time_24hr': true,
+      minuteIncrement: 1,
+      disableMobile: true,
+      minDate: minDate,
+      maxDate: maxDate,
+      defaultDate: defaultDate,
+      onChange: (selectedDates) => this.#onDateChange(selectedDates, dateType),
+    });
+
+    if (input.name === 'event-start-time') {
+      this.#dateStartPicker = flatpickr(
+        input,
+        createFlatpickrConfig(DateType.START, new Date(this._state.dateFrom), null, null)
+      );
+    } else if (input.name === 'event-end-time') {
+      this.#dateEndPicker = flatpickr(
+        input,
+        createFlatpickrConfig(DateType.END, new Date(this._state.dateTo), new Date(this._state.dateFrom))
+      );
+    }
   }
 
   // @------------ обработчики ------------@ //
@@ -115,6 +180,7 @@ export default class EditFormView extends AbstractStatefulView {
   };
 
   #onTypeChange = (e) => {
+    e.preventDefault();
     const targetsParentElement = e.target.parentElement;
     const nearestInput = targetsParentElement.querySelector('input');
     if (this._state.type === nearestInput.value) {
@@ -137,20 +203,24 @@ export default class EditFormView extends AbstractStatefulView {
     }
   };
 
-  _restoreHandlers() {
-    this.element.querySelector('.event__rollup-btn')
-      .addEventListener('click', this.#onFormClose);
+  #onDateChange = ([userDate], dateType) => {
+    switch (dateType) {
+      case (DateType.START):
+        this._setState({ dateFrom: userDate });
+        if (new Date(this._state.dateFrom) > new Date(this._state.dateTo)) {
+          this._setState({ dateTo: userDate });
+          this.#dateEndPicker.set('defaultDate', this._state.dateFrom);
+        }
+        this.#dateEndPicker.set('minDate', userDate);
+        break;
+      case (DateType.END):
+        this.#dateStartPicker.set('maxDate', userDate);
+        this._setState({ dateTo: userDate });
+        break;
+    }
+  };
 
-    this.element.querySelector('.event__save-btn')
-      .addEventListener('click', this.#onFormSubmit);
-
-    this.element.querySelector('.event__type-group')
-      .addEventListener('change', this.#onTypeChange);
-
-    this.element.querySelector('.event__input--destination')
-      .addEventListener('change', this.#onDestinationChange);
-  }
-
+  // @------------ статические методы ------------@ //
   static parsePointToState(point) {
     return { ...point };
   }
