@@ -1,5 +1,4 @@
 import { render, remove } from '../framework/render';
-import { generateFilter } from '../mock/mock-filter';
 
 //@ utils
 import { sortByDay, sortByTime, sortByPrice } from '../utils/point';
@@ -11,7 +10,7 @@ import SortView from '../view/sort-view';
 import NoPointsView from '../view/no-points-view';
 
 import PointPresenter from './point-presenter';
-import { SortType, UpdateType, UserAction } from '../const';
+import { SortType, UpdateType, UserAction, filters } from '../const';
 
 // $======================== MainPresenter ========================$ //
 
@@ -58,9 +57,13 @@ export default class MainPresenter {
 
 
   #renderFilters() {
-    const filters = generateFilter(this.points);
-    render(new FiltersView({ filters }), this.#filtersContainer);
+    render(new FiltersView({
+      filters,
+      currentFilterType: 'everything',
+      onFilterTypeChange: () => { }
+    }), this.#filtersContainer);
   }
+
 
   #renderPoint(point) {
     const pointPresenter = new PointPresenter({

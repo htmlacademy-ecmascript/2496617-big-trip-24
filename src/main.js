@@ -6,6 +6,8 @@ import FilterModel from './model/filter-model';
 import MainPresenter from './presenter/main-presenter';
 
 // $======================== main ========================$ //
+
+
 const pointsElement = document.querySelector('.trip-events');
 const filtersElement = document.querySelector('.trip-controls__filters');
 
@@ -19,7 +21,8 @@ const mainPresenter = new MainPresenter({
   filtersContainer: filtersElement,
   pointsModel,
   offersModel,
-  destinationsModel
+  destinationsModel,
+  filterModel
 });
 
 mainPresenter.init();
