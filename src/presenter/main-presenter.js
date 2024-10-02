@@ -24,6 +24,7 @@ export default class MainPresenter {
 
 
   #sortComponent = null;
+  #noPointsComponent = null;
   #pointsListComponent = new PointsListView();
 
   #pointPresenters = new Map();
@@ -92,7 +93,11 @@ export default class MainPresenter {
   }
 
   #renderNoPoints() {
-    render(new NoPointsView(), this.#pointsContainer);
+    this.#noPointsComponent = new NoPointsView({
+      filterType: this.#filterType
+    });
+    render(this.#noPointsComponent, this.#pointsContainer);
+    remove(this.#sortComponent);
   }
 
   #renderPointsList() {
@@ -110,6 +115,9 @@ export default class MainPresenter {
 
     if (resetSortType) {
       this.#currentSortType = SortType.DAY;
+    }
+    if (this.#noPointsComponent) {
+      remove(this.#noPointsComponent);
     }
   }
 
