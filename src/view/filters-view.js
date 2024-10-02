@@ -11,6 +11,7 @@ const createFilterItemTemplate = (filter, currentFilter) => {
         type="radio"
         name="trip-filter"
         value="${type}"
+        data-filter-count="${count}"
         ${type === currentFilter ? 'checked' : ''}
         ${count === 0 ? 'disabled' : ''}
       />
@@ -50,11 +51,17 @@ export default class FiltersView extends AbstractView {
   }
 
   #onFilterTypeChange = (evt) => {
+    evt.preventDefault();
     if (evt.target.tagName !== 'LABEL') {
       return;
     }
+
     const targetParentElement = evt.target.closest('label').parentElement;
     const nearestInput = targetParentElement.querySelector('input');
-    this.#handleFilterTypeChange(nearestInput.value);
+
+    //? вот тут проверяю, что выбранный фильтр не 0
+    if (Number(nearestInput.dataset.filterCount)) {
+      this.#handleFilterTypeChange(nearestInput.value);
+    }
   };
 }
