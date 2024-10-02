@@ -96,6 +96,8 @@ export default class MainPresenter {
   }
 
   #renderPointsList() {
+    this.#renderSort();
+
     render(this.#pointsListComponent, this.#pointsContainer);
     this.#renderPoints(this.points);
   }
@@ -104,6 +106,7 @@ export default class MainPresenter {
     this.#pointPresenters.forEach((presenter) => presenter.destroy());
     this.#pointPresenters.clear();
 
+    this.#removeSort();
 
     if (resetSortType) {
       this.#currentSortType = SortType.DAY;
@@ -128,7 +131,6 @@ export default class MainPresenter {
 
   // @------------ инициализация ------------@ //
   init() {
-    this.#renderSort();
     this.#renderPointsList();
   }
 
