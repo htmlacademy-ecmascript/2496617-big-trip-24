@@ -45,8 +45,8 @@ export default class SortView extends AbstractView {
     if (evt.target.tagName !== 'LABEL') {
       return;
     }
-    const targetsParentElement = evt.target.closest('label').parentElement;
-    const nearestInput = targetsParentElement.querySelector('input');
+    const targetParentElement = evt.target.closest('label').parentElement;
+    const nearestInput = targetParentElement.querySelector('input');
     this.#handleSortTypeChange(nearestInput.dataset.sortType);
   };
 }

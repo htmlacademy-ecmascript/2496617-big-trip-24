@@ -2,7 +2,7 @@ import AbstractView from '../framework/view/abstract-view';
 
 // $======================== FiltersView ========================$ //
 
-const createFilterItemTemplate = (filter, currentFilterType) => {
+const createFilterItemTemplate = (filter, currentFilter) => {
   const { type, count } = filter;
   return /*html*/`
     <div class="trip-filters__filter">
@@ -11,7 +11,7 @@ const createFilterItemTemplate = (filter, currentFilterType) => {
         type="radio"
         name="trip-filter"
         value="${type}"
-        ${type === currentFilterType ? 'checked' : ''}
+        ${type === currentFilter ? 'checked' : ''}
         ${count === 0 ? 'disabled' : ''}
       />
         <label class="trip-filters__filter-label" for="filter-${type}" >
@@ -22,9 +22,9 @@ const createFilterItemTemplate = (filter, currentFilterType) => {
   `;
 };
 
-const createFiltersTemplate = (filters) => /*html*/`
+const createFiltersTemplate = (filters, currentFilter) => /*html*/`
   <form class="trip-filters" action="#" method="get">
-    ${filters.map((filter) => createFilterItemTemplate(filter)).join('')}
+    ${filters.map((filter) => createFilterItemTemplate(filter, currentFilter)).join('')}
     <button class="visually-hidden" type="submit">
       Accept filter
     </button>
@@ -46,11 +46,15 @@ export default class FiltersView extends AbstractView {
   }
 
   get template() {
-    return createFiltersTemplate(this.#filters);
+    return createFiltersTemplate(this.#filters, this.#currentFilter);
   }
 
   #onFilterTypeChange = (evt) => {
-    evt.preventDefault();
-    this.#handleFilterTypeChange(evt.target.value);
+    if (evt.target.tagName !== 'LABEL') {
+      return;
+    }
+    const targetParentElement = evt.target.closest('label').parentElement;
+    const nearestInput = targetParentElement.querySelector('input');
+    this.#handleFilterTypeChange(nearestInput.value);
   };
 }

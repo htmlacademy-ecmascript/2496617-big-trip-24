@@ -186,8 +186,8 @@ export default class EditFormView extends AbstractStatefulView {
 
   #onTypeChange = (evt) => {
     evt.preventDefault();
-    const targetsParentElement = evt.target.parentElement;
-    const nearestInput = targetsParentElement.querySelector('input');
+    const targetParentElement = evt.target.parentElement;
+    const nearestInput = targetParentElement.querySelector('input');
     if (this._state.type === nearestInput.value) {
       return;
     }

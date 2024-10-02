@@ -10,16 +10,17 @@ import NoPointsView from '../view/no-points-view';
 
 import PointPresenter from './point-presenter';
 import { SortType, UpdateType, UserAction } from '../const';
+import { filter } from '../utils/filter.js';
 
 // $======================== MainPresenter ========================$ //
 
 export default class MainPresenter {
   #pointsContainer = null;
-  #filtersContainer = null;
 
   #pointsModel = null;
   #offersModel = null;
   #destinationsModel = null;
+  #filtersModel = null;
 
 
   #sortComponent = null;
@@ -28,30 +29,39 @@ export default class MainPresenter {
   #pointPresenters = new Map();
 
   #currentSortType = SortType.DAY;
+  #filterType = null;
 
 
-  constructor({ pointsContainer, filtersContainer, pointsModel, offersModel, destinationsModel }) {
+  constructor({ pointsContainer, pointsModel, offersModel, destinationsModel, filtersModel }) {
     this.#pointsContainer = pointsContainer;
-    this.#filtersContainer = filtersContainer;
     this.#pointsModel = pointsModel;
     this.#offersModel = offersModel;
     this.#destinationsModel = destinationsModel;
+    this.#filtersModel = filtersModel;
 
     this.#pointsModel.addObserver(this.#handleModelEvent);
+    this.#filtersModel.addObserver(this.#handleModelEvent);
   }
 
 
   get points() {
+    this.#filterType = this.#filtersModel.filter;
+    const points = this.#pointsModel.points;
+
+    const filteredPoints = filter[this.#filterType](points);
+
     switch (this.#currentSortType) {
       case SortType.DAY:
-        return [...this.#pointsModel.points].sort(sortByDay);
+        return filteredPoints.sort(sortByDay);
       case SortType.TIME:
-        return [...this.#pointsModel.points].sort(sortByTime);
+        return filteredPoints.sort(sortByTime);
       case SortType.PRICE:
-        return [...this.#pointsModel.points].sort(sortByPrice);
+        return filteredPoints.sort(sortByPrice);
+      case SortType.EVENT || SortType.OFFERS:
+        return filteredPoints;
     }
 
-    return this.#pointsModel.points;
+    return filteredPoints;
   }
 
 
@@ -134,7 +144,7 @@ export default class MainPresenter {
   #handleSortTypeChange = (sortType) => {
     if (
       this.#currentSortType === sortType
-      && (sortType === SortType.EVENT || sortType === SortType.OFFERS)
+      || (sortType === SortType.EVENT || sortType === SortType.OFFERS)
     ) {
       return;
     }

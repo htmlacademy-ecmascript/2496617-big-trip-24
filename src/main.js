@@ -22,6 +22,7 @@ const mainPresenter = new MainPresenter({
   pointsModel,
   offersModel,
   destinationsModel,
+  filtersModel,
 });
 
 const filtersPresenter = new FiltersPresenter({
