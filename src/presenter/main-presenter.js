@@ -10,7 +10,8 @@ import NoPointsView from '../view/no-points-view';
 
 import PointPresenter from './point-presenter';
 import { SortType, UpdateType, UserAction } from '../const';
-import { filter } from '../utils/filter.js';
+import { filter, FilterType } from '../utils/filter.js';
+import NewPointPresenter from './new-point-presenter.js';
 
 // $======================== MainPresenter ========================$ //
 
@@ -28,6 +29,7 @@ export default class MainPresenter {
   #pointsListComponent = new PointsListView();
 
   #pointPresenters = new Map();
+  #newPointPresenter = null;
 
   #currentSortType = SortType.DAY;
   #filterType = null;
@@ -42,6 +44,11 @@ export default class MainPresenter {
 
     this.#pointsModel.addObserver(this.#handleModelEvent);
     this.#filtersModel.addObserver(this.#handleModelEvent);
+
+    this.#newPointPresenter = new NewPointPresenter({
+      pointsListComponent: this.#pointsListComponent.element,
+
+    });
   }
 
 
@@ -140,6 +147,12 @@ export default class MainPresenter {
   // @------------ инициализация ------------@ //
   init() {
     this.#renderPointsList();
+  }
+
+  createPoint() {
+    this.#currentSortType = SortType.DAY;
+    this.#filtersModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
+    this.#newPointPresenter.init();
   }
 
 

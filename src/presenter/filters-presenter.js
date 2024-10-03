@@ -6,14 +6,14 @@ import FiltersView from '../view/filters-view';
 // $======================== FilterPresenter ========================$ //
 
 export default class FiltersPresenter {
-  #filtersContainer = null;
+  #headerContainer = null;
   #filtersModel = null;
   #pointsModel = null;
 
   #filtersComponent = null;
 
-  constructor({ filtersContainer, filtersModel, pointsModel }) {
-    this.#filtersContainer = filtersContainer;
+  constructor({ headerContainer, filtersModel, pointsModel }) {
+    this.#headerContainer = headerContainer;
     this.#filtersModel = filtersModel;
     this.#pointsModel = pointsModel;
 
@@ -41,7 +41,7 @@ export default class FiltersPresenter {
     });
 
     if (prevFilterComponent === null) {
-      render(this.#filtersComponent, this.#filtersContainer);
+      render(this.#filtersComponent, this.#headerContainer);
       return;
     }
     replace(this.#filtersComponent, prevFilterComponent);

@@ -5,12 +5,14 @@ import FiltersModel from './model/filters-model';
 
 import MainPresenter from './presenter/main-presenter';
 import FiltersPresenter from './presenter/filters-presenter';
+import NewPointButtonView from './view/new-point-button-view';
+import { render } from './framework/render';
 
 // $======================== main ========================$ //
 
 
 const pointsElement = document.querySelector('.trip-events');
-const filtersElement = document.querySelector('.trip-controls__filters');
+const headerElement = document.querySelector('.trip-main');
 
 const pointsModel = new PointsModel();
 const offersModel = new OffersModel();
@@ -26,12 +28,25 @@ const mainPresenter = new MainPresenter({
 });
 
 const filtersPresenter = new FiltersPresenter({
-  filtersContainer: filtersElement,
+  headerContainer: headerElement,
   filtersModel,
   pointsModel,
 });
 
 filtersPresenter.init();
+
+
+const newPointButtonComponent = new NewPointButtonView({
+  handleNewPointButtonClick: handleNewPointButtonClick,
+});
+
+function handleNewPointButtonClick() {
+  mainPresenter.createPoint();
+  newPointButtonComponent.element.disabled = true;
+}
+
+render(newPointButtonComponent, headerElement);
+
 mainPresenter.init();
 
 
