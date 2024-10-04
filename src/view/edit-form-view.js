@@ -17,16 +17,15 @@ import { getDestinationById, getDestinationByName, getOffersById, getOffersByTyp
 
 const createEditFormTemplate = (point, allOffers, allDestinations, isNew) => {
 
-
   const { basePrice, dateFrom, dateTo, type } = point;
 
   const offersById = !isNew ?
     getOffersById(allOffers, point.type, point.offers) : [];
 
-  const offersByType = !isNew ? getOffersByType(allOffers, point.type) : [];
+  const offersByType = !isNew ?
+    getOffersByType(allOffers, point.type) : [];
 
-  const pointDestination = !isNew ?
-    getDestinationById(allDestinations, point.destination) : '';
+  const pointDestination = getDestinationById(allDestinations, point.destination);
 
   const pointTypeTemplate = createPointTypeTemplate(type);
   const destinationsListTemplate = createDestinationsListTemplate(allDestinations);

@@ -10,13 +10,19 @@ export default class NewPointPresenter {
   #pointsListComponent = null;
   #editFormComponent = null;
 
+  #destinationsModel = null;
+  #offersModel = null;
+
   #handleDestroy = null;
   #handleDataChange = null;
 
-  constructor({ pointsListComponent, handleDataChange, handleDestroy }) {
+  constructor({ pointsListComponent, handleDataChange, handleDestroy,destinationsModel, offersModel }) {
     this.#pointsListComponent = pointsListComponent;
     this.#handleDataChange = handleDataChange;
     this.#handleDestroy = handleDestroy;
+
+    this.#offersModel = offersModel;
+    this.#destinationsModel = destinationsModel;
   }
 
   init() {
@@ -27,6 +33,11 @@ export default class NewPointPresenter {
     this.#editFormComponent = new EditFormView({
       handleFormSubmit: this.#handleFormSubmit,
       handleDeleteClick: this.#handleDeleteClick,
+      handleFormClose: this.#handleDeleteClick,
+
+      allDestinations: this.#destinationsModel.destinations,
+      allOffers: this.#offersModel.offers,
+
       isNew: true,
     });
 

@@ -47,6 +47,7 @@ export default class MainPresenter {
 
     this.#newPointPresenter = new NewPointPresenter({
       pointsListComponent: this.#pointsListComponent.element,
+      destinationsModel: this.#destinationsModel,
       handleDataChange: this.#handleViewAction,
       handleDestroy: handleNewPointDestroy
     });
