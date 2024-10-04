@@ -3,7 +3,7 @@ import AbstractView from '../framework/view/abstract-view';
 // $======================== FiltersView ========================$ //
 
 const createFilterItemTemplate = (filter, currentFilter) => {
-  const { type, count } = filter;
+  const { type } = filter;
   return /*html*/`
     <div class="trip-filters__filter">
       <input id="filter-${type}"
@@ -15,7 +15,6 @@ const createFilterItemTemplate = (filter, currentFilter) => {
       />
         <label class="trip-filters__filter-label" for="filter-${type}" >
           ${type}
-          (${count})
         </label>
     </div>
   `;
