@@ -18,7 +18,7 @@ const createPointTemplate = (point, allOffers, allDestinations) => {
   const pointDestination = getDestinationById(allDestinations, point.destination);
 
   const date = humanizeDate(dateFrom);
-  const duration = humanizeDuration(getDuration(dateFrom, dateTo));
+  const duration = dateFrom && dateTo ? humanizeDuration(getDuration(dateFrom, dateTo)) : '';
 
   const offersTemplate = createOffersTemplate(pointOffers);
 
