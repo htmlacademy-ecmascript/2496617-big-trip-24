@@ -1,5 +1,5 @@
 import { UpdateType, UserAction } from '../const';
-import { remove, render } from '../framework/render';
+import { remove, render, RenderPosition } from '../framework/render';
 import { isEscapeKey } from '../utils/common';
 import EditFormView from '../view/edit-form-view';
 import { nanoid } from 'nanoid';
@@ -27,9 +27,11 @@ export default class NewPointPresenter {
     this.#editFormComponent = new EditFormView({
       handleFormSubmit: this.#handleFormSubmit,
       handleDeleteClick: this.#handleDeleteClick,
+      isNew: true,
     });
 
-    render(this.#editFormComponent, this.#pointsListComponent);
+
+    render(this.#editFormComponent, this.#pointsListComponent, RenderPosition.AFTERBEGIN);
 
     document.addEventListener('keydown', this.#onEscKeydown);
   }

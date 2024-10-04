@@ -91,6 +91,7 @@ export default class PointPresenter {
       handleFormSubmit: this.#handleFormSubmit,
       handleFormClose: this.#handleFormClose,
       handleDeleteClick: this.#handleDeleteClick,
+      isNew: false,
     });
 
     if (prevPointComponent === null || prevEditFormComponent === null) {

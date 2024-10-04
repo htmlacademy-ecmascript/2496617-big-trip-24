@@ -25,6 +25,7 @@ const mainPresenter = new MainPresenter({
   offersModel,
   destinationsModel,
   filtersModel,
+  handleNewPointDestroy,
 });
 
 const filtersPresenter = new FiltersPresenter({
@@ -43,6 +44,10 @@ const newPointButtonComponent = new NewPointButtonView({
 function handleNewPointButtonClick() {
   mainPresenter.createPoint();
   newPointButtonComponent.element.disabled = true;
+}
+
+function handleNewPointDestroy() {
+  newPointButtonComponent.element.disabled = false;
 }
 
 render(newPointButtonComponent, headerElement);

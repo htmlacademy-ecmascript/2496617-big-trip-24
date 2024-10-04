@@ -35,7 +35,7 @@ export default class MainPresenter {
   #filterType = null;
 
 
-  constructor({ pointsContainer, pointsModel, offersModel, destinationsModel, filtersModel }) {
+  constructor({ pointsContainer, pointsModel, offersModel, destinationsModel, filtersModel, handleNewPointDestroy }) {
     this.#pointsContainer = pointsContainer;
     this.#pointsModel = pointsModel;
     this.#offersModel = offersModel;
@@ -47,7 +47,8 @@ export default class MainPresenter {
 
     this.#newPointPresenter = new NewPointPresenter({
       pointsListComponent: this.#pointsListComponent.element,
-
+      handleDataChange: this.#handleViewAction,
+      handleDestroy: handleNewPointDestroy
     });
   }
 

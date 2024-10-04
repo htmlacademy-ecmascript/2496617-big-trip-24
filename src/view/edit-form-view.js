@@ -8,20 +8,25 @@ import {
   createDestinationTemplate,
   createDestinationsListTemplate
 } from './forms-templates';
-import { DateType } from '../const';
+import { BLANK_POINT, DateType } from '../const';
 import { capitalize } from '../utils/common';
 import { getDestinationById, getDestinationByName, getOffersById, getOffersByType, humanizeDateAndTime } from '../utils/point';
 
 
 // $======================== EditFormView ========================$ //
 
-const createEditFormTemplate = (point, allOffers, allDestinations) => {
+const createEditFormTemplate = (point, allOffers, allDestinations, isNew) => {
+
 
   const { basePrice, dateFrom, dateTo, type } = point;
 
-  const offersById = getOffersById(allOffers, point.type, point.offers);
-  const offersByType = getOffersByType(allOffers, point.type);
-  const pointDestination = getDestinationById(allDestinations, point.destination);
+  const offersById = !isNew ?
+    getOffersById(allOffers, point.type, point.offers) : [];
+
+  const offersByType = !isNew ? getOffersByType(allOffers, point.type) : [];
+
+  const pointDestination = !isNew ?
+    getDestinationById(allDestinations, point.destination) : '';
 
   const pointTypeTemplate = createPointTypeTemplate(type);
   const destinationsListTemplate = createDestinationsListTemplate(allDestinations);
@@ -88,9 +93,12 @@ export default class EditFormView extends AbstractStatefulView {
 
   #dateStartPicker = null;
   #dateEndPicker = null;
+  #isNew = false;
 
-  constructor({ point, allOffers, allDestinations, handleFormSubmit, handleFormClose, handleDeleteClick }) {
+  constructor({ isNew, point = BLANK_POINT, allOffers, allDestinations, handleFormSubmit, handleFormClose, handleDeleteClick }) {
     super();
+    this.#isNew = isNew;
+
     this.#allOffers = allOffers;
     this.#allDestinations = allDestinations;
 
@@ -101,10 +109,11 @@ export default class EditFormView extends AbstractStatefulView {
     this._setState(EditFormView.parsePointToState(point));
 
     this._restoreHandlers();
+
   }
 
   get template() {
-    return createEditFormTemplate(this._state, this.#allOffers, this.#allDestinations);
+    return createEditFormTemplate(this._state, this.#allOffers, this.#allDestinations, this.#isNew);
   }
 
   removeElement() {

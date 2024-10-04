@@ -42,7 +42,7 @@ const createDestinationOptionTemplate = (destination) => `
   <option value="${destination.name}"></option>
 `;
 
-export const createDestinationsListTemplate = (allDestinations) => /*html*/`
+export const createDestinationsListTemplate = (allDestinations = []) => /*html*/`
   <datalist id="destination-list-1">
     ${allDestinations.map((destination) => createDestinationOptionTemplate(destination)).join('')}
   </datalist>
@@ -51,7 +51,7 @@ export const createDestinationsListTemplate = (allDestinations) => /*html*/`
 
 // $------------ createOffersContainerTemplate ------------$ //
 
-const createOfferTemplate = ({ id, title, price }, offers) => /*html*/`
+const createOfferTemplate = ({ id, title, price }, offers = []) => /*html*/`
   <div class="event__offer-selector">
   <input
     class="event__offer-checkbox  visually-hidden"
