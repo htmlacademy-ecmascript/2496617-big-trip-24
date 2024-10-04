@@ -22,8 +22,7 @@ const createEditFormTemplate = (point, allOffers, allDestinations, isNew) => {
   const offersById = !isNew ?
     getOffersById(allOffers, point.type, point.offers) : [];
 
-  const offersByType = !isNew ?
-    getOffersByType(allOffers, point.type) : [];
+  const offersByType = getOffersByType(allOffers, point.type);
 
   const pointDestination = getDestinationById(allDestinations, point.destination);
 
@@ -108,7 +107,6 @@ export default class EditFormView extends AbstractStatefulView {
     this._setState(EditFormView.parsePointToState(point));
 
     this._restoreHandlers();
-
   }
 
   get template() {
@@ -168,15 +166,17 @@ export default class EditFormView extends AbstractStatefulView {
       onChange: (selectedDates) => this.#onDateChange(selectedDates, dateType),
     });
 
+    const configureDate = (date) => !this.#isNew ? new Date(date) : null;
+
     if (input.name === 'event-start-time') {
       this.#dateStartPicker = flatpickr(
         input,
-        createFlatpickrConfig(DateType.START, new Date(this._state.dateFrom), null, null)
+        createFlatpickrConfig(DateType.START, configureDate(this._state.dateFrom), null, null)
       );
     } else if (input.name === 'event-end-time') {
       this.#dateEndPicker = flatpickr(
         input,
-        createFlatpickrConfig(DateType.END, new Date(this._state.dateTo), new Date(this._state.dateFrom))
+        createFlatpickrConfig(DateType.END, configureDate(this._state.dateTo), configureDate(this._state.dateFrom))
       );
     }
   }
