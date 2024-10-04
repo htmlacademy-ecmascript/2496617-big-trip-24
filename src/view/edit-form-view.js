@@ -151,6 +151,9 @@ export default class EditFormView extends AbstractStatefulView {
 
     this.element.querySelector('.event__reset-btn')
       .addEventListener('click', this.#onDeleteClick);
+
+    this.element.querySelector('.event__input--price')
+      .addEventListener('change', this.#onPriceChange);
   }
 
   #setDatePicker(input) {
@@ -214,6 +217,13 @@ export default class EditFormView extends AbstractStatefulView {
         destination: destinationByName.id,
       });
     }
+  };
+
+  #onPriceChange = (evt) => {
+    evt.preventDefault();
+    this._setState({
+      basePrice: evt.target.value,
+    });
   };
 
   #onDateChange = ([userDate], dateType) => {
