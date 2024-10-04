@@ -169,7 +169,7 @@ export default class EditFormView extends AbstractStatefulView {
       onChange: (selectedDates) => this.#onDateChange(selectedDates, dateType),
     });
 
-    const configureDate = (date) => !this.#isNew ? new Date(date) : null;
+    const configureDate = (date) => !this.#isNew && date ? new Date(date) : null;
 
     if (input.name === 'event-start-time') {
       this.#dateStartPicker = flatpickr(
