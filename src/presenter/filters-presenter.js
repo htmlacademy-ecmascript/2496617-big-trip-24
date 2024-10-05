@@ -1,6 +1,6 @@
-import { UpdateType } from '../const';
+import { UpdateType, FilterType } from '../const';
 import { render, remove, replace } from '../framework/render';
-import { FilterType, filter } from '../utils/filter';
+import { filter } from '../utils/filter';
 import FiltersView from '../view/filters-view';
 
 // $======================== FilterPresenter ========================$ //

@@ -1,5 +1,6 @@
 import AbstractView from '../framework/view/abstract-view';
 import { getDuration, humanizeDate, humanizeTime, humanizeDuration, getDestinationById, getOffersById } from '../utils/point';
+import he from 'he';
 
 // $======================== PointView ========================$ //
 
@@ -43,7 +44,7 @@ const createPointTemplate = (point, allOffers, allDestinations) => {
         </div>
 
         <p class="event__price">
-          &euro;&nbsp;<span class="event__price-value">${basePrice}</span>
+          &euro;&nbsp;<span class="event__price-value">${he.encode(String(basePrice))}</span>
         </p>
 
         <h4 class="visually-hidden">Offers:</h4>

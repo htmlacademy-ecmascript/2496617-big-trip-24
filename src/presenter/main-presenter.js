@@ -9,9 +9,10 @@ import SortView from '../view/sort-view';
 import NoPointsView from '../view/no-points-view';
 
 import PointPresenter from './point-presenter';
-import { SortType, UpdateType, UserAction } from '../const';
-import { filter, FilterType } from '../utils/filter.js';
 import NewPointPresenter from './new-point-presenter.js';
+
+import { SortType, UpdateType, UserAction, FilterType } from '../const';
+import { filter } from '../utils/filter.js';
 
 // $======================== MainPresenter ========================$ //
 

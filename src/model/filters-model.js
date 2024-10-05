@@ -1,5 +1,5 @@
 import Observable from '../framework/observable';
-import { FilterType } from '../utils/filter';
+import { FilterType } from '../const';
 
 // $======================== FilterModel ========================$ //
 

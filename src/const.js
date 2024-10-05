@@ -50,6 +50,32 @@ const UserAction = {
   DELETE_POINT: 'DELETE_POINT'
 };
 
+const FilterType = {
+  EVERYTHING: 'everything',
+  FUTURE: 'future',
+  PRESENT: 'present',
+  PAST: 'past'
+};
+
+const NoPointsTextType = {
+  [FilterType.EVERYTHING]: 'Click New Event to create your first point',
+  [FilterType.FUTURE]: 'There are no future events now',
+  [FilterType.PAST]: 'There are no past events now',
+  [FilterType.PRESENT]: 'There are no present events now',
+};
+
 export {
-  POINT_EVENT_TYPE_ITEMS, BLANK_POINT, DATE_FORMAT, TIME_FORMAT, DATE_AND_TIME_FORMAT, DURATION_FORMAT, Mode, SortType, DateType, UpdateType, UserAction,
+  POINT_EVENT_TYPE_ITEMS,
+  BLANK_POINT,
+  DATE_FORMAT,
+  TIME_FORMAT,
+  DATE_AND_TIME_FORMAT,
+  DURATION_FORMAT,
+  Mode,
+  SortType,
+  DateType,
+  UpdateType,
+  UserAction,
+  FilterType,
+  NoPointsTextType
 };

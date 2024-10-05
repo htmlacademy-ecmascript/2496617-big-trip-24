@@ -1,5 +1,6 @@
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
+import he from 'he';
 
 import AbstractStatefulView from '../framework/view/abstract-stateful-view';
 import {
@@ -9,7 +10,7 @@ import {
   createDestinationsListTemplate
 } from './forms-templates';
 import { BLANK_POINT, DateType } from '../const';
-import { capitalize } from '../utils/common';
+import { capitalize, isNumber } from '../utils/common';
 import { getDestinationById, getDestinationByName, getOffersById, getOffersByType, humanizeDateAndTime } from '../utils/point';
 
 
@@ -43,7 +44,7 @@ const createEditFormTemplate = (point, allOffers, allDestinations, isNew) => {
               ${capitalize(type)}
             </label>
             <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination"
-            value="${pointDestination ? pointDestination.name : ''}" list="destination-list-1">
+            value="${he.encode(pointDestination ? pointDestination.name : '')}" list="destination-list-1">
 
             ${destinationsListTemplate}
 
@@ -62,7 +63,7 @@ const createEditFormTemplate = (point, allOffers, allDestinations, isNew) => {
               <span class="visually-hidden">Price</span>
               &euro;
             </label>
-            <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${basePrice}">
+            <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${he.encode(String(basePrice))}">
           </div>
 
           <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
@@ -152,8 +153,9 @@ export default class EditFormView extends AbstractStatefulView {
     this.element.querySelector('.event__reset-btn')
       .addEventListener('click', this.#onDeleteClick);
 
-    this.element.querySelector('.event__input--price')
-      .addEventListener('change', this.#onPriceChange);
+    const priceInput = this.element.querySelector('.event__input--price');
+    priceInput.addEventListener('change', this.#onPriceChange);
+    priceInput.addEventListener('input', this.#onPriceInput);
   }
 
   #setDatePicker(input) {
@@ -224,6 +226,15 @@ export default class EditFormView extends AbstractStatefulView {
     this._setState({
       basePrice: evt.target.value,
     });
+  };
+
+  #onPriceInput = (evt) => {
+    const inputValue = evt.target.value;
+
+    if (!isNumber(inputValue)) {
+      evt.preventDefault();
+      evt.target.value = inputValue.replace(/[^0-9]/g, '');
+    }
   };
 
   #onDateChange = ([userDate], dateType) => {

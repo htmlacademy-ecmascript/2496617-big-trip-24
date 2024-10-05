@@ -1,13 +1,7 @@
 import { isFuturePoint, isPastPoint, isPresentPoint } from './point';
+import { FilterType } from '../const';
 
 // $======================== filter ========================$ //
-
-const FilterType = {
-  EVERYTHING: 'everything',
-  FUTURE: 'future',
-  PRESENT: 'present',
-  PAST: 'past'
-};
 
 const filter = {
   [FilterType.EVERYTHING]: (points) => points,
@@ -16,4 +10,4 @@ const filter = {
   [FilterType.PAST]: (points) => points.filter((point) => isPastPoint(point)),
 };
 
-export { FilterType, filter };
+export { filter };
