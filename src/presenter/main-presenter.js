@@ -69,11 +69,8 @@ export default class MainPresenter {
         return filteredPoints.sort(sortByTime);
       case SortType.PRICE:
         return filteredPoints.sort(sortByPrice);
-      case SortType.EVENT || SortType.OFFERS:
-        return filteredPoints;
+      default: return filteredPoints;
     }
-
-    return filteredPoints;
   }
 
 
