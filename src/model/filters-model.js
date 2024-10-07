@@ -11,9 +11,7 @@ export default class FiltersModel extends Observable {
   }
 
   setFilter(updateType, filter) {
-    if (filter) {
-      this.#filter = filter;
-      this._notify(updateType, filter);
-    }
+    this.#filter = filter;
+    this._notify(updateType, filter);
   }
 }

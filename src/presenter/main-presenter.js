@@ -89,13 +89,13 @@ export default class MainPresenter {
     this.#pointPresenters.set(point.id, pointPresenter);
   }
 
-  #renderPoints(points) {
-    if (points.length === 0) {
+  #renderPoints() {
+    if (this.points.length === 0) {
       this.#renderNoPoints();
       return;
     }
 
-    points.forEach((point) => {
+    this.points.forEach((point) => {
       this.#renderPoint(point);
     });
   }
@@ -201,11 +201,11 @@ export default class MainPresenter {
       case UpdateType.PATCH:
         this.#pointPresenters.get(data.id).init(data);
         break;
-      case (UpdateType.MINOR):
+      case UpdateType.MINOR:
         this.#clearPointsList();
         this.#renderPointsList();
         break;
-      case (UpdateType.MAJOR):
+      case UpdateType.MAJOR:
         this.#clearPointsList({ resetSortType: true });
         this.#renderPointsList();
     }
