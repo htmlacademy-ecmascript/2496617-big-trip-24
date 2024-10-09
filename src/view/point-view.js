@@ -1,5 +1,6 @@
 import AbstractView from '../framework/view/abstract-view';
 import { getDuration, humanizeDate, humanizeTime, humanizeDuration, getDestinationById, getOffersById } from '../utils/point';
+import he from 'he';
 
 // $======================== PointView ========================$ //
 
@@ -18,7 +19,7 @@ const createPointTemplate = (point, allOffers, allDestinations) => {
   const pointDestination = getDestinationById(allDestinations, point.destination);
 
   const date = humanizeDate(dateFrom);
-  const duration = humanizeDuration(getDuration(dateFrom, dateTo));
+  const duration = dateFrom && dateTo ? humanizeDuration(getDuration(dateFrom, dateTo)) : '';
 
   const offersTemplate = createOffersTemplate(pointOffers);
 
@@ -31,7 +32,7 @@ const createPointTemplate = (point, allOffers, allDestinations) => {
           <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
         </div>
 
-        <h3 class="event__title">${type} ${pointDestination.name}</h3>
+        <h3 class="event__title">${type} ${pointDestination ? pointDestination.name : ''}</h3>
 
         <div class="event__schedule">
           <p class="event__time">
@@ -43,7 +44,7 @@ const createPointTemplate = (point, allOffers, allDestinations) => {
         </div>
 
         <p class="event__price">
-          &euro;&nbsp;<span class="event__price-value">${basePrice}</span>
+          &euro;&nbsp;<span class="event__price-value">${he.encode(String(basePrice))}</span>
         </p>
 
         <h4 class="visually-hidden">Offers:</h4>
@@ -94,13 +95,13 @@ export default class PointView extends AbstractView {
     return createPointTemplate(this.#point, this.#allOffers, this.#allDestinations);
   }
 
-  #onEditClick = (e) => {
-    e.preventDefault();
+  #onEditClick = (evt) => {
+    evt.preventDefault();
     this.#handleEditClick();
   };
 
-  #onFavoriteClick = (e) => {
-    e.preventDefault();
+  #onFavoriteClick = (evt) => {
+    evt.preventDefault();
     this.#handleFavoriteClick();
   };
 }

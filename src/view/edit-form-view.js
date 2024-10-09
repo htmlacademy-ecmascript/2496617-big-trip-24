@@ -1,5 +1,6 @@
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
+import he from 'he';
 
 import AbstractStatefulView from '../framework/view/abstract-stateful-view';
 import {
@@ -8,19 +9,22 @@ import {
   createDestinationTemplate,
   createDestinationsListTemplate
 } from './forms-templates';
-import { DateType } from '../const';
-import { capitalize } from '../utils/common';
+import { BLANK_POINT, DateType } from '../const';
+import { capitalize, isNumber } from '../utils/common';
 import { getDestinationById, getDestinationByName, getOffersById, getOffersByType, humanizeDateAndTime } from '../utils/point';
 
 
 // $======================== EditFormView ========================$ //
 
-const createEditFormTemplate = (point, allOffers, allDestinations) => {
+const createEditFormTemplate = (point, allOffers, allDestinations, isNew) => {
 
   const { basePrice, dateFrom, dateTo, type } = point;
 
-  const offersById = getOffersById(allOffers, point.type, point.offers);
+  const offersById = !isNew ?
+    getOffersById(allOffers, point.type, point.offers) : [];
+
   const offersByType = getOffersByType(allOffers, point.type);
+
   const pointDestination = getDestinationById(allDestinations, point.destination);
 
   const pointTypeTemplate = createPointTypeTemplate(type);
@@ -40,7 +44,7 @@ const createEditFormTemplate = (point, allOffers, allDestinations) => {
               ${capitalize(type)}
             </label>
             <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination"
-            value="${pointDestination ? pointDestination.name : ''}" list="destination-list-1">
+            value="${he.encode(pointDestination ? pointDestination.name : '')}" list="destination-list-1">
 
             ${destinationsListTemplate}
 
@@ -59,7 +63,7 @@ const createEditFormTemplate = (point, allOffers, allDestinations) => {
               <span class="visually-hidden">Price</span>
               &euro;
             </label>
-            <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${basePrice}">
+            <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${he.encode(String(basePrice))}">
           </div>
 
           <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
@@ -84,17 +88,22 @@ export default class EditFormView extends AbstractStatefulView {
 
   #handleFormSubmit = null;
   #handleFormClose = null;
+  #handleDeleteClick = null;
 
   #dateStartPicker = null;
   #dateEndPicker = null;
+  #isNew = false;
 
-  constructor({ point, allOffers, allDestinations, handleFormSubmit, handleFormClose, }) {
+  constructor({ isNew, point = BLANK_POINT, allOffers, allDestinations, handleFormSubmit, handleFormClose, handleDeleteClick }) {
     super();
+    this.#isNew = isNew;
+
     this.#allOffers = allOffers;
     this.#allDestinations = allDestinations;
 
     this.#handleFormSubmit = handleFormSubmit;
     this.#handleFormClose = handleFormClose;
+    this.#handleDeleteClick = handleDeleteClick;
 
     this._setState(EditFormView.parsePointToState(point));
 
@@ -102,7 +111,7 @@ export default class EditFormView extends AbstractStatefulView {
   }
 
   get template() {
-    return createEditFormTemplate(this._state, this.#allOffers, this.#allDestinations);
+    return createEditFormTemplate(this._state, this.#allOffers, this.#allDestinations, this.#isNew);
   }
 
   removeElement() {
@@ -140,8 +149,19 @@ export default class EditFormView extends AbstractStatefulView {
     this.element.querySelectorAll('.event__input--time').forEach((input) => {
       this.#setDatePicker(input);
     });
+
+    this.element.querySelector('.event__reset-btn')
+      .addEventListener('click', this.#onDeleteClick);
+
+    const priceInput = this.element.querySelector('.event__input--price');
+    priceInput.addEventListener('change', this.#onPriceChange);
+    priceInput.addEventListener('input', this.#onPriceInput);
+
+    this.element.querySelector('.event__available-offers')
+      ?.addEventListener('click', this.#onOffersClick);
   }
 
+  // @------------ выбор даты ------------@ //
   #setDatePicker(input) {
     const createFlatpickrConfig = (dateType, defaultDate = null, minDate = null, maxDate = null) => ({
       dateFormat: 'd/m/y H:i',
@@ -155,34 +175,36 @@ export default class EditFormView extends AbstractStatefulView {
       onChange: (selectedDates) => this.#onDateChange(selectedDates, dateType),
     });
 
+    const configureDate = (date) => !this.#isNew && date ? new Date(date) : null;
+
     if (input.name === 'event-start-time') {
       this.#dateStartPicker = flatpickr(
         input,
-        createFlatpickrConfig(DateType.START, new Date(this._state.dateFrom), null, null)
+        createFlatpickrConfig(DateType.START, configureDate(this._state.dateFrom), null, null)
       );
     } else if (input.name === 'event-end-time') {
       this.#dateEndPicker = flatpickr(
         input,
-        createFlatpickrConfig(DateType.END, new Date(this._state.dateTo), new Date(this._state.dateFrom))
+        createFlatpickrConfig(DateType.END, configureDate(this._state.dateTo), configureDate(this._state.dateFrom))
       );
     }
   }
 
   // @------------ обработчики ------------@ //
-  #onFormSubmit = (e) => {
-    e.preventDefault();
+  #onFormSubmit = (evt) => {
+    evt.preventDefault();
     this.#handleFormSubmit(EditFormView.parseStateToPoint(this._state));
   };
 
-  #onFormClose = (e) => {
-    e.preventDefault();
+  #onFormClose = (evt) => {
+    evt.preventDefault();
     this.#handleFormClose();
   };
 
-  #onTypeChange = (e) => {
-    e.preventDefault();
-    const targetsParentElement = e.target.parentElement;
-    const nearestInput = targetsParentElement.querySelector('input');
+  #onTypeChange = (evt) => {
+    evt.preventDefault();
+    const targetParentElement = evt.target.parentElement;
+    const nearestInput = targetParentElement.querySelector('input');
     if (this._state.type === nearestInput.value) {
       return;
     }
@@ -192,14 +214,30 @@ export default class EditFormView extends AbstractStatefulView {
     });
   };
 
-  #onDestinationChange = (e) => {
-    e.preventDefault();
-    const destinationByName = getDestinationByName(this.#allDestinations, e.target.value);
+  #onDestinationChange = (evt) => {
+    evt.preventDefault();
+    const destinationByName = getDestinationByName(this.#allDestinations, evt.target.value);
 
     if (destinationByName) {
       this.updateElement({
         destination: destinationByName.id,
       });
+    }
+  };
+
+  #onPriceChange = (evt) => {
+    evt.preventDefault();
+    this._setState({
+      basePrice: evt.target.value,
+    });
+  };
+
+  #onPriceInput = (evt) => {
+    const inputValue = evt.target.value;
+
+    if (!isNumber(inputValue)) {
+      evt.preventDefault();
+      evt.target.value = inputValue.replace(/[^0-9]/g, '');
     }
   };
 
@@ -217,6 +255,44 @@ export default class EditFormView extends AbstractStatefulView {
         this.#dateStartPicker.set('maxDate', userDate);
         this._setState({ dateTo: userDate });
         break;
+    }
+  };
+
+  #onDeleteClick = (evt) => {
+    evt.preventDefault();
+    this.#handleDeleteClick(EditFormView.parseStateToPoint(this._state));
+  };
+
+  #onOffersClick = (evt) => {
+    evt.preventDefault();
+    const offerSelector = evt.target.closest('.event__offer-selector');
+    if (!offerSelector) {
+      return;
+    }
+    const clickedOfferId = offerSelector.querySelector('input').id;
+    const clickedOfferIndex = this._state.offers.indexOf(clickedOfferId);
+
+    const removeOffer = () => {
+      this.updateElement({
+        offers: [
+          ...this._state.offers.slice(0, clickedOfferIndex),
+          ...this._state.offers.slice(clickedOfferIndex + 1)
+        ]
+      });
+    };
+    const addOffer = () => {
+      this.updateElement({
+        offers: [
+          ...this._state.offers,
+          clickedOfferId
+        ]
+      });
+    };
+
+    if (clickedOfferIndex !== -1) {
+      removeOffer();
+    } else {
+      addOffer();
     }
   };
 

@@ -8,6 +8,6 @@ const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) +
 
 const getRandomArrayItem = (items) => items[getRandomInt(0, items.length - 1)];
 
-const updateItem = (items, update) => items.map((item) => item.id === update.id ? update : item);
+const isNumber = (value) => /^[0-9]*$/.test(value);
 
-export { isEscapeKey, capitalize, getRandomInt, getRandomArrayItem, updateItem };
+export { isEscapeKey, capitalize, getRandomInt, getRandomArrayItem, isNumber };

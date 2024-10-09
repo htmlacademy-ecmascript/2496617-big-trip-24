@@ -38,6 +38,44 @@ const DateType = {
   END: 'end'
 };
 
+const UpdateType = {
+  PATCH: 'PATCH',
+  MINOR: 'MINOR',
+  MAJOR: 'MAJOR'
+};
+
+const UserAction = {
+  UPDATE_POINT: 'UPDATE_POINT',
+  ADD_POINT: 'ADD_POINT',
+  DELETE_POINT: 'DELETE_POINT'
+};
+
+const FilterType = {
+  EVERYTHING: 'everything',
+  FUTURE: 'future',
+  PRESENT: 'present',
+  PAST: 'past'
+};
+
+const NoPointsTextType = {
+  [FilterType.EVERYTHING]: 'Click New Event to create your first point',
+  [FilterType.FUTURE]: 'There are no future events now',
+  [FilterType.PAST]: 'There are no past events now',
+  [FilterType.PRESENT]: 'There are no present events now',
+};
+
 export {
-  POINT_EVENT_TYPE_ITEMS, BLANK_POINT, DATE_FORMAT, TIME_FORMAT, DATE_AND_TIME_FORMAT, DURATION_FORMAT, Mode, SortType, DateType
+  POINT_EVENT_TYPE_ITEMS,
+  BLANK_POINT,
+  DATE_FORMAT,
+  TIME_FORMAT,
+  DATE_AND_TIME_FORMAT,
+  DURATION_FORMAT,
+  Mode,
+  SortType,
+  DateType,
+  UpdateType,
+  UserAction,
+  FilterType,
+  NoPointsTextType
 };
