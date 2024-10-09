@@ -156,8 +156,12 @@ export default class EditFormView extends AbstractStatefulView {
     const priceInput = this.element.querySelector('.event__input--price');
     priceInput.addEventListener('change', this.#onPriceChange);
     priceInput.addEventListener('input', this.#onPriceInput);
+
+    this.element.querySelector('.event__available-offers')
+      ?.addEventListener('click', this.#onOffersClick);
   }
 
+  // @------------ выбор даты ------------@ //
   #setDatePicker(input) {
     const createFlatpickrConfig = (dateType, defaultDate = null, minDate = null, maxDate = null) => ({
       dateFormat: 'd/m/y H:i',
@@ -257,6 +261,39 @@ export default class EditFormView extends AbstractStatefulView {
   #onDeleteClick = (evt) => {
     evt.preventDefault();
     this.#handleDeleteClick(EditFormView.parseStateToPoint(this._state));
+  };
+
+  #onOffersClick = (evt) => {
+    evt.preventDefault();
+    const offerSelector = evt.target.closest('.event__offer-selector');
+    if (!offerSelector) {
+      return;
+    }
+    const clickedOfferId = offerSelector.querySelector('input').id;
+    const clickedOfferIndex = this._state.offers.indexOf(clickedOfferId);
+
+    const removeOffer = () => {
+      this.updateElement({
+        offers: [
+          ...this._state.offers.slice(0, clickedOfferIndex),
+          ...this._state.offers.slice(clickedOfferIndex + 1)
+        ]
+      });
+    };
+    const addOffer = () => {
+      this.updateElement({
+        offers: [
+          ...this._state.offers,
+          clickedOfferId
+        ]
+      });
+    };
+
+    if (clickedOfferIndex !== -1) {
+      removeOffer();
+    } else {
+      addOffer();
+    }
   };
 
   // @------------ статические методы ------------@ //

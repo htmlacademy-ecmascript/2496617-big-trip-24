@@ -55,7 +55,7 @@ const createOfferTemplate = ({ id, title, price }, offers = []) => /*html*/`
   <div class="event__offer-selector">
   <input
     class="event__offer-checkbox  visually-hidden"
-    id="event-offer-${id}-1"
+    id="${id}"
     type="checkbox"
     name="event-offer-${id}"
     ${offers.map((offer) => offer.title === title ? 'checked' : '').join('')}
