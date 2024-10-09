@@ -6,6 +6,17 @@ import Observable from '../framework/observable';
 export default class PointsModel extends Observable {
   #points = [...new Set(Array.from({ length: getRandomInt(0, mockPoints.length - 1) }, getRandomPoint))];
 
+  #pointsApiService = null;
+
+  constructor({ pointsApiService }) {
+    super();
+    this.#pointsApiService = pointsApiService;
+
+    this.#pointsApiService.points.then((points) => {
+      console.log(points);
+    });
+  }
+
   get points() {
     return this.#points;
   }
