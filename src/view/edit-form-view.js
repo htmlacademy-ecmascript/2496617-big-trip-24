@@ -42,8 +42,15 @@ const createEditFormTemplate = (point, allOffers, allDestinations) => {
             <label class="event__label  event__type-output" for="event-destination-1">
               ${capitalize(type)}
             </label>
-            <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination"
-            value="${he.encode(pointDestination ? pointDestination.name : '')}" list="destination-list-1">
+            <input
+              class="event__input  event__input--destination"
+              id="event-destination-1"
+              type="text"
+              name="event-destination"
+              value="${he.encode(pointDestination ? pointDestination.name : '')}"
+              list="destination-list-1"
+              required
+            >
 
             ${destinationsListTemplate}
 
@@ -51,10 +58,24 @@ const createEditFormTemplate = (point, allOffers, allDestinations) => {
 
           <div class="event__field-group  event__field-group--time">
             <label class="visually-hidden" for="event-start-time-1">From</label>
-            <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${humanizeDateAndTime(dateFrom)}">
+            <input
+              class="event__input  event__input--time"
+              id="event-start-time-1"
+              type="text"
+              name="event-start-time"
+              value="${humanizeDateAndTime(dateFrom)}"
+              required
+            >
             &mdash;
             <label class="visually-hidden" for="event-end-time-1">To</label>
-            <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${humanizeDateAndTime(dateTo)}">
+            <input
+              class="event__input  event__input--time"
+              id="event-end-time-1"
+              type="text"
+              name="event-end-time"
+              value="${humanizeDateAndTime(dateTo)}"
+              required
+            >
           </div>
 
           <div class="event__field-group  event__field-group--price">
@@ -62,7 +83,14 @@ const createEditFormTemplate = (point, allOffers, allDestinations) => {
               <span class="visually-hidden">Price</span>
               &euro;
             </label>
-            <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${he.encode(String(basePrice))}">
+            <input
+              class="event__input  event__input--price"
+              id="event-price-1"
+              type="text"
+              name="event-price"
+              value="${he.encode(String(basePrice))}"
+              required
+            >
           </div>
 
           <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
@@ -227,7 +255,7 @@ export default class EditFormView extends AbstractStatefulView {
   #onPriceChange = (evt) => {
     evt.preventDefault();
     this._setState({
-      basePrice: evt.target.value,
+      basePrice: Number(evt.target.value),
     });
   };
 
@@ -269,30 +297,16 @@ export default class EditFormView extends AbstractStatefulView {
       return;
     }
     const clickedOfferId = offerSelector.querySelector('input').id;
-    const clickedOfferIndex = this._state.offers.indexOf(clickedOfferId);
 
-    const removeOffer = () => {
-      this.updateElement({
-        offers: [
-          ...this._state.offers.slice(0, clickedOfferIndex),
-          ...this._state.offers.slice(clickedOfferIndex + 1)
-        ]
-      });
-    };
-    const addOffer = () => {
-      this.updateElement({
-        offers: [
-          ...this._state.offers,
-          clickedOfferId
-        ]
-      });
-    };
+    const currentOffers = [...this._state.offers];
 
-    if (clickedOfferIndex !== -1) {
-      removeOffer();
-    } else {
-      addOffer();
-    }
+    const selectedOffers = currentOffers.includes(clickedOfferId)
+      ? currentOffers.filter((offerId) => offerId !== clickedOfferId)
+      : [...currentOffers, clickedOfferId];
+
+    this.updateElement({
+      offers: selectedOffers,
+    });
   };
 
   // @------------ статические методы ------------@ //
