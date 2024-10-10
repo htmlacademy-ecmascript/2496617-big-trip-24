@@ -24,9 +24,6 @@ export default class PointsApiService extends ApiService {
   #adaptToServer(point) {
     const adaptedPoint = {
       ...point,
-
-      //? вот тут чёт не очень понял прикол ↓
-
       'date_from': point.dateFrom instanceof Date ? point.dateFrom.toISOString() : point.dateFrom,
       'date_to': point.dateTo instanceof Date ? point.dateTo.toISOString() : point.dateTo,
       'base_price': point.basePrice,
@@ -37,6 +34,7 @@ export default class PointsApiService extends ApiService {
     delete adaptedPoint.dateTo;
     delete adaptedPoint.basePrice;
     delete adaptedPoint.isFavorite;
+    delete adaptedPoint.id;
 
     return adaptedPoint;
   }
