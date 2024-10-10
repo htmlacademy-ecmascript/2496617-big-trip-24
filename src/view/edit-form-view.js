@@ -220,6 +220,11 @@ export default class EditFormView extends AbstractStatefulView {
   // @------------ обработчики ------------@ //
   #onFormSubmit = (evt) => {
     evt.preventDefault();
+
+    //? required на инпутах не сработал
+    if (!this._state.dateFrom || !this._state.dateTo || !this._state.destination || this._state.basePrice <= 0) {
+      return;
+    }
     this.#handleFormSubmit(EditFormView.parseStateToPoint(this._state));
   };
 
