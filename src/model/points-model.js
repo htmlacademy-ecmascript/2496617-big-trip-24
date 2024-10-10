@@ -1,6 +1,5 @@
-import { mockPoints, getRandomPoint } from '../mock/mock-points';
-import { getRandomInt } from '../utils/common';
 import Observable from '../framework/observable';
+import { UpdateType } from '../const';
 // $======================== PointsModel ========================$ //
 
 export default class PointsModel extends Observable {
@@ -12,9 +11,9 @@ export default class PointsModel extends Observable {
     super();
     this.#pointsApiService = pointsApiService;
 
-    this.#pointsApiService.points.then((points) => {
-      /* console.log(points.map((point) => this.#adaptToClient(point))); */
-    });
+    // this.#pointsApiService.points.then((points) => {
+    //   /* console.log(points.map((point) => this.#adaptToClient(point))); */
+    // });
   }
 
   get points() {
@@ -82,10 +81,9 @@ export default class PointsModel extends Observable {
     try {
       const points = await this.#pointsApiService.points;
       this.#points = points.map(this.#adaptToClient);
-      console.log(1);
     } catch (error) {
       this.#points = [];
-      console.log(2);
     }
+    this._notify(UpdateType.INIT);
   }
 }

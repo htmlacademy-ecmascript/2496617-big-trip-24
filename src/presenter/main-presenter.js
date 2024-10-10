@@ -7,6 +7,7 @@ import { sortByDay, sortByTime, sortByPrice } from '../utils/point';
 import PointsListView from '../view/points-list-view';
 import SortView from '../view/sort-view';
 import NoPointsView from '../view/no-points-view';
+import LoadingView from '../view/loading-view.js';
 
 import PointPresenter from './point-presenter';
 import NewPointPresenter from './new-point-presenter.js';
@@ -28,12 +29,15 @@ export default class MainPresenter {
   #sortComponent = null;
   #noPointsComponent = null;
   #pointsListComponent = new PointsListView();
+  #loadingComponent = new LoadingView();
 
   #pointPresenters = new Map();
   #newPointPresenter = null;
 
   #currentSortType = SortType.DAY;
   #filterType = null;
+
+  #isLoading = true;
 
 
   constructor({ pointsContainer, pointsModel, offersModel, destinationsModel, filtersModel, handleNewPointDestroy }) {
@@ -109,10 +113,15 @@ export default class MainPresenter {
   }
 
   #renderPointsList() {
+    if (this.#isLoading) {
+      this.#renderLoading();
+      return;
+    }
     this.#renderSort();
 
     render(this.#pointsListComponent, this.#pointsContainer);
     this.#renderPoints(this.points);
+
   }
 
   #clearPointsList({ resetSortType = false } = {}) {
@@ -127,6 +136,13 @@ export default class MainPresenter {
     if (this.#noPointsComponent) {
       remove(this.#noPointsComponent);
     }
+    if (!this.#isLoading) {
+      remove(this.#loadingComponent);
+    }
+  }
+
+  #renderLoading() {
+    render(this.#loadingComponent, this.#pointsContainer);
   }
 
 
@@ -208,6 +224,12 @@ export default class MainPresenter {
       case UpdateType.MAJOR:
         this.#clearPointsList({ resetSortType: true });
         this.#renderPointsList();
+        break;
+      case UpdateType.INIT:
+        this.#isLoading = false;
+        remove(this.#loadingComponent);
+        this.#renderPointsList();
+        break;
     }
   };
 }

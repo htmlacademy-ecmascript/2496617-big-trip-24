@@ -10,7 +10,6 @@ import { render } from './framework/render';
 import PointsApiService from './point-api-service';
 
 // $======================== main ========================$ //
-
 const AUTHORIZATION = 'Basic JZizjDBB1s';
 const END_POINT = 'https://24.objects.htmlacademy.pro/big-trip';
 
@@ -18,15 +17,21 @@ const END_POINT = 'https://24.objects.htmlacademy.pro/big-trip';
 const pointsElement = document.querySelector('.trip-events');
 const headerElement = document.querySelector('.trip-main');
 
-const pointsModel = new PointsModel(
-  { pointsApiService: new PointsApiService(END_POINT, AUTHORIZATION) }
-);
 const offersModel = new OffersModel(
   { pointsApiService: new PointsApiService(END_POINT, AUTHORIZATION) }
 );
+
 const destinationsModel = new DestinationsModel(
   { pointsApiService: new PointsApiService(END_POINT, AUTHORIZATION) }
 );
+
+const pointsModel = new PointsModel(
+  { pointsApiService: new PointsApiService(END_POINT, AUTHORIZATION) }
+);
+offersModel.init()
+  .then(destinationsModel.init())
+  .then(pointsModel.init());
+
 const filtersModel = new FiltersModel();
 
 const mainPresenter = new MainPresenter({
@@ -63,5 +68,3 @@ function handleNewPointDestroy() {
 render(newPointButtonComponent, headerElement);
 
 mainPresenter.init();
-
-
