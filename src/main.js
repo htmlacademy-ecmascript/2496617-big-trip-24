@@ -17,6 +17,10 @@ const END_POINT = 'https://24.objects.htmlacademy.pro/big-trip';
 const pointsElement = document.querySelector('.trip-events');
 const headerElement = document.querySelector('.trip-main');
 
+const newPointButtonComponent = new NewPointButtonView({
+  handleNewPointButtonClick: handleNewPointButtonClick,
+});
+
 const offersModel = new OffersModel(
   { pointsApiService: new PointsApiService(END_POINT, AUTHORIZATION) }
 );
@@ -29,8 +33,15 @@ const pointsModel = new PointsModel(
   { pointsApiService: new PointsApiService(END_POINT, AUTHORIZATION) }
 );
 offersModel.init()
-  .then(destinationsModel.init())
-  .then(pointsModel.init());
+  .then(() => {
+    destinationsModel.init();
+  })
+  .then(() => {
+    pointsModel.init()
+      .finally(() => {
+        render(newPointButtonComponent, headerElement);
+      });
+  });
 
 const filtersModel = new FiltersModel();
 
@@ -52,10 +63,6 @@ const filtersPresenter = new FiltersPresenter({
 filtersPresenter.init();
 
 
-const newPointButtonComponent = new NewPointButtonView({
-  handleNewPointButtonClick: handleNewPointButtonClick,
-});
-
 function handleNewPointButtonClick() {
   mainPresenter.createPoint();
   newPointButtonComponent.element.disabled = true;
@@ -64,7 +71,5 @@ function handleNewPointButtonClick() {
 function handleNewPointDestroy() {
   newPointButtonComponent.element.disabled = false;
 }
-
-render(newPointButtonComponent, headerElement);
 
 mainPresenter.init();
