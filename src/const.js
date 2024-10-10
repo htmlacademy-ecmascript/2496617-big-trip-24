@@ -8,7 +8,6 @@ const DATE_AND_TIME_FORMAT = 'DD/MM/YY HH:mm';
 const DURATION_FORMAT = 'D HH mm';
 
 const BLANK_POINT = {
-  id: '',
   basePrice: 0,
   dateFrom: '',
   dateTo: '',
