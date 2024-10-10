@@ -55,7 +55,7 @@ export default class MainPresenter {
       offersModel: this.#offersModel,
       destinationsModel: this.#destinationsModel,
       handleDataChange: this.#handleViewAction,
-      handleDestroy: handleNewPointDestroy
+      handleDestroy: handleNewPointDestroy,
     });
   }
 
@@ -176,6 +176,7 @@ export default class MainPresenter {
     this.#pointPresenters.forEach((pointPresenter) => {
       pointPresenter.resetView();
     });
+    this.#newPointPresenter.destroy();
   };
 
   #handleSortTypeChange = (sortType) => {
