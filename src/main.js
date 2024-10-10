@@ -32,10 +32,12 @@ const destinationsModel = new DestinationsModel(
 const pointsModel = new PointsModel(
   { pointsApiService: new PointsApiService(END_POINT, AUTHORIZATION) }
 );
-offersModel.init()
-  .then(() => {
-    destinationsModel.init();
-  })
+
+Promise
+  .all([
+    offersModel.init(),
+    destinationsModel.init()
+  ])
   .then(() => {
     pointsModel.init()
       .finally(() => {
