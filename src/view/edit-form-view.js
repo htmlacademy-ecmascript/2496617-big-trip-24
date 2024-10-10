@@ -20,8 +20,7 @@ const createEditFormTemplate = (point, allOffers, allDestinations, isNew) => {
 
   const { basePrice, dateFrom, dateTo, type } = point;
 
-  const offersById = !isNew ?
-    getOffersById(allOffers, point.type, point.offers) : [];
+  const offersById = getOffersById(allOffers, point.type, point.offers);
 
   const offersByType = getOffersByType(allOffers, point.type);
 
