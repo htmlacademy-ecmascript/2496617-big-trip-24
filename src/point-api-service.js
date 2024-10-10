@@ -1,16 +1,32 @@
 import ApiService from './framework/api-service';
 
-// $======================== PointApiService ========================$ //
+// $======================== PointsApiService ========================$ //
 
 const Method = {
   GET: 'GET',
   PUT: 'PUT',
 };
 
-export default class PointApiService extends ApiService {
+const URL = {
+  POINTS: 'points',
+  OFFERS: 'offers',
+  DESTINATIONS: 'destinations'
+};
+
+export default class PointsApiService extends ApiService {
 
   get points() {
-    return this._load({ url: 'points' })
+    return this._load({ url: URL.POINTS })
+      .then(ApiService.parseResponse);
+  }
+
+  get offers() {
+    return this._load({ url: URL.OFFERS })
+      .then(ApiService.parseResponse);
+  }
+
+  get destinations() {
+    return this._load({ url: URL.DESTINATIONS })
       .then(ApiService.parseResponse);
   }
 

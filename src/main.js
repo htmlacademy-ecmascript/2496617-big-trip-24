@@ -7,7 +7,7 @@ import MainPresenter from './presenter/main-presenter';
 import FiltersPresenter from './presenter/filters-presenter';
 import NewPointButtonView from './view/new-point-button-view';
 import { render } from './framework/render';
-import PointApiService from './point-api-service';
+import PointsApiService from './point-api-service';
 
 // $======================== main ========================$ //
 
@@ -19,10 +19,14 @@ const pointsElement = document.querySelector('.trip-events');
 const headerElement = document.querySelector('.trip-main');
 
 const pointsModel = new PointsModel(
-  { pointsApiService: new PointApiService(END_POINT, AUTHORIZATION) }
+  { pointsApiService: new PointsApiService(END_POINT, AUTHORIZATION) }
 );
-const offersModel = new OffersModel();
-const destinationsModel = new DestinationsModel();
+const offersModel = new OffersModel(
+  { pointsApiService: new PointsApiService(END_POINT, AUTHORIZATION) }
+);
+const destinationsModel = new DestinationsModel(
+  { pointsApiService: new PointsApiService(END_POINT, AUTHORIZATION) }
+);
 const filtersModel = new FiltersModel();
 
 const mainPresenter = new MainPresenter({
