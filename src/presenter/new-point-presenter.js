@@ -64,8 +64,6 @@ export default class NewPointPresenter {
     this.#handleDataChange(
       UserAction.ADD_POINT,
       UpdateType.MINOR,
-
-      //? а сервер id генерит вообще?
       point
     );
     this.destroy();
