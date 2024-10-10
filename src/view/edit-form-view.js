@@ -16,7 +16,7 @@ import { getDestinationById, getDestinationByName, getOffersById, getOffersByTyp
 
 // $======================== EditFormView ========================$ //
 
-const createEditFormTemplate = (point, allOffers, allDestinations, isNew) => {
+const createEditFormTemplate = (point, allOffers, allDestinations) => {
 
   const { basePrice, dateFrom, dateTo, type } = point;
 
@@ -110,7 +110,7 @@ export default class EditFormView extends AbstractStatefulView {
   }
 
   get template() {
-    return createEditFormTemplate(this._state, this.#allOffers, this.#allDestinations, this.#isNew);
+    return createEditFormTemplate(this._state, this.#allOffers, this.#allDestinations);
   }
 
   removeElement() {
