@@ -5,6 +5,7 @@ import { Method, URL } from './const';
 
 export default class PointsApiService extends ApiService {
 
+  // @------------ GETTERS ------------@ //
   get points() {
     return this._load({ url: URL.POINTS })
       .then(ApiService.parseResponse);
@@ -18,41 +19,6 @@ export default class PointsApiService extends ApiService {
   get destinations() {
     return this._load({ url: URL.DESTINATIONS })
       .then(ApiService.parseResponse);
-  }
-
-  async updatePoint(point) {
-    const response = await this._load({
-      url: `${URL.POINTS}/${point.id}`,
-      method: Method.PUT,
-      body: JSON.stringify(this.#adaptToServer(point)),
-      headers: new Headers({ 'Content-Type': 'application/json' })
-    });
-
-    const parsedResponse = await ApiService.parseResponse(response);
-
-    return parsedResponse;
-  }
-
-  async addPoint(point) {
-    const response = await this._load({
-      url: URL.POINTS,
-      method: Method.POST,
-      body: JSON.stringify(this.#adaptToServer(point)),
-      headers: new Headers({ 'Content-Type': 'application/json' }),
-    });
-
-    const parsedResponse = await ApiService.parseResponse(response);
-
-    return parsedResponse;
-  }
-
-  async deletePoint(point) {
-    const response = await this._load({
-      url: `${URL.POINTS}/${point.id}`,
-      method: Method.DELETE,
-    });
-
-    return response;
   }
 
   #adaptToServer(point) {
@@ -73,5 +39,43 @@ export default class PointsApiService extends ApiService {
     delete adaptedPoint.isFavorite;
 
     return adaptedPoint;
+  }
+
+  // @------------ UPDATE POINT ------------@ //
+  async updatePoint(point) {
+    const response = await this._load({
+      url: `${URL.POINTS}/${point.id}`,
+      method: Method.PUT,
+      body: JSON.stringify(this.#adaptToServer(point)),
+      headers: new Headers({ 'Content-Type': 'application/json' })
+    });
+
+    const parsedResponse = await ApiService.parseResponse(response);
+
+    return parsedResponse;
+  }
+
+  // @------------ ADD POINT ------------@ //
+  async addPoint(point) {
+    const response = await this._load({
+      url: URL.POINTS,
+      method: Method.POST,
+      body: JSON.stringify(this.#adaptToServer(point)),
+      headers: new Headers({ 'Content-Type': 'application/json' }),
+    });
+
+    const parsedResponse = await ApiService.parseResponse(response);
+
+    return parsedResponse;
+  }
+
+  // @------------ DELETE POINT ------------@ //
+  async deletePoint(point) {
+    const response = await this._load({
+      url: `${URL.POINTS}/${point.id}`,
+      method: Method.DELETE,
+    });
+
+    return response;
   }
 }

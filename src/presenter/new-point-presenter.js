@@ -15,6 +15,7 @@ export default class NewPointPresenter {
   #handleDestroy = null;
   #handleDataChange = null;
 
+  // @------------ CONSTRUCTOR ------------@ //
   constructor({ pointsListComponent, handleDataChange, handleDestroy, destinationsModel, offersModel }) {
     this.#pointsListComponent = pointsListComponent;
     this.#handleDataChange = handleDataChange;
@@ -24,6 +25,7 @@ export default class NewPointPresenter {
     this.#destinationsModel = destinationsModel;
   }
 
+  // @------------ INIT ------------@ //
   init() {
     if (this.#editFormComponent !== null) {
       return;
@@ -52,14 +54,12 @@ export default class NewPointPresenter {
     }
 
     this.#handleDestroy();
-
     remove(this.#editFormComponent);
-
     this.#editFormComponent = null;
-
     document.removeEventListener('keydown', this.#onEscKeydown);
   }
 
+  // @------------ HANDLERS ------------@ //
   #handleFormSubmit = (point) => {
     this.#handleDataChange(
       UserAction.ADD_POINT,

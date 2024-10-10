@@ -7,6 +7,7 @@ export default class PointsModel extends Observable {
 
   #pointsApiService = null;
 
+  // @------------ CONSTRUCTOR ------------@ //
   constructor({ pointsApiService }) {
     super();
     this.#pointsApiService = pointsApiService;
@@ -33,6 +34,7 @@ export default class PointsModel extends Observable {
     return adaptedPoint;
   }
 
+  // @------------ UPDATE POINT ------------@ //
   async updatePoint(updateType, update) {
     const index = this.#points.findIndex((point) => point.id === update.id);
 
@@ -55,6 +57,7 @@ export default class PointsModel extends Observable {
     }
   }
 
+  // @------------ ADD POINT ------------@ //
   async addPoint(updateType, update) {
     try {
       const response = await this.#pointsApiService.addPoint(update);
@@ -71,6 +74,7 @@ export default class PointsModel extends Observable {
     }
   }
 
+  // @------------ DELETE POINT ------------@ //
   async deletePoint(updateType, update) {
     const index = this.#points.findIndex((point) => point.id === update.id);
 
@@ -89,9 +93,9 @@ export default class PointsModel extends Observable {
     } catch (error) {
       throw new Error('Can\'t delete task');
     }
-
   }
 
+  // @------------ INIT ------------@ //
   async init() {
     try {
       const points = await this.#pointsApiService.points;

@@ -39,7 +39,7 @@ export default class MainPresenter {
 
   #isLoading = true;
 
-
+  // @------------ CONSTRUCTOR ------------@ //
   constructor({ pointsContainer, pointsModel, offersModel, destinationsModel, filtersModel, handleNewPointDestroy }) {
     this.#pointsContainer = pointsContainer;
     this.#pointsModel = pointsModel;
@@ -59,7 +59,7 @@ export default class MainPresenter {
     });
   }
 
-
+  // @------------ GETTERS ------------@ //
   get points() {
     this.#filterType = this.#filtersModel.filter;
     const points = this.#pointsModel.points;
@@ -77,7 +77,7 @@ export default class MainPresenter {
     }
   }
 
-
+  // @------------ RENDER ------------@ //
   #renderPoint(point) {
     const pointPresenter = new PointPresenter({
       pointsListComponent: this.#pointsListComponent,
@@ -121,7 +121,24 @@ export default class MainPresenter {
 
     render(this.#pointsListComponent, this.#pointsContainer);
     this.#renderPoints(this.points);
+  }
 
+  #renderSort() {
+    this.#sortComponent = new SortView({
+      handleSortTypeChange: this.#handleSortTypeChange,
+      currentSortType: this.#currentSortType,
+    });
+
+    render(this.#sortComponent, this.#pointsContainer);
+  }
+
+  #renderLoading() {
+    render(this.#loadingComponent, this.#pointsContainer);
+  }
+
+  // @------------ CLEAR/DELETE ------------@ //
+  #removeSort() {
+    remove(this.#sortComponent);
   }
 
   #clearPointsList({ resetSortType = false } = {}) {
@@ -141,27 +158,8 @@ export default class MainPresenter {
     }
   }
 
-  #renderLoading() {
-    render(this.#loadingComponent, this.#pointsContainer);
-  }
 
-
-  // @------------ сортировка ------------@ //
-  #renderSort() {
-    this.#sortComponent = new SortView({
-      handleSortTypeChange: this.#handleSortTypeChange,
-      currentSortType: this.#currentSortType,
-    });
-
-    render(this.#sortComponent, this.#pointsContainer);
-  }
-
-  #removeSort() {
-    remove(this.#sortComponent);
-  }
-
-
-  // @------------ инициализация ------------@ //
+  // @------------ INIT ------------@ //
   init() {
     this.#renderPointsList();
   }
@@ -173,8 +171,7 @@ export default class MainPresenter {
   }
 
 
-  // @------------ обработчики ------------@ //
-
+  // @------------ HANDLERS ------------@ //
   #handleModeChange = () => {
     this.#pointPresenters.forEach((pointPresenter) => {
       pointPresenter.resetView();
