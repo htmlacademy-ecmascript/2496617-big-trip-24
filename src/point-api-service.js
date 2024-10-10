@@ -1,17 +1,7 @@
 import ApiService from './framework/api-service';
+import { Method, URL } from './const';
 
 // $======================== PointsApiService ========================$ //
-
-const Method = {
-  GET: 'GET',
-  PUT: 'PUT',
-};
-
-const URL = {
-  POINTS: 'points',
-  OFFERS: 'offers',
-  DESTINATIONS: 'destinations'
-};
 
 export default class PointsApiService extends ApiService {
 
@@ -46,11 +36,12 @@ export default class PointsApiService extends ApiService {
   #adaptToServer(point) {
     const adaptedPoint = {
       ...point,
-      'date_from': point.dateFrom instanceof Date ? point.dateFrom.toIsoString() : null,
-      'date_to': point.dateTo instanceof Date ? point.dateTo.toIsoString() : null,
+      'date_from': point.dateFrom instanceof Date ? point.dateFrom.toISOString() : null,
+      'date_to': point.dateTo instanceof Date ? point.dateTo.toISOString() : null,
       'base_price': point.basePrice,
       'is_favorite': point.isFavorite,
     };
+
     delete adaptedPoint.dateFrom;
     delete adaptedPoint.dateTo;
     delete adaptedPoint.basePrice;

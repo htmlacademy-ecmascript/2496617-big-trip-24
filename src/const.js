@@ -65,6 +65,17 @@ const NoPointsTextType = {
   [FilterType.PRESENT]: 'There are no present events now',
 };
 
+const Method = {
+  GET: 'GET',
+  PUT: 'PUT',
+};
+
+const URL = {
+  POINTS: 'points',
+  OFFERS: 'offers',
+  DESTINATIONS: 'destinations'
+};
+
 export {
   POINT_EVENT_TYPE_ITEMS,
   BLANK_POINT,
@@ -78,5 +89,7 @@ export {
   UpdateType,
   UserAction,
   FilterType,
-  NoPointsTextType
+  NoPointsTextType,
+  Method,
+  URL
 };
