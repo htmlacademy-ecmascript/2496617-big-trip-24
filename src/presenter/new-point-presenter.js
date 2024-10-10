@@ -2,7 +2,6 @@ import { UpdateType, UserAction } from '../const';
 import { remove, render, RenderPosition } from '../framework/render';
 import { isEscapeKey } from '../utils/common';
 import EditFormView from '../view/edit-form-view';
-import { nanoid } from 'nanoid';
 
 // $======================== NewPointPresenter ========================$ //
 
@@ -16,7 +15,8 @@ export default class NewPointPresenter {
   #handleDestroy = null;
   #handleDataChange = null;
 
-  constructor({ pointsListComponent, handleDataChange, handleDestroy,destinationsModel, offersModel }) {
+  // @------------ CONSTRUCTOR ------------@ //
+  constructor({ pointsListComponent, handleDataChange, handleDestroy, destinationsModel, offersModel }) {
     this.#pointsListComponent = pointsListComponent;
     this.#handleDataChange = handleDataChange;
     this.#handleDestroy = handleDestroy;
@@ -25,6 +25,7 @@ export default class NewPointPresenter {
     this.#destinationsModel = destinationsModel;
   }
 
+  // @------------ INIT ------------@ //
   init() {
     if (this.#editFormComponent !== null) {
       return;
@@ -53,19 +54,17 @@ export default class NewPointPresenter {
     }
 
     this.#handleDestroy();
-
     remove(this.#editFormComponent);
-
     this.#editFormComponent = null;
-
     document.removeEventListener('keydown', this.#onEscKeydown);
   }
 
+  // @------------ HANDLERS ------------@ //
   #handleFormSubmit = (point) => {
     this.#handleDataChange(
       UserAction.ADD_POINT,
       UpdateType.MINOR,
-      { id: nanoid(), ...point }
+      point
     );
     this.destroy();
   };
