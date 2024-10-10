@@ -4,7 +4,7 @@ import Observable from '../framework/observable';
 // $======================== PointsModel ========================$ //
 
 export default class PointsModel extends Observable {
-  #points = [...new Set(Array.from({ length: getRandomInt(0, mockPoints.length - 1) }, getRandomPoint))];
+  #points = [];
 
   #pointsApiService = null;
 
@@ -13,7 +13,7 @@ export default class PointsModel extends Observable {
     this.#pointsApiService = pointsApiService;
 
     this.#pointsApiService.points.then((points) => {
-      console.log(points.map((point) => this.#adaptToClient(point)));
+      /* console.log(points.map((point) => this.#adaptToClient(point))); */
     });
   }
 
@@ -76,5 +76,16 @@ export default class PointsModel extends Observable {
     ];
 
     this._notify(updateType);
+  }
+
+  async init() {
+    try {
+      const points = await this.#pointsApiService.points;
+      this.#points = points.map(this.#adaptToClient);
+      console.log(1);
+    } catch (error) {
+      this.#points = [];
+      console.log(2);
+    }
   }
 }

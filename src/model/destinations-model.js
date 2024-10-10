@@ -3,7 +3,7 @@ import { mockDestinations } from '../mock/mock-destinations';
 // $======================== DestinationsModel ========================$ //
 
 export default class DestinationsModel {
-  #destinations = mockDestinations;
+  #destinations = [];
   #pointsApiService = null;
 
   constructor({ pointsApiService }) {
@@ -17,6 +17,16 @@ export default class DestinationsModel {
 
   get destinations() {
     return this.#destinations;
+  }
+
+  async init() {
+    try {
+      this.#destinations = await this.#pointsApiService.destinations;
+      console.log(1);
+    } catch (error) {
+      this.#destinations = [];
+      console.log(2);
+    }
   }
 
 }
