@@ -2,7 +2,6 @@ import { UpdateType, UserAction } from '../const';
 import { remove, render, RenderPosition } from '../framework/render';
 import { isEscapeKey } from '../utils/common';
 import EditFormView from '../view/edit-form-view';
-import { nanoid } from 'nanoid';
 
 // $======================== NewPointPresenter ========================$ //
 
@@ -16,7 +15,7 @@ export default class NewPointPresenter {
   #handleDestroy = null;
   #handleDataChange = null;
 
-  constructor({ pointsListComponent, handleDataChange, handleDestroy,destinationsModel, offersModel }) {
+  constructor({ pointsListComponent, handleDataChange, handleDestroy, destinationsModel, offersModel }) {
     this.#pointsListComponent = pointsListComponent;
     this.#handleDataChange = handleDataChange;
     this.#handleDestroy = handleDestroy;
@@ -65,7 +64,9 @@ export default class NewPointPresenter {
     this.#handleDataChange(
       UserAction.ADD_POINT,
       UpdateType.MINOR,
-      { id: nanoid(), ...point }
+
+      //? а сервер id генерит вообще?
+      point
     );
     this.destroy();
   };

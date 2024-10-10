@@ -14,9 +14,7 @@ const BLANK_POINT = {
   dateTo: '',
   destination: '',
   isFavorite: false,
-  offers: [
-    ''
-  ],
+  offers: [],
   type: 'flight'
 };
 
@@ -68,6 +66,8 @@ const NoPointsTextType = {
 const Method = {
   GET: 'GET',
   PUT: 'PUT',
+  POST: 'POST',
+  DELETE: 'DELETE',
 };
 
 const URL = {
