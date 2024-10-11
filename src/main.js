@@ -7,16 +7,44 @@ import MainPresenter from './presenter/main-presenter';
 import FiltersPresenter from './presenter/filters-presenter';
 import NewPointButtonView from './view/new-point-button-view';
 import { render } from './framework/render';
+import PointsApiService from './point-api-service';
 
 // $======================== main ========================$ //
+const AUTHORIZATION = 'Basic JZizjDBB1s';
+const END_POINT = 'https://24.objects.htmlacademy.pro/big-trip';
 
 
 const pointsElement = document.querySelector('.trip-events');
 const headerElement = document.querySelector('.trip-main');
 
-const pointsModel = new PointsModel();
-const offersModel = new OffersModel();
-const destinationsModel = new DestinationsModel();
+const newPointButtonComponent = new NewPointButtonView({
+  handleNewPointButtonClick: handleNewPointButtonClick,
+});
+
+const offersModel = new OffersModel(
+  { pointsApiService: new PointsApiService(END_POINT, AUTHORIZATION) }
+);
+
+const destinationsModel = new DestinationsModel(
+  { pointsApiService: new PointsApiService(END_POINT, AUTHORIZATION) }
+);
+
+const pointsModel = new PointsModel(
+  { pointsApiService: new PointsApiService(END_POINT, AUTHORIZATION) }
+);
+
+Promise
+  .all([
+    offersModel.init(),
+    destinationsModel.init()
+  ])
+  .then(() => {
+    pointsModel.init()
+      .finally(() => {
+        render(newPointButtonComponent, headerElement);
+      });
+  });
+
 const filtersModel = new FiltersModel();
 
 const mainPresenter = new MainPresenter({
@@ -37,10 +65,6 @@ const filtersPresenter = new FiltersPresenter({
 filtersPresenter.init();
 
 
-const newPointButtonComponent = new NewPointButtonView({
-  handleNewPointButtonClick: handleNewPointButtonClick,
-});
-
 function handleNewPointButtonClick() {
   mainPresenter.createPoint();
   newPointButtonComponent.element.disabled = true;
@@ -50,8 +74,4 @@ function handleNewPointDestroy() {
   newPointButtonComponent.element.disabled = false;
 }
 
-render(newPointButtonComponent, headerElement);
-
 mainPresenter.init();
-
-
