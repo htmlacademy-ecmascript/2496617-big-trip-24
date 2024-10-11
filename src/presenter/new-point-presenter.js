@@ -59,6 +59,24 @@ export default class NewPointPresenter {
     document.removeEventListener('keydown', this.#onEscKeydown);
   }
 
+  setSaving() {
+    this.#editFormComponent.updateElement({
+      isDisabled: true,
+      isSaving: true,
+    });
+  }
+
+  setAborting() {
+    const resetFormState = () => {
+      this.#editFormComponent.updateElement({
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false,
+      });
+    };
+    this.#editFormComponent.shake(resetFormState);
+  }
+
   // @------------ HANDLERS ------------@ //
   #handleFormSubmit = (point) => {
     this.#handleDataChange(
@@ -66,7 +84,7 @@ export default class NewPointPresenter {
       UpdateType.MINOR,
       point
     );
-    this.destroy();
+    // this.destroy();
   };
 
   #handleDeleteClick = () => {

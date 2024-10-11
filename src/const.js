@@ -75,6 +75,11 @@ const URL = {
   DESTINATIONS: 'destinations'
 };
 
+const TimeLimit = {
+  LOWER_LIMIT: 350,
+  UPPER_LIMIT: 1000,
+};
+
 export {
   POINT_EVENT_TYPE_ITEMS,
   BLANK_POINT,
@@ -90,5 +95,6 @@ export {
   FilterType,
   NoPointsTextType,
   Method,
-  URL
+  URL,
+  TimeLimit
 };

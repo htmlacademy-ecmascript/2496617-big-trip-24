@@ -98,14 +98,14 @@ const createEditFormTemplate = (point, allOffers, allDestinations) => {
             type="submit"
             ${isDisabled ? 'disabled' : ''}
           >
-            ${isSaving ? 'Saving' : 'Save'}
+            ${isSaving ? 'Saving...' : 'Save'}
           </button>
           <button
             class="event__reset-btn"
             type="reset"
             ${isDisabled ? 'disabled' : ''}
           >
-            ${isDeleting ? 'Deleting' : 'Delete'}
+            ${isDeleting ? 'Deleting...' : 'Delete'}
           </button>
           <button class="event__rollup-btn" type="button">
             <span class="visually-hidden">Open event</span>
@@ -133,6 +133,7 @@ export default class EditFormView extends AbstractStatefulView {
   #dateEndPicker = null;
   #isNew = false;
 
+  // @------------ CONSTRUCTOR ------------@ //
   constructor({ isNew, point = BLANK_POINT, allOffers, allDestinations, handleFormSubmit, handleFormClose, handleDeleteClick }) {
     super();
     this.#isNew = isNew;
@@ -149,6 +150,7 @@ export default class EditFormView extends AbstractStatefulView {
     this._restoreHandlers();
   }
 
+  // @------------ GETTERS ------------@ //
   get template() {
     return createEditFormTemplate(this._state, this.#allOffers, this.#allDestinations);
   }
@@ -229,7 +231,7 @@ export default class EditFormView extends AbstractStatefulView {
     }
   }
 
-  // @------------ обработчики ------------@ //
+  // @------------ HANDLERS ------------@ //
   #onFormSubmit = (evt) => {
     evt.preventDefault();
 
@@ -326,7 +328,7 @@ export default class EditFormView extends AbstractStatefulView {
     });
   };
 
-  // @------------ статические методы ------------@ //
+  // @------------ STATIC ------------@ //
   static parsePointToState(point) {
     return {
       ...point,
