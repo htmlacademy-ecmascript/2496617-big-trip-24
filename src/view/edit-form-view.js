@@ -7,7 +7,9 @@ import {
   createPointTypeTemplate,
   createOffersContainerTemplate,
   createDestinationTemplate,
-  createDestinationsListTemplate
+  createDestinationsListTemplate,
+  createRollUpButtonTemplate,
+  createResetButtonText
 } from './forms-templates';
 import { BLANK_POINT, DateType } from '../const';
 import { capitalize, isNumber } from '../utils/common';
@@ -16,7 +18,7 @@ import { getDestinationById, getDestinationByName, getOffersById, getOffersByTyp
 
 // $======================== EditFormView ========================$ //
 
-const createEditFormTemplate = (point, allOffers, allDestinations) => {
+const createEditFormTemplate = (point, allOffers, allDestinations, isNew) => {
 
   const { basePrice, dateFrom, dateTo, type, isDisabled, isSaving, isDeleting } = point;
 
@@ -30,6 +32,8 @@ const createEditFormTemplate = (point, allOffers, allDestinations) => {
   const destinationsListTemplate = createDestinationsListTemplate(allDestinations);
   const destinationTemplate = createDestinationTemplate(pointDestination);
   const offersContainerTemplate = createOffersContainerTemplate(offersByType, offersById);
+  const rollUpButtonTemplate = createRollUpButtonTemplate(isNew);
+  const resetButtonText = createResetButtonText(isNew, isDeleting);
 
   return /*html*/`
     <li class="trip-events__item">
@@ -105,11 +109,12 @@ const createEditFormTemplate = (point, allOffers, allDestinations) => {
             type="reset"
             ${isDisabled ? 'disabled' : ''}
           >
-            ${isDeleting ? 'Deleting...' : 'Delete'}
+            ${resetButtonText}
+
           </button>
-          <button class="event__rollup-btn" type="button">
-            <span class="visually-hidden">Open event</span>
-          </button>
+
+          ${rollUpButtonTemplate}
+
         </header>
 
           ${offersByType.length !== 0 ? offersContainerTemplate : ''}
@@ -152,7 +157,7 @@ export default class EditFormView extends AbstractStatefulView {
 
   // @------------ GETTERS ------------@ //
   get template() {
-    return createEditFormTemplate(this._state, this.#allOffers, this.#allDestinations);
+    return createEditFormTemplate(this._state, this.#allOffers, this.#allDestinations, this.#isNew);
   }
 
   removeElement() {
@@ -176,7 +181,7 @@ export default class EditFormView extends AbstractStatefulView {
 
   _restoreHandlers() {
     this.element.querySelector('.event__rollup-btn')
-      .addEventListener('click', this.#onFormClose);
+      ?.addEventListener('click', this.#onFormClose);
 
     this.element.querySelector('.event__save-btn')
       .addEventListener('click', this.#onFormSubmit);
