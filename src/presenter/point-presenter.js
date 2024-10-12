@@ -31,7 +31,7 @@ export default class PointPresenter {
   }
 
 
-  //@ функции замены точки на форму и обратно
+  // @------------ REPLACE ------------@ //
   #replacePointToForm() {
     replace(this.#editFormComponent, this.#pointComponent);
 
@@ -48,7 +48,7 @@ export default class PointPresenter {
   }
 
 
-  //@ удаление точки
+  // @------------ DESTROY/RESET ------------@ //
   destroy() {
     remove(this.#pointComponent);
     remove(this.#editFormComponent);
@@ -64,6 +64,7 @@ export default class PointPresenter {
     document.removeEventListener('keydown', this.#handleEscKeyDown);
   }
 
+  // @------------ SET FLAGS ------------@ //
   setSaving() {
     if (this.#mode === Mode.EDITING) {
       this.#editFormComponent.updateElement({

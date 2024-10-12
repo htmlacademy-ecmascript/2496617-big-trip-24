@@ -75,6 +75,9 @@ const URL = {
   DESTINATIONS: 'destinations'
 };
 
+const AUTHORIZATION = 'Basic JZizjDBB1s';
+const END_POINT = 'https://24.objects.htmlacademy.pro/big-trip';
+
 const TimeLimit = {
   LOWER_LIMIT: 350,
   UPPER_LIMIT: 1000,
@@ -96,5 +99,7 @@ export {
   NoPointsTextType,
   Method,
   URL,
-  TimeLimit
+  TimeLimit,
+  AUTHORIZATION,
+  END_POINT
 };

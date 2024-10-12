@@ -19,13 +19,10 @@ import { getDestinationById, getDestinationByName, getOffersById, getOffersByTyp
 // $======================== EditFormView ========================$ //
 
 const createEditFormTemplate = (point, allOffers, allDestinations, isNew) => {
-
   const { basePrice, dateFrom, dateTo, type, isDisabled, isSaving, isDeleting } = point;
 
   const offersById = getOffersById(allOffers, point.type, point.offers);
-
   const offersByType = getOffersByType(allOffers, point.type);
-
   const pointDestination = getDestinationById(allDestinations, point.destination);
 
   const pointTypeTemplate = createPointTypeTemplate(type);
@@ -207,7 +204,7 @@ export default class EditFormView extends AbstractStatefulView {
       ?.addEventListener('click', this.#onOffersClick);
   }
 
-  // @------------ выбор даты ------------@ //
+  // @------------ SET DATE PICKER ------------@ //
   #setDatePicker(input) {
     const createFlatpickrConfig = (dateType, defaultDate = null, minDate = null, maxDate = null) => ({
       dateFormat: 'd/m/y H:i',
