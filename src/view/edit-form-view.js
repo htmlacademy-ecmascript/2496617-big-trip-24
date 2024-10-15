@@ -7,29 +7,29 @@ import {
   createPointTypeTemplate,
   createOffersContainerTemplate,
   createDestinationTemplate,
-  createDestinationsListTemplate
+  createDestinationsListTemplate,
+  createRollUpButtonTemplate,
 } from './forms-templates';
 import { BLANK_POINT, DateType } from '../const';
 import { capitalize, isNumber } from '../utils/common';
-import { getDestinationById, getDestinationByName, getOffersById, getOffersByType, humanizeDateAndTime } from '../utils/point';
+import { adjustResetButtonText, getDestinationById, getDestinationByName, getOffersById, getOffersByType, humanizeDateAndTime } from '../utils/point';
 
 
 // $======================== EditFormView ========================$ //
 
-const createEditFormTemplate = (point, allOffers, allDestinations) => {
-
-  const { basePrice, dateFrom, dateTo, type } = point;
+const createEditFormTemplate = (point, allOffers, allDestinations, isNew) => {
+  const { basePrice, dateFrom, dateTo, type, isDisabled, isSaving, isDeleting } = point;
 
   const offersById = getOffersById(allOffers, point.type, point.offers);
-
   const offersByType = getOffersByType(allOffers, point.type);
-
   const pointDestination = getDestinationById(allDestinations, point.destination);
 
   const pointTypeTemplate = createPointTypeTemplate(type);
   const destinationsListTemplate = createDestinationsListTemplate(allDestinations);
   const destinationTemplate = createDestinationTemplate(pointDestination);
   const offersContainerTemplate = createOffersContainerTemplate(offersByType, offersById);
+  const rollUpButtonTemplate = createRollUpButtonTemplate(isNew);
+  const resetButtonText = adjustResetButtonText(isNew, isDeleting);
 
   return /*html*/`
     <li class="trip-events__item">
@@ -93,11 +93,24 @@ const createEditFormTemplate = (point, allOffers, allDestinations) => {
             >
           </div>
 
-          <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-          <button class="event__reset-btn" type="reset">Delete</button>
-          <button class="event__rollup-btn" type="button">
-            <span class="visually-hidden">Open event</span>
+          <button
+            class="event__save-btn  btn  btn--blue"
+            type="submit"
+            ${isDisabled ? 'disabled' : ''}
+          >
+            ${isSaving ? 'Saving...' : 'Save'}
           </button>
+          <button
+            class="event__reset-btn"
+            type="reset"
+            ${isDisabled ? 'disabled' : ''}
+          >
+            ${resetButtonText}
+
+          </button>
+
+          ${rollUpButtonTemplate}
+
         </header>
 
           ${offersByType.length !== 0 ? offersContainerTemplate : ''}
@@ -121,6 +134,7 @@ export default class EditFormView extends AbstractStatefulView {
   #dateEndPicker = null;
   #isNew = false;
 
+  // @------------ CONSTRUCTOR ------------@ //
   constructor({ isNew, point = BLANK_POINT, allOffers, allDestinations, handleFormSubmit, handleFormClose, handleDeleteClick }) {
     super();
     this.#isNew = isNew;
@@ -137,8 +151,9 @@ export default class EditFormView extends AbstractStatefulView {
     this._restoreHandlers();
   }
 
+  // @------------ GETTERS ------------@ //
   get template() {
-    return createEditFormTemplate(this._state, this.#allOffers, this.#allDestinations);
+    return createEditFormTemplate(this._state, this.#allOffers, this.#allDestinations, this.#isNew);
   }
 
   removeElement() {
@@ -162,7 +177,7 @@ export default class EditFormView extends AbstractStatefulView {
 
   _restoreHandlers() {
     this.element.querySelector('.event__rollup-btn')
-      .addEventListener('click', this.#onFormClose);
+      ?.addEventListener('click', this.#onFormClose);
 
     this.element.querySelector('.event__save-btn')
       .addEventListener('click', this.#onFormSubmit);
@@ -188,7 +203,7 @@ export default class EditFormView extends AbstractStatefulView {
       ?.addEventListener('click', this.#onOffersClick);
   }
 
-  // @------------ выбор даты ------------@ //
+  // @------------ SET DATE PICKER ------------@ //
   #setDatePicker(input) {
     const createFlatpickrConfig = (dateType, defaultDate = null, minDate = null, maxDate = null) => ({
       dateFormat: 'd/m/y H:i',
@@ -217,14 +232,9 @@ export default class EditFormView extends AbstractStatefulView {
     }
   }
 
-  // @------------ обработчики ------------@ //
+  // @------------ HANDLERS ------------@ //
   #onFormSubmit = (evt) => {
     evt.preventDefault();
-
-    //? required на инпутах не сработал
-    if (!this._state.dateFrom || !this._state.dateTo || !this._state.destination || this._state.basePrice <= 0) {
-      return;
-    }
     this.#handleFormSubmit(EditFormView.parseStateToPoint(this._state));
   };
 
@@ -314,12 +324,22 @@ export default class EditFormView extends AbstractStatefulView {
     });
   };
 
-  // @------------ статические методы ------------@ //
+  // @------------ STATIC ------------@ //
   static parsePointToState(point) {
-    return { ...point };
+    return {
+      ...point,
+      isDisabled: false,
+      isSaving: false,
+      isDeleting: false
+    };
   }
 
   static parseStateToPoint(state) {
-    return { ...state };
+    const point = { ...state };
+    delete point.isDisabled;
+    delete point.isSaving;
+    delete point.isDeleting;
+
+    return point;
   }
 }

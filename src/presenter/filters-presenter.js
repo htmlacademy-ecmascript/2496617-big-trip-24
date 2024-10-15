@@ -12,6 +12,7 @@ export default class FiltersPresenter {
 
   #filtersComponent = null;
 
+  // @------------ CONSTRUCTOR ------------@ //
   constructor({ headerContainer, filtersModel, pointsModel }) {
     this.#headerContainer = headerContainer;
     this.#filtersModel = filtersModel;
@@ -21,6 +22,7 @@ export default class FiltersPresenter {
     this.#filtersModel.addObserver(this.#handleModelEvent);
   }
 
+  // @------------ GETTERS ------------@ //
   get filters() {
     const points = this.#pointsModel.points;
 
@@ -30,6 +32,7 @@ export default class FiltersPresenter {
     }));
   }
 
+  // @------------ INIT ------------@ //
   init() {
     const filters = this.filters;
     const prevFilterComponent = this.#filtersComponent;
@@ -48,6 +51,7 @@ export default class FiltersPresenter {
     remove(prevFilterComponent);
   }
 
+  // @------------ HANDLERS ------------@ //
   #handleModelEvent = () => {
     this.init();
   };

@@ -1,4 +1,5 @@
 import { render, remove } from '../framework/render';
+import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
 
 //@ utils
 import { sortByDay, sortByTime, sortByPrice } from '../utils/point';
@@ -9,10 +10,11 @@ import SortView from '../view/sort-view';
 import NoPointsView from '../view/no-points-view';
 import LoadingView from '../view/loading-view.js';
 
+//@ presenters
 import PointPresenter from './point-presenter';
 import NewPointPresenter from './new-point-presenter.js';
 
-import { SortType, UpdateType, UserAction, FilterType } from '../const';
+import { SortType, UpdateType, UserAction, FilterType, TimeLimit } from '../const';
 import { filter } from '../utils/filter.js';
 
 // $======================== MainPresenter ========================$ //
@@ -24,7 +26,6 @@ export default class MainPresenter {
   #offersModel = null;
   #destinationsModel = null;
   #filtersModel = null;
-
 
   #sortComponent = null;
   #noPointsComponent = null;
@@ -38,6 +39,11 @@ export default class MainPresenter {
   #filterType = null;
 
   #isLoading = true;
+
+  #uiBlocker = new UiBlocker({
+    lowerLimit: TimeLimit.LOWER_LIMIT,
+    upperLimit: TimeLimit.UPPER_LIMIT
+  });
 
   // @------------ CONSTRUCTOR ------------@ //
   constructor({ pointsContainer, pointsModel, offersModel, destinationsModel, filtersModel, handleNewPointDestroy }) {
@@ -144,6 +150,7 @@ export default class MainPresenter {
   #clearPointsList({ resetSortType = false } = {}) {
     this.#pointPresenters.forEach((presenter) => presenter.destroy());
     this.#pointPresenters.clear();
+    this.#newPointPresenter.destroy();
 
     this.#removeSort();
 
@@ -173,10 +180,8 @@ export default class MainPresenter {
 
   // @------------ HANDLERS ------------@ //
   #handleModeChange = () => {
-    this.#pointPresenters.forEach((pointPresenter) => {
-      pointPresenter.resetView();
-    });
     this.#newPointPresenter.destroy();
+    this.#pointPresenters.forEach((pointPresenter) => pointPresenter.resetView());
   };
 
   #handleSortTypeChange = (sortType) => {
@@ -196,18 +201,36 @@ export default class MainPresenter {
     this.#renderPointsList();
   };
 
-  #handleViewAction = (actionType, updateType, update) => {
+  #handleViewAction = async (actionType, updateType, update) => {
+    this.#uiBlocker.block();
+
     switch (actionType) {
       case UserAction.UPDATE_POINT:
-        this.#pointsModel.updatePoint(updateType, update);
+        this.#pointPresenters.get(update.id).setSaving();
+        try {
+          await this.#pointsModel.updatePoint(updateType, update);
+        } catch (error) {
+          this.#pointPresenters.get(update.id).setAborting();
+        }
         break;
       case UserAction.ADD_POINT:
-        this.#pointsModel.addPoint(updateType, update);
+        this.#newPointPresenter.setSaving();
+        try {
+          await this.#pointsModel.addPoint(updateType, update);
+        } catch (error) {
+          this.#newPointPresenter.setAborting();
+        }
         break;
       case UserAction.DELETE_POINT:
-        this.#pointsModel.deletePoint(updateType, update);
+        this.#pointPresenters.get(update.id).setDeleting();
+        try {
+          await this.#pointsModel.deletePoint(updateType, update);
+        } catch (error) {
+          this.#pointPresenters.get(update.id).setAborting();
+        }
         break;
     }
+    this.#uiBlocker.unblock();
   };
 
   #handleModelEvent = (updateType, data) => {
