@@ -1,6 +1,6 @@
 import { INFO_DATE_FORMAT } from '../const';
 import AbstractView from '../framework/view/abstract-view';
-import { getDestinationById, getOffersById, humanizeDate, sortByDay } from '../utils/point';
+import { getDestinationById, getOffersById, humanizeTime, sortByDay } from '../utils/point';
 
 // $======================== TripInfoView ========================$ //
 
@@ -14,8 +14,8 @@ const createTripInfoTemplate = (points, allDestinations, allOffers) => {
   const lastDestination =
     getDestinationById(allDestinations, lastPoint.destination);
 
-  const startDate = humanizeDate(firstPoint.dateFrom, INFO_DATE_FORMAT);
-  const endDate = humanizeDate(lastPoint.dateTo, INFO_DATE_FORMAT);
+  const startDate = humanizeTime(firstPoint.dateFrom, INFO_DATE_FORMAT);
+  const endDate = humanizeTime(lastPoint.dateTo, INFO_DATE_FORMAT);
 
   let totalCost = 0;
 
