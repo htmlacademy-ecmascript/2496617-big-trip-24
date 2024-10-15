@@ -5,11 +5,15 @@ import { getDestinationById, getOffersById, humanizeTime, sortByDay } from '../u
 // $======================== TripInfoView ========================$ //
 
 const createTripInfoTemplate = (points, allDestinations, allOffers) => {
-  const firstPoint = points.sort(sortByDay)[0];
-  const lastPoint = points.sort(sortByDay)[points.length - 1];
+  const sortedPoints = points.sort(sortByDay);
+  const firstPoint = sortedPoints[0];
+  const middlePoint = sortedPoints[1];
+  const lastPoint = sortedPoints[points.length - 1];
 
   const firstDestination =
     getDestinationById(allDestinations, firstPoint.destination);
+
+  const middleDestination = getDestinationById(allDestinations, middlePoint.destination);
 
   const lastDestination =
     getDestinationById(allDestinations, lastPoint.destination);
@@ -28,10 +32,12 @@ const createTripInfoTemplate = (points, allDestinations, allOffers) => {
       });
   });
 
+  const middle = sortedPoints.length > 3 ? ' ... ' : `&mdash; ${middleDestination.name} &mdash;`;
+
   return /*html*/`
     <section class="trip-main__trip-info  trip-info">
     <div class="trip-info__main">
-      <h1 class="trip-info__title">${firstDestination.name} &mdash; Chamonix &mdash; ${lastDestination.name}</h1>
+      <h1 class="trip-info__title">${firstDestination.name} ${middle} ${lastDestination.name}</h1>
 
       <p class="trip-info__dates">${startDate}&nbsp;&mdash;&nbsp;${endDate}</p>
     </div>
