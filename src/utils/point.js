@@ -59,6 +59,14 @@ const getDestinationById = (destinations, id) => destinations.find((destination)
 
 const getDestinationByName = (destinations, name) => destinations.find((destination) => destination.name === name);
 
+// $------------ adjustResetButtonText ------------$ //
+const adjustResetButtonText = (isNewPoint, isDeleting) => {
+  if (isNewPoint) {
+    return 'Cancel';
+  }
+  return isDeleting ? 'Deleting...' : 'Delete';
+};
+
 // &======================== export ========================& //
 export {
   humanizeDate,
@@ -75,5 +83,6 @@ export {
   getDestinationById,
   getDestinationByName,
   getOffersByType,
-  getOffersById
+  getOffersById,
+  adjustResetButtonText
 };

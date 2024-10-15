@@ -131,14 +131,3 @@ export const createRollUpButtonTemplate = (isNewPoint) =>
       </button>
     `
     : '';
-
-
-// $------------ createResetButtonText ------------$ //
-
-export const createResetButtonText = (isNewPoint, isDeleting) => {
-  if (isNewPoint) {
-    return 'Cancel';
-  } else {
-    return isDeleting ? 'Deleting...' : 'Delete';
-  }
-};

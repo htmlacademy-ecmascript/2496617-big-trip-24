@@ -9,11 +9,10 @@ import {
   createDestinationTemplate,
   createDestinationsListTemplate,
   createRollUpButtonTemplate,
-  createResetButtonText
 } from './forms-templates';
 import { BLANK_POINT, DateType } from '../const';
 import { capitalize, isNumber } from '../utils/common';
-import { getDestinationById, getDestinationByName, getOffersById, getOffersByType, humanizeDateAndTime } from '../utils/point';
+import { adjustResetButtonText, getDestinationById, getDestinationByName, getOffersById, getOffersByType, humanizeDateAndTime } from '../utils/point';
 
 
 // $======================== EditFormView ========================$ //
@@ -30,7 +29,7 @@ const createEditFormTemplate = (point, allOffers, allDestinations, isNew) => {
   const destinationTemplate = createDestinationTemplate(pointDestination);
   const offersContainerTemplate = createOffersContainerTemplate(offersByType, offersById);
   const rollUpButtonTemplate = createRollUpButtonTemplate(isNew);
-  const resetButtonText = createResetButtonText(isNew, isDeleting);
+  const resetButtonText = adjustResetButtonText(isNew, isDeleting);
 
   return /*html*/`
     <li class="trip-events__item">
