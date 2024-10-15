@@ -6,6 +6,7 @@ const DATE_FORMAT = 'MMM D';
 const TIME_FORMAT = 'HH : mm';
 const DATE_AND_TIME_FORMAT = 'DD/MM/YY HH:mm';
 const DURATION_FORMAT = 'D HH mm';
+const INFO_DATE_FORMAT = 'D MMM'
 
 const BLANK_POINT = {
   basePrice: 0,
@@ -87,6 +88,7 @@ export {
   POINT_EVENT_TYPE_ITEMS,
   BLANK_POINT,
   DATE_FORMAT,
+  INFO_DATE_FORMAT,
   TIME_FORMAT,
   DATE_AND_TIME_FORMAT,
   DURATION_FORMAT,

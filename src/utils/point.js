@@ -4,7 +4,7 @@ import { DATE_FORMAT, TIME_FORMAT, DATE_AND_TIME_FORMAT } from '../const';
 // $======================== point utils ========================$ //
 
 // $------------ date and time functions ------------$ //
-const humanizeDate = (date) => date ? dayjs(date).format(DATE_FORMAT) : '';
+const humanizeDate = (date, format = DATE_FORMAT) => date ? dayjs(date).format(format) : '';
 
 const humanizeTime = (time) => time ? dayjs(time).format(TIME_FORMAT) : '';
 

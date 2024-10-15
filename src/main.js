@@ -12,6 +12,7 @@ import FiltersPresenter from './presenter/filters-presenter';
 import NewPointButtonView from './view/new-point-button-view';
 
 import { AUTHORIZATION, END_POINT } from './const';
+import TripInfoPresenter from './presenter/trip-info-presenter';
 
 // $======================== main ========================$ //
 
@@ -34,6 +35,22 @@ const pointsModel = new PointsModel(
   { pointsApiService: new PointsApiService(END_POINT, AUTHORIZATION) }
 );
 
+const filtersModel = new FiltersModel();
+
+const tripInfoPresenter = new TripInfoPresenter({
+  headerContainer: headerElement,
+  pointsModel,
+  offersModel,
+  destinationsModel,
+});
+
+
+const filtersPresenter = new FiltersPresenter({
+  headerContainer: headerElement,
+  filtersModel,
+  pointsModel,
+});
+
 Promise
   .all([
     offersModel.init(),
@@ -43,10 +60,11 @@ Promise
     pointsModel.init()
       .finally(() => {
         render(newPointButtonComponent, headerElement);
+        tripInfoPresenter.init();
+        filtersPresenter.init();
       });
   });
 
-const filtersModel = new FiltersModel();
 
 const mainPresenter = new MainPresenter({
   pointsContainer: pointsElement,
@@ -56,14 +74,6 @@ const mainPresenter = new MainPresenter({
   filtersModel,
   handleNewPointDestroy,
 });
-
-const filtersPresenter = new FiltersPresenter({
-  headerContainer: headerElement,
-  filtersModel,
-  pointsModel,
-});
-
-filtersPresenter.init();
 
 
 function handleNewPointButtonClick() {

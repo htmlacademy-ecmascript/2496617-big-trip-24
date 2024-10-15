@@ -16,7 +16,6 @@ import NewPointPresenter from './new-point-presenter.js';
 
 import { SortType, UpdateType, UserAction, FilterType, TimeLimit } from '../const';
 import { filter } from '../utils/filter.js';
-
 // $======================== MainPresenter ========================$ //
 
 export default class MainPresenter {
