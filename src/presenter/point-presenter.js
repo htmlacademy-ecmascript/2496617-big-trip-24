@@ -14,17 +14,15 @@ export default class PointPresenter {
   #point = null;
   #mode = Mode.DEFAULT;
 
-  #offersModel = null;
-  #destinationsModel = null;
+  #pointsModel = null;
 
   #handleDataChange = null;
   #handleModeChange = null;
 
   // @------------ CONSTRUCTOR ------------@ //
-  constructor({ pointsListComponent, offersModel, destinationsModel, handleDataChange, handleModeChange }) {
+  constructor({ pointsListComponent, pointsModel, handleDataChange, handleModeChange }) {
     this.#pointsListComponent = pointsListComponent;
-    this.#offersModel = offersModel;
-    this.#destinationsModel = destinationsModel;
+    this.#pointsModel = pointsModel;
 
     this.#handleDataChange = handleDataChange;
     this.#handleModeChange = handleModeChange;
@@ -112,8 +110,8 @@ export default class PointPresenter {
     //@ создание точки
     this.#pointComponent = new PointView({
       point: this.#point,
-      allOffers: this.#offersModel.offers,
-      allDestinations: this.#destinationsModel.destinations,
+      allOffers: this.#pointsModel.offers,
+      allDestinations: this.#pointsModel.destinations,
 
       handleEditClick: this.#handleEditClick,
       handleFavoriteClick: this.#handleFavoriteClick,
@@ -122,8 +120,8 @@ export default class PointPresenter {
     //@ создание формы
     this.#editFormComponent = new EditFormView({
       point: this.#point,
-      allOffers: this.#offersModel.offers,
-      allDestinations: this.#destinationsModel.destinations,
+      allOffers: this.#pointsModel.offers,
+      allDestinations: this.#pointsModel.destinations,
 
       handleFormSubmit: this.#handleFormSubmit,
       handleFormClose: this.#handleFormClose,

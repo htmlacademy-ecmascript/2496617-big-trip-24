@@ -7,14 +7,10 @@ export default class TripInfoPresenter {
   #tripInfoComponent = null;
   #headerContainer = null;
   #pointsModel;
-  #destinationsModel = null;
-  #offersModel = null;
 
-  constructor({ headerContainer, pointsModel, offersModel, destinationsModel }) {
+  constructor({ headerContainer, pointsModel }) {
     this.#headerContainer = headerContainer;
     this.#pointsModel = pointsModel;
-    this.#offersModel = offersModel;
-    this.#destinationsModel = destinationsModel;
 
     this.#pointsModel.addObserver(this.#handleModelEvent);
   }
@@ -29,8 +25,8 @@ export default class TripInfoPresenter {
 
     this.#tripInfoComponent = new TripInfoView({
       points: this.points,
-      allOffers: this.#offersModel.offers,
-      allDestinations: this.#destinationsModel.destinations,
+      allOffers: this.#pointsModel.offers,
+      allDestinations: this.#pointsModel.destinations,
     });
 
     if (prevTripInfoComponent === null) {

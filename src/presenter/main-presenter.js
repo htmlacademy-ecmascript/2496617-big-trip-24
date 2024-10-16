@@ -22,8 +22,6 @@ export default class MainPresenter {
   #pointsContainer = null;
 
   #pointsModel = null;
-  #offersModel = null;
-  #destinationsModel = null;
   #filtersModel = null;
 
   #sortComponent = null;
@@ -45,11 +43,9 @@ export default class MainPresenter {
   });
 
   // @------------ CONSTRUCTOR ------------@ //
-  constructor({ pointsContainer, pointsModel, offersModel, destinationsModel, filtersModel, handleNewPointDestroy }) {
+  constructor({ pointsContainer, pointsModel, filtersModel, handleNewPointDestroy }) {
     this.#pointsContainer = pointsContainer;
     this.#pointsModel = pointsModel;
-    this.#offersModel = offersModel;
-    this.#destinationsModel = destinationsModel;
     this.#filtersModel = filtersModel;
 
     this.#pointsModel.addObserver(this.#handleModelEvent);
@@ -57,8 +53,7 @@ export default class MainPresenter {
 
     this.#newPointPresenter = new NewPointPresenter({
       pointsListComponent: this.#pointsListComponent.element,
-      offersModel: this.#offersModel,
-      destinationsModel: this.#destinationsModel,
+      pointsModel: this.#pointsModel,
       handleDataChange: this.#handleViewAction,
       handleDestroy: handleNewPointDestroy,
     });
@@ -86,9 +81,7 @@ export default class MainPresenter {
   #renderPoint(point) {
     const pointPresenter = new PointPresenter({
       pointsListComponent: this.#pointsListComponent,
-
-      offersModel: this.#offersModel,
-      destinationsModel: this.#destinationsModel,
+      pointsModel: this.#pointsModel,
 
       handleDataChange: this.#handleViewAction,
       handleModeChange: this.#handleModeChange,

@@ -9,20 +9,18 @@ export default class NewPointPresenter {
   #pointsListComponent = null;
   #editFormComponent = null;
 
-  #destinationsModel = null;
-  #offersModel = null;
+  #pointsModel = null;
 
   #handleDestroy = null;
   #handleDataChange = null;
 
   // @------------ CONSTRUCTOR ------------@ //
-  constructor({ pointsListComponent, handleDataChange, handleDestroy, destinationsModel, offersModel }) {
+  constructor({ pointsListComponent, handleDataChange, handleDestroy, pointsModel }) {
     this.#pointsListComponent = pointsListComponent;
     this.#handleDataChange = handleDataChange;
     this.#handleDestroy = handleDestroy;
 
-    this.#offersModel = offersModel;
-    this.#destinationsModel = destinationsModel;
+    this.#pointsModel = pointsModel;
   }
 
   // @------------ INIT ------------@ //
@@ -36,8 +34,8 @@ export default class NewPointPresenter {
       handleDeleteClick: this.#handleDeleteClick,
       handleFormClose: this.#handleDeleteClick,
 
-      allDestinations: this.#destinationsModel.destinations,
-      allOffers: this.#offersModel.offers,
+      allDestinations: this.#pointsModel.destinations,
+      allOffers: this.#pointsModel.offers,
 
       isNew: true,
     });
