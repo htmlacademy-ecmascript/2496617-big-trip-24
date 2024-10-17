@@ -177,6 +177,11 @@ export default class MainPresenter {
     this.#currentSortType = SortType.DAY;
     this.#filtersModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
     this.#newPointPresenter.init();
+    remove(this.#noPointsComponent);
+  }
+
+  cancelNewPointCreation() {
+    this.#renderNoPoints();
   }
 
 
