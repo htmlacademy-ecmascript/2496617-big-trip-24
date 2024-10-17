@@ -19,6 +19,8 @@ export default class PointPresenter {
   #handleDataChange = null;
   #handleModeChange = null;
 
+  #isSaving;
+
   // @------------ CONSTRUCTOR ------------@ //
   constructor({ pointsListComponent, pointsModel, handleDataChange, handleModeChange }) {
     this.#pointsListComponent = pointsListComponent;
@@ -33,7 +35,7 @@ export default class PointPresenter {
   #replacePointToForm() {
     replace(this.#editFormComponent, this.#pointComponent);
 
-    document.addEventListener('keydown', this.#handleEscKeyDown);
+    // document.addEventListener('keydown', this.#handleEscKeyDown);
     this.#handleModeChange();
     this.#mode = Mode.EDITING;
   }
@@ -41,7 +43,7 @@ export default class PointPresenter {
   #replaceFormToPoint() {
     replace(this.#pointComponent, this.#editFormComponent);
 
-    document.removeEventListener('keydown', this.#handleEscKeyDown);
+    // document.removeEventListener('keydown', this.#handleEscKeyDown);
     this.#mode = Mode.DEFAULT;
   }
 
@@ -60,6 +62,10 @@ export default class PointPresenter {
 
   #removeEscKeydownEventListener() {
     document.removeEventListener('keydown', this.#handleEscKeyDown);
+  }
+
+  #addEscKeydownEventListener() {
+    document.addEventListener('keydown', this.#handleEscKeyDown);
   }
 
   // @------------ SET FLAGS ------------@ //
@@ -88,6 +94,7 @@ export default class PointPresenter {
     }
 
     const resetFormState = () => {
+      this.#addEscKeydownEventListener();
       this.#editFormComponent.updateElement({
         isDisabled: false,
         isSaving: false,
@@ -151,7 +158,6 @@ export default class PointPresenter {
   // @------------ HANDLERS ------------@ //
   #handleEscKeyDown = (evt) => {
     if (isEscapeKey(evt)) {
-      evt.preventDefault();
       this.#editFormComponent.reset(this.#point);
       this.#replaceFormToPoint();
       this.#removeEscKeydownEventListener();
@@ -160,16 +166,17 @@ export default class PointPresenter {
 
   #handleEditClick = () => {
     this.#replacePointToForm();
-    document.addEventListener('keydown', this.#handleEscKeyDown);
+    this.#addEscKeydownEventListener();
   };
 
   #handleFormSubmit = (update) => {
-    // this.#removeEscKeydownEventListener();
     this.#handleDataChange(
       UserAction.UPDATE_POINT,
       UpdateType.MINOR,
       update
     );
+    this.#removeEscKeydownEventListener();
+
   };
 
   #handleFormClose = () => {
