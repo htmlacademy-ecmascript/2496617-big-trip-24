@@ -24,7 +24,7 @@ const createTripInfoTemplate = (points, allDestinations, allOffers) => {
     }
     if (sortedPoints.length === 3) {
       const middleDestination = getDestinationName(sortedPoints[1]);
-      return `&mdash; ${middleDestination.name} &mdash;`;
+      return `${firstDestination.name} &mdash; ${middleDestination.name} &mdash; ${lastDestination.name}`;
     }
     if (sortedPoints.length === 2) {
       return `${firstDestination.name} &mdash; ${lastDestination.name}`;
