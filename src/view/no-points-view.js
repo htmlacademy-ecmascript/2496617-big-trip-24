@@ -11,7 +11,6 @@ const createNoPointsTemplate = (filterType) => {
     </p>`;
 };
 
-
 export default class NoPointsView extends AbstractView {
   #filterType = null;
 

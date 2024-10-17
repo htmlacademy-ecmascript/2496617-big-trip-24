@@ -1,5 +1,6 @@
+import { DATE_FORMAT, TIME_FORMAT } from '../const';
 import AbstractView from '../framework/view/abstract-view';
-import { getDuration, humanizeDate, humanizeTime, humanizeDuration, getDestinationById, getOffersById } from '../utils/point';
+import { getDuration, humanizeTime, humanizeDuration, getDestinationById, getOffersById } from '../utils/point';
 import he from 'he';
 
 // $======================== PointView ========================$ //
@@ -18,7 +19,9 @@ const createPointTemplate = (point, allOffers, allDestinations) => {
   const pointOffers = getOffersById(allOffers, point.type, point.offers);
   const pointDestination = getDestinationById(allDestinations, point.destination);
 
-  const date = humanizeDate(dateFrom);
+  const date = humanizeTime(dateFrom, DATE_FORMAT);
+  const startTime = humanizeTime(dateFrom, TIME_FORMAT);
+  const endTime = humanizeTime(dateTo, TIME_FORMAT);
   const duration = dateFrom && dateTo ? humanizeDuration(getDuration(dateFrom, dateTo)) : '';
 
   const offersTemplate = createOffersTemplate(pointOffers);
@@ -36,9 +39,9 @@ const createPointTemplate = (point, allOffers, allDestinations) => {
 
         <div class="event__schedule">
           <p class="event__time">
-            <time class="event__start-time" datetime="${dateFrom}">${humanizeTime(dateFrom)}</time>
+            <time class="event__start-time" datetime="${startTime}">${startTime}</time>
             &mdash;
-            <time class="event__end-time" datetime="${dateTo}">${humanizeTime(dateTo)}</time>
+            <time class="event__end-time" datetime="${endTime}">${endTime}</time>
           </p>
           <p class="event__duration">${duration}</p>
         </div>

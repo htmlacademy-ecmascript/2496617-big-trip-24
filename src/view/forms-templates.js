@@ -81,7 +81,7 @@ export const createOffersContainerTemplate = (allOffers, offers) => /*html*/`
 // $------------ createPhotosContainerTemplate ------------$ //
 
 const createPhotoItemTemplate = (photoPath) => /*html*/`
-  <img class="event__photo" src="${photoPath}" alt="Event photo">
+  <img class="event__photo" src="${photoPath.src}" alt="${photoPath.description}">
 `;
 
 export const createPhotosContainerTemplate = (photosPaths) => /*html*/`
@@ -96,8 +96,7 @@ export const createPhotosContainerTemplate = (photosPaths) => /*html*/`
 // $------------ createDestinationTemplate ------------$ //
 
 export const createDestinationTemplate = (destination) => {
-
-  if (!destination) {
+  if (!destination || !destination.description) {
     return '';
   }
   const { description, pictures: photoPaths } = destination;
@@ -109,13 +108,7 @@ export const createDestinationTemplate = (destination) => {
         ${description}
       </p>
 
-      <div class="event__photos-container">
-        <div class="event__photos-tape">
-          ${photoPaths.map((photoPath) => `
-            <img class="event__photo" src="${photoPath.src}" alt="${photoPath.description}">
-          `).join('')}
-        </div>
-      </div>
+      ${photoPaths.length !== 0 ? createPhotosContainerTemplate(photoPaths) : ''}
 
     </section>
   `;

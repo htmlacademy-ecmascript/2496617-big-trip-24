@@ -9,6 +9,7 @@ import PointsListView from '../view/points-list-view';
 import SortView from '../view/sort-view';
 import NoPointsView from '../view/no-points-view';
 import LoadingView from '../view/loading-view.js';
+import FailedLoadView from '../view/failed-load-view.js';
 
 //@ presenters
 import PointPresenter from './point-presenter';
@@ -16,21 +17,19 @@ import NewPointPresenter from './new-point-presenter.js';
 
 import { SortType, UpdateType, UserAction, FilterType, TimeLimit } from '../const';
 import { filter } from '../utils/filter.js';
-
 // $======================== MainPresenter ========================$ //
 
 export default class MainPresenter {
   #pointsContainer = null;
 
   #pointsModel = null;
-  #offersModel = null;
-  #destinationsModel = null;
   #filtersModel = null;
 
   #sortComponent = null;
   #noPointsComponent = null;
   #pointsListComponent = new PointsListView();
   #loadingComponent = new LoadingView();
+  #failedLoadComponent = new FailedLoadView();
 
   #pointPresenters = new Map();
   #newPointPresenter = null;
@@ -46,11 +45,9 @@ export default class MainPresenter {
   });
 
   // @------------ CONSTRUCTOR ------------@ //
-  constructor({ pointsContainer, pointsModel, offersModel, destinationsModel, filtersModel, handleNewPointDestroy }) {
+  constructor({ pointsContainer, pointsModel, filtersModel, handleNewPointDestroy }) {
     this.#pointsContainer = pointsContainer;
     this.#pointsModel = pointsModel;
-    this.#offersModel = offersModel;
-    this.#destinationsModel = destinationsModel;
     this.#filtersModel = filtersModel;
 
     this.#pointsModel.addObserver(this.#handleModelEvent);
@@ -58,8 +55,7 @@ export default class MainPresenter {
 
     this.#newPointPresenter = new NewPointPresenter({
       pointsListComponent: this.#pointsListComponent.element,
-      offersModel: this.#offersModel,
-      destinationsModel: this.#destinationsModel,
+      pointsModel: this.#pointsModel,
       handleDataChange: this.#handleViewAction,
       handleDestroy: handleNewPointDestroy,
     });
@@ -87,9 +83,7 @@ export default class MainPresenter {
   #renderPoint(point) {
     const pointPresenter = new PointPresenter({
       pointsListComponent: this.#pointsListComponent,
-
-      offersModel: this.#offersModel,
-      destinationsModel: this.#destinationsModel,
+      pointsModel: this.#pointsModel,
 
       handleDataChange: this.#handleViewAction,
       handleModeChange: this.#handleModeChange,
@@ -123,6 +117,10 @@ export default class MainPresenter {
       this.#renderLoading();
       return;
     }
+    if (!this.#pointsModel.isSuccessfulLoad) {
+      this.#renderFailedLoad();
+      return;
+    }
     this.#renderSort();
 
     render(this.#pointsListComponent, this.#pointsContainer);
@@ -140,6 +138,10 @@ export default class MainPresenter {
 
   #renderLoading() {
     render(this.#loadingComponent, this.#pointsContainer);
+  }
+
+  #renderFailedLoad() {
+    render(this.#failedLoadComponent, this.#pointsContainer);
   }
 
   // @------------ CLEAR/DELETE ------------@ //
@@ -165,7 +167,6 @@ export default class MainPresenter {
     }
   }
 
-
   // @------------ INIT ------------@ //
   init() {
     this.#renderPointsList();
@@ -175,8 +176,14 @@ export default class MainPresenter {
     this.#currentSortType = SortType.DAY;
     this.#filtersModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
     this.#newPointPresenter.init();
+    remove(this.#noPointsComponent);
   }
 
+  cancelNewPointCreation() {
+    if (this.#pointsModel.points.length === 0) {
+      this.#renderNoPoints();
+    }
+  }
 
   // @------------ HANDLERS ------------@ //
   #handleModeChange = () => {
