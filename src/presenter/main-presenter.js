@@ -167,7 +167,6 @@ export default class MainPresenter {
     }
   }
 
-
   // @------------ INIT ------------@ //
   init() {
     this.#renderPointsList();
@@ -183,7 +182,6 @@ export default class MainPresenter {
   cancelNewPointCreation() {
     this.#renderNoPoints();
   }
-
 
   // @------------ HANDLERS ------------@ //
   #handleModeChange = () => {

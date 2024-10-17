@@ -14,7 +14,6 @@ import { BLANK_POINT, DATE_AND_TIME_FORMAT, DateType } from '../const';
 import { capitalize, isNumber } from '../utils/common';
 import { adjustResetButtonText, getDestinationById, getDestinationByName, getOffersById, getOffersByType, humanizeTime } from '../utils/point';
 
-
 // $======================== EditFormView ========================$ //
 
 const createEditFormTemplate = (point, allOffers, allDestinations, isNew) => {

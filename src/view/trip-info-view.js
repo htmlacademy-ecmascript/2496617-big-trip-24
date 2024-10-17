@@ -30,7 +30,6 @@ const createTripInfoTemplate = (points, allDestinations, allOffers) => {
     return `${firstDestination.name} ... ${lastDestination.name}`;
   };
 
-
   const totalCost = points.reduce((total, point) => {
     const pointOffers = getOffersById(allOffers, point.type, point.offers);
     const offersTotal = pointOffers.reduce((sum, offer) => sum + offer.price, 0);

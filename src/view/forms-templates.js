@@ -48,7 +48,6 @@ export const createDestinationsListTemplate = (allDestinations = []) => /*html*/
   </datalist>
 `;
 
-
 // $------------ createOffersContainerTemplate ------------$ //
 
 const createOfferTemplate = ({ id, title, price }, offers = []) => /*html*/`
@@ -67,7 +66,6 @@ const createOfferTemplate = ({ id, title, price }, offers = []) => /*html*/`
     </label>
   </div>
 `;
-
 
 export const createOffersContainerTemplate = (allOffers, offers) => /*html*/`
   <section class="event__section  event__section--offers">
@@ -91,7 +89,6 @@ export const createPhotosContainerTemplate = (photosPaths) => /*html*/`
     </div>
   </div>
 `;
-
 
 // $------------ createDestinationTemplate ------------$ //
 

@@ -40,7 +40,6 @@ export default class NewPointPresenter {
       isNew: true,
     });
 
-
     render(this.#editFormComponent, this.#pointsListComponent, RenderPosition.AFTERBEGIN);
 
     document.addEventListener('keydown', this.#onEscKeydown);

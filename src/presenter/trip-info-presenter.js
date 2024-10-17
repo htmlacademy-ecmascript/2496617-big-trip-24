@@ -19,7 +19,6 @@ export default class TripInfoPresenter {
     return this.#pointsModel.points;
   }
 
-
   init() {
     if (!this.#pointsModel.isSuccessfulLoad) {
       return;

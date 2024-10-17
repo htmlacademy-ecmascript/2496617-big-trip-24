@@ -30,12 +30,11 @@ export default class PointPresenter {
     this.#handleModeChange = handleModeChange;
   }
 
-
   // @------------ REPLACE ------------@ //
   #replacePointToForm() {
     replace(this.#editFormComponent, this.#pointComponent);
 
-    // document.addEventListener('keydown', this.#handleEscKeyDown);
+    this.#addEscKeydownEventListener();
     this.#handleModeChange();
     this.#mode = Mode.EDITING;
   }
@@ -43,10 +42,9 @@ export default class PointPresenter {
   #replaceFormToPoint() {
     replace(this.#pointComponent, this.#editFormComponent);
 
-    // document.removeEventListener('keydown', this.#handleEscKeyDown);
+    this.#removeEscKeydownEventListener();
     this.#mode = Mode.DEFAULT;
   }
-
 
   // @------------ DESTROY/RESET ------------@ //
   destroy() {
@@ -105,14 +103,12 @@ export default class PointPresenter {
     this.#editFormComponent.shake(resetFormState);
   }
 
-
   // @------------ INIT ------------@ //
   init(point) {
     this.#point = point;
 
     const prevPointComponent = this.#pointComponent;
     const prevEditFormComponent = this.#editFormComponent;
-
 
     //@ создание точки
     this.#pointComponent = new PointView({
@@ -154,19 +150,16 @@ export default class PointPresenter {
     remove(prevEditFormComponent);
   }
 
-
   // @------------ HANDLERS ------------@ //
   #handleEscKeyDown = (evt) => {
     if (isEscapeKey(evt)) {
       this.#editFormComponent.reset(this.#point);
       this.#replaceFormToPoint();
-      this.#removeEscKeydownEventListener();
     }
   };
 
   #handleEditClick = () => {
     this.#replacePointToForm();
-    this.#addEscKeydownEventListener();
   };
 
   #handleFormSubmit = (update) => {
@@ -176,13 +169,11 @@ export default class PointPresenter {
       update
     );
     this.#removeEscKeydownEventListener();
-
   };
 
   #handleFormClose = () => {
     this.#editFormComponent.reset(this.#point);
     this.#replaceFormToPoint();
-    this.#removeEscKeydownEventListener();
   };
 
   #handleFavoriteClick = () => {

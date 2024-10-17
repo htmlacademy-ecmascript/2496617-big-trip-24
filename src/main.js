@@ -52,7 +52,6 @@ const mainPresenter = new MainPresenter({
 });
 mainPresenter.init();
 
-
 function handleNewPointButtonClick() {
   mainPresenter.createPoint();
   newPointButtonComponent.element.disabled = true;
