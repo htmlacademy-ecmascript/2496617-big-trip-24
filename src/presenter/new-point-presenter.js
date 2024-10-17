@@ -23,6 +23,14 @@ export default class NewPointPresenter {
     this.#pointsModel = pointsModel;
   }
 
+  #removeEscKeydownEventListener() {
+    document.removeEventListener('keydown', this.#handleEscKeyDown);
+  }
+
+  #addEscKeydownEventListener() {
+    document.addEventListener('keydown', this.#handleEscKeyDown);
+  }
+
   // @------------ INIT ------------@ //
   init() {
     if (this.#editFormComponent !== null) {
@@ -42,7 +50,7 @@ export default class NewPointPresenter {
 
     render(this.#editFormComponent, this.#pointsListComponent, RenderPosition.AFTERBEGIN);
 
-    document.addEventListener('keydown', this.#onEscKeydown);
+    document.addEventListener('keydown', this.#handleEscKeyDown);
   }
 
   destroy() {
@@ -53,7 +61,7 @@ export default class NewPointPresenter {
     this.#handleDestroy();
     remove(this.#editFormComponent);
     this.#editFormComponent = null;
-    document.removeEventListener('keydown', this.#onEscKeydown);
+    this.#removeEscKeydownEventListener();
   }
 
   setSaving() {
@@ -65,6 +73,8 @@ export default class NewPointPresenter {
 
   setAborting() {
     const resetFormState = () => {
+      this.#addEscKeydownEventListener();
+
       this.#editFormComponent.updateElement({
         isDisabled: false,
         isSaving: false,
@@ -81,16 +91,19 @@ export default class NewPointPresenter {
       UpdateType.MINOR,
       point
     );
+    this.#removeEscKeydownEventListener();
   };
 
   #handleDeleteClick = () => {
     this.destroy();
+    this.#removeEscKeydownEventListener();
   };
 
-  #onEscKeydown = (evt) => {
+  #handleEscKeyDown = (evt) => {
     if (isEscapeKey(evt)) {
       evt.preventDefault();
       this.destroy();
     }
+    this.#removeEscKeydownEventListener();
   };
 }
