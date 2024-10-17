@@ -6,7 +6,7 @@ import { render, replace, remove } from '../framework/render';
 export default class TripInfoPresenter {
   #tripInfoComponent = null;
   #headerContainer = null;
-  #pointsModel;
+  #pointsModel = null;
 
   constructor({ headerContainer, pointsModel }) {
     this.#headerContainer = headerContainer;
@@ -21,6 +21,9 @@ export default class TripInfoPresenter {
 
 
   init() {
+    if (!this.#pointsModel.isSuccessfulLoad) {
+      return;
+    }
     const prevTripInfoComponent = this.#tripInfoComponent;
 
     this.#tripInfoComponent = new TripInfoView({

@@ -9,6 +9,7 @@ import PointsListView from '../view/points-list-view';
 import SortView from '../view/sort-view';
 import NoPointsView from '../view/no-points-view';
 import LoadingView from '../view/loading-view.js';
+import FailedLoadView from '../view/failed-load-view.js';
 
 //@ presenters
 import PointPresenter from './point-presenter';
@@ -28,6 +29,7 @@ export default class MainPresenter {
   #noPointsComponent = null;
   #pointsListComponent = new PointsListView();
   #loadingComponent = new LoadingView();
+  #failedLoadComponent = new FailedLoadView();
 
   #pointPresenters = new Map();
   #newPointPresenter = null;
@@ -115,6 +117,10 @@ export default class MainPresenter {
       this.#renderLoading();
       return;
     }
+    if (!this.#pointsModel.isSuccessfulLoad) {
+      this.#renderFailedLoad();
+      return;
+    }
     this.#renderSort();
 
     render(this.#pointsListComponent, this.#pointsContainer);
@@ -132,6 +138,10 @@ export default class MainPresenter {
 
   #renderLoading() {
     render(this.#loadingComponent, this.#pointsContainer);
+  }
+
+  #renderFailedLoad() {
+    render(this.#failedLoadComponent, this.#pointsContainer);
   }
 
   // @------------ CLEAR/DELETE ------------@ //

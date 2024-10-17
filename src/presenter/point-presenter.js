@@ -164,13 +164,12 @@ export default class PointPresenter {
   };
 
   #handleFormSubmit = (update) => {
+    // this.#removeEscKeydownEventListener();
     this.#handleDataChange(
       UserAction.UPDATE_POINT,
       UpdateType.MINOR,
       update
     );
-    //? this.#replaceFormToPoint();
-    this.#removeEscKeydownEventListener();
   };
 
   #handleFormClose = () => {

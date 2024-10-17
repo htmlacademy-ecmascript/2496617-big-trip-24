@@ -20,6 +20,7 @@ const headerElement = document.querySelector('.trip-main');
 const newPointButtonComponent = new NewPointButtonView({
   handleNewPointButtonClick: handleNewPointButtonClick,
 });
+
 const pointsModel = new PointsModel(
   { pointsApiService: new PointsApiService(END_POINT, AUTHORIZATION) }
 );
@@ -30,14 +31,11 @@ const tripInfoPresenter = new TripInfoPresenter({
   headerContainer: headerElement,
   pointsModel,
 });
-
-
 const filtersPresenter = new FiltersPresenter({
   headerContainer: headerElement,
   filtersModel,
   pointsModel,
 });
-
 
 pointsModel.init()
   .finally(() => {
@@ -46,13 +44,13 @@ pointsModel.init()
     filtersPresenter.init();
   });
 
-
 const mainPresenter = new MainPresenter({
   pointsContainer: pointsElement,
   pointsModel,
   filtersModel,
   handleNewPointDestroy,
 });
+mainPresenter.init();
 
 
 function handleNewPointButtonClick() {
@@ -63,5 +61,3 @@ function handleNewPointButtonClick() {
 function handleNewPointDestroy() {
   newPointButtonComponent.element.disabled = false;
 }
-
-mainPresenter.init();
