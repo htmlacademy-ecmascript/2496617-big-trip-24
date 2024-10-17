@@ -5,21 +5,35 @@ import { getDestinationById, getOffersById, humanizeTime, sortByDay } from '../u
 // $======================== TripInfoView ========================$ //
 
 const createTripInfoTemplate = (points, allDestinations, allOffers) => {
+  const getDestinationName = (point) => getDestinationById(allDestinations, point.destination);
+
   const sortedPoints = points.sort(sortByDay);
   const firstPoint = sortedPoints[0];
-  const middlePoint = sortedPoints[1];
   const lastPoint = sortedPoints[points.length - 1];
 
-  const firstDestination =
-    getDestinationById(allDestinations, firstPoint.destination);
-
-  const middleDestination = getDestinationById(allDestinations, middlePoint.destination);
-
-  const lastDestination =
-    getDestinationById(allDestinations, lastPoint.destination);
+  const firstDestination = getDestinationName(firstPoint);
 
   const startDate = humanizeTime(firstPoint.dateFrom, INFO_DATE_FORMAT);
   const endDate = humanizeTime(lastPoint.dateTo, INFO_DATE_FORMAT);
+
+  const lastDestination = getDestinationName(lastPoint);
+
+  const createTripInfoTitle = () => {
+    if (sortedPoints.length > 3) {
+      return `${firstDestination.name} ... ${lastDestination.name}`;
+    }
+    if (sortedPoints.length === 3) {
+      const middleDestination = getDestinationName(sortedPoints[1]);
+      return `&mdash; ${middleDestination.name} &mdash;`;
+    }
+    if (sortedPoints.length === 2) {
+      return `${firstDestination.name} &mdash; ${lastDestination.name}`;
+    }
+    if (sortedPoints.length === 1) {
+      return `${firstDestination.name}`;
+    }
+  };
+
 
   let totalCost = 0;
 
@@ -32,12 +46,10 @@ const createTripInfoTemplate = (points, allDestinations, allOffers) => {
       });
   });
 
-  const middle = sortedPoints.length > 3 ? ' ... ' : `&mdash; ${middleDestination.name} &mdash;`;
-
   return /*html*/`
     <section class="trip-main__trip-info  trip-info">
     <div class="trip-info__main">
-      <h1 class="trip-info__title">${firstDestination.name} ${middle} ${lastDestination.name}</h1>
+      <h1 class="trip-info__title">${createTripInfoTitle()}</h1>
 
       <p class="trip-info__dates">${startDate}&nbsp;&mdash;&nbsp;${endDate}</p>
     </div>
