@@ -180,7 +180,9 @@ export default class MainPresenter {
   }
 
   cancelNewPointCreation() {
-    this.#renderNoPoints();
+    if (this.#pointsModel.points.length === 0) {
+      this.#renderNoPoints();
+    }
   }
 
   // @------------ HANDLERS ------------@ //
