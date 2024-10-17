@@ -11,17 +11,12 @@ const createTripInfoTemplate = (points, allDestinations, allOffers) => {
   const firstPoint = sortedPoints[0];
   const lastPoint = sortedPoints[points.length - 1];
 
-  const firstDestination = getDestinationName(firstPoint);
-
   const startDate = humanizeTime(firstPoint.dateFrom, INFO_DATE_FORMAT);
   const endDate = humanizeTime(lastPoint.dateTo, INFO_DATE_FORMAT);
 
-  const lastDestination = getDestinationName(lastPoint);
-
   const createTripInfoTitle = () => {
-    if (sortedPoints.length > 3) {
-      return `${firstDestination.name} ... ${lastDestination.name}`;
-    }
+    const firstDestination = getDestinationName(firstPoint);
+    const lastDestination = getDestinationName(lastPoint);
     if (sortedPoints.length === 3) {
       const middleDestination = getDestinationName(sortedPoints[1]);
       return `${firstDestination.name} &mdash; ${middleDestination.name} &mdash; ${lastDestination.name}`;
@@ -32,19 +27,15 @@ const createTripInfoTemplate = (points, allDestinations, allOffers) => {
     if (sortedPoints.length === 1) {
       return `${firstDestination.name}`;
     }
+    return `${firstDestination.name} ... ${lastDestination.name}`;
   };
 
 
-  let totalCost = 0;
-
-  points.forEach((point) => {
-    totalCost += point.basePrice;
-
-    getOffersById(allOffers, point.type, point.offers)
-      .forEach((offer) => {
-        totalCost += offer.price;
-      });
-  });
+  const totalCost = points.reduce((total, point) => {
+    const pointOffers = getOffersById(allOffers, point.type, point.offers);
+    const offersTotal = pointOffers.reduce((sum, offer) => sum + offer.price, 0);
+    return total + point.basePrice + offersTotal;
+  }, 0);
 
   return /*html*/`
     <section class="trip-main__trip-info  trip-info">
