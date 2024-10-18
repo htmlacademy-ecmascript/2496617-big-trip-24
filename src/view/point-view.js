@@ -1,4 +1,4 @@
-import { DATE_FORMAT, TIME_FORMAT } from '../const';
+import { Format } from '../const';
 import AbstractView from '../framework/view/abstract-view';
 import { getDuration, humanizeTime, humanizeDuration, getDestinationById, getOffersById } from '../utils/point';
 import he from 'he';
@@ -19,9 +19,9 @@ const createPointTemplate = (point, allOffers, allDestinations) => {
   const pointOffers = getOffersById(allOffers, point.type, point.offers);
   const pointDestination = getDestinationById(allDestinations, point.destination);
 
-  const date = humanizeTime(dateFrom, DATE_FORMAT);
-  const startTime = humanizeTime(dateFrom, TIME_FORMAT);
-  const endTime = humanizeTime(dateTo, TIME_FORMAT);
+  const date = humanizeTime(dateFrom, Format.DATE);
+  const startTime = humanizeTime(dateFrom, Format.TIME);
+  const endTime = humanizeTime(dateTo, Format.TIME);
   const duration = dateFrom && dateTo ? humanizeDuration(getDuration(dateFrom, dateTo)) : '';
 
   const offersTemplate = createOffersTemplate(pointOffers);

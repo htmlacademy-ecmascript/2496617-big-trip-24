@@ -10,7 +10,7 @@ import {
   createDestinationsListTemplate,
   createRollUpButtonTemplate,
 } from './forms-templates';
-import { BLANK_POINT, DATE_AND_TIME_FORMAT, DateType } from '../const';
+import { BLANK_POINT, Format, DateType } from '../const';
 import { capitalize, isNumber } from '../utils/common';
 import { adjustResetButtonText, getDestinationById, getDestinationByName, getOffersById, getOffersByType, humanizeTime } from '../utils/point';
 
@@ -62,7 +62,7 @@ const createEditFormTemplate = (point, allOffers, allDestinations, isNew) => {
               id="event-start-time-1"
               type="text"
               name="event-start-time"
-              value="${humanizeTime(dateFrom, DATE_AND_TIME_FORMAT)}"
+              value="${humanizeTime(dateFrom, Format.DATE_AND_TIME)}"
               required
             >
             &mdash;
@@ -72,7 +72,7 @@ const createEditFormTemplate = (point, allOffers, allDestinations, isNew) => {
               id="event-end-time-1"
               type="text"
               name="event-end-time"
-              value="${humanizeTime(dateTo, DATE_AND_TIME_FORMAT)}"
+              value="${humanizeTime(dateTo, Format.DATE_AND_TIME)}"
               required
             >
           </div>
