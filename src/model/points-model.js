@@ -9,7 +9,7 @@ export default class PointsModel extends Observable {
 
   #pointsApiService = null;
 
-  isSuccessfulLoad = true;
+  isLoaded = true;
 
   // @------------ CONSTRUCTOR ------------@ //
   constructor({ pointsApiService }) {
@@ -118,7 +118,7 @@ export default class PointsModel extends Observable {
       this.#offers = [];
       this.#destinations = [];
       this.#points = [];
-      this.isSuccessfulLoad = false;
+      this.isLoaded = false;
     } finally {
       this._notify(UpdateType.INIT);
     }

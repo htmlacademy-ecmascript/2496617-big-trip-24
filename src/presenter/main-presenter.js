@@ -117,7 +117,7 @@ export default class MainPresenter {
       this.#renderLoading();
       return;
     }
-    if (!this.#pointsModel.isSuccessfulLoad) {
+    if (!this.#pointsModel.isLoaded) {
       this.#renderFailedLoad();
       return;
     }

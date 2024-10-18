@@ -34,7 +34,7 @@ export default class FiltersPresenter {
 
   // @------------ INIT ------------@ //
   init() {
-    if (!this.#pointsModel.isSuccessfulLoad) {
+    if (!this.#pointsModel.isLoaded) {
       return;
     }
     const filters = this.filters;

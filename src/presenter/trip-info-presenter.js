@@ -20,7 +20,7 @@ export default class TripInfoPresenter {
   }
 
   init() {
-    if (!this.#pointsModel.isSuccessfulLoad) {
+    if (!this.#pointsModel.isLoaded) {
       return;
     }
 
