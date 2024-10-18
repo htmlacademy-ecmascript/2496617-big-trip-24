@@ -191,5 +191,6 @@ export default class PointPresenter {
       UpdateType.MINOR,
       point
     );
+    this.#removeEscKeydownEventListener();
   };
 }
