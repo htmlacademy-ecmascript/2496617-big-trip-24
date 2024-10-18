@@ -14,28 +14,27 @@ export default class PointPresenter {
   #point = null;
   #mode = Mode.DEFAULT;
 
-  #offersModel = null;
-  #destinationsModel = null;
+  #pointsModel = null;
 
   #handleDataChange = null;
   #handleModeChange = null;
 
+  #isSaving;
+
   // @------------ CONSTRUCTOR ------------@ //
-  constructor({ pointsListComponent, offersModel, destinationsModel, handleDataChange, handleModeChange }) {
+  constructor({ pointsListComponent, pointsModel, handleDataChange, handleModeChange }) {
     this.#pointsListComponent = pointsListComponent;
-    this.#offersModel = offersModel;
-    this.#destinationsModel = destinationsModel;
+    this.#pointsModel = pointsModel;
 
     this.#handleDataChange = handleDataChange;
     this.#handleModeChange = handleModeChange;
   }
 
-
   // @------------ REPLACE ------------@ //
   #replacePointToForm() {
     replace(this.#editFormComponent, this.#pointComponent);
 
-    document.addEventListener('keydown', this.#handleEscKeyDown);
+    this.#addEscKeydownEventListener();
     this.#handleModeChange();
     this.#mode = Mode.EDITING;
   }
@@ -43,10 +42,9 @@ export default class PointPresenter {
   #replaceFormToPoint() {
     replace(this.#pointComponent, this.#editFormComponent);
 
-    document.removeEventListener('keydown', this.#handleEscKeyDown);
+    this.#removeEscKeydownEventListener();
     this.#mode = Mode.DEFAULT;
   }
-
 
   // @------------ DESTROY/RESET ------------@ //
   destroy() {
@@ -56,12 +54,17 @@ export default class PointPresenter {
 
   resetView() {
     if (this.#mode !== Mode.DEFAULT) {
+      this.#editFormComponent.reset(this.#point);
       this.#replaceFormToPoint();
     }
   }
 
   #removeEscKeydownEventListener() {
     document.removeEventListener('keydown', this.#handleEscKeyDown);
+  }
+
+  #addEscKeydownEventListener() {
+    document.addEventListener('keydown', this.#handleEscKeyDown);
   }
 
   // @------------ SET FLAGS ------------@ //
@@ -90,6 +93,7 @@ export default class PointPresenter {
     }
 
     const resetFormState = () => {
+      this.#addEscKeydownEventListener();
       this.#editFormComponent.updateElement({
         isDisabled: false,
         isSaving: false,
@@ -100,7 +104,6 @@ export default class PointPresenter {
     this.#editFormComponent.shake(resetFormState);
   }
 
-
   // @------------ INIT ------------@ //
   init(point) {
     this.#point = point;
@@ -108,12 +111,11 @@ export default class PointPresenter {
     const prevPointComponent = this.#pointComponent;
     const prevEditFormComponent = this.#editFormComponent;
 
-
     //@ создание точки
     this.#pointComponent = new PointView({
       point: this.#point,
-      allOffers: this.#offersModel.offers,
-      allDestinations: this.#destinationsModel.destinations,
+      allOffers: this.#pointsModel.offers,
+      allDestinations: this.#pointsModel.destinations,
 
       handleEditClick: this.#handleEditClick,
       handleFavoriteClick: this.#handleFavoriteClick,
@@ -122,8 +124,8 @@ export default class PointPresenter {
     //@ создание формы
     this.#editFormComponent = new EditFormView({
       point: this.#point,
-      allOffers: this.#offersModel.offers,
-      allDestinations: this.#destinationsModel.destinations,
+      allOffers: this.#pointsModel.offers,
+      allDestinations: this.#pointsModel.destinations,
 
       handleFormSubmit: this.#handleFormSubmit,
       handleFormClose: this.#handleFormClose,
@@ -149,20 +151,16 @@ export default class PointPresenter {
     remove(prevEditFormComponent);
   }
 
-
   // @------------ HANDLERS ------------@ //
   #handleEscKeyDown = (evt) => {
     if (isEscapeKey(evt)) {
-      evt.preventDefault();
       this.#editFormComponent.reset(this.#point);
       this.#replaceFormToPoint();
-      this.#removeEscKeydownEventListener();
     }
   };
 
   #handleEditClick = () => {
     this.#replacePointToForm();
-    document.addEventListener('keydown', this.#handleEscKeyDown);
   };
 
   #handleFormSubmit = (update) => {
@@ -171,14 +169,12 @@ export default class PointPresenter {
       UpdateType.MINOR,
       update
     );
-    //? this.#replaceFormToPoint();
     this.#removeEscKeydownEventListener();
   };
 
   #handleFormClose = () => {
     this.#editFormComponent.reset(this.#point);
     this.#replaceFormToPoint();
-    this.#removeEscKeydownEventListener();
   };
 
   #handleFavoriteClick = () => {
@@ -195,5 +191,6 @@ export default class PointPresenter {
       UpdateType.MINOR,
       point
     );
+    this.#removeEscKeydownEventListener();
   };
 }

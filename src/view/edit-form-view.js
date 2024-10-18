@@ -10,10 +10,9 @@ import {
   createDestinationsListTemplate,
   createRollUpButtonTemplate,
 } from './forms-templates';
-import { BLANK_POINT, DateType } from '../const';
+import { BLANK_POINT, Format, DateType } from '../const';
 import { capitalize, isNumber } from '../utils/common';
-import { adjustResetButtonText, getDestinationById, getDestinationByName, getOffersById, getOffersByType, humanizeDateAndTime } from '../utils/point';
-
+import { adjustResetButtonText, getDestinationById, getDestinationByName, getOffersById, getOffersByType, humanizeTime } from '../utils/point';
 
 // $======================== EditFormView ========================$ //
 
@@ -31,7 +30,7 @@ const createEditFormTemplate = (point, allOffers, allDestinations, isNew) => {
   const rollUpButtonTemplate = createRollUpButtonTemplate(isNew);
   const resetButtonText = adjustResetButtonText(isNew, isDeleting);
 
-  return /*html*/`
+  return `
     <li class="trip-events__item">
       <form class="event event--edit" action="#" method="post">
         <header class="event__header">
@@ -63,7 +62,7 @@ const createEditFormTemplate = (point, allOffers, allDestinations, isNew) => {
               id="event-start-time-1"
               type="text"
               name="event-start-time"
-              value="${humanizeDateAndTime(dateFrom)}"
+              value="${humanizeTime(dateFrom, Format.DATE_AND_TIME)}"
               required
             >
             &mdash;
@@ -73,7 +72,7 @@ const createEditFormTemplate = (point, allOffers, allDestinations, isNew) => {
               id="event-end-time-1"
               type="text"
               name="event-end-time"
-              value="${humanizeDateAndTime(dateTo)}"
+              value="${humanizeTime(dateTo, Format.DATE_AND_TIME)}"
               required
             >
           </div>
@@ -113,7 +112,7 @@ const createEditFormTemplate = (point, allOffers, allDestinations, isNew) => {
 
         </header>
 
-          ${offersByType.length !== 0 ? offersContainerTemplate : ''}
+          ${offersByType.length > 0 ? offersContainerTemplate : ''}
 
           ${destinationTemplate}
 

@@ -34,6 +34,9 @@ export default class FiltersPresenter {
 
   // @------------ INIT ------------@ //
   init() {
+    if (!this.#pointsModel.isLoaded) {
+      return;
+    }
     const filters = this.filters;
     const prevFilterComponent = this.#filtersComponent;
 

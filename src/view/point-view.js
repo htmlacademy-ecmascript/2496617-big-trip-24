@@ -1,10 +1,11 @@
+import { Format } from '../const';
 import AbstractView from '../framework/view/abstract-view';
-import { getDuration, humanizeDate, humanizeTime, humanizeDuration, getDestinationById, getOffersById } from '../utils/point';
+import { getDuration, humanizeTime, humanizeDuration, getDestinationById, getOffersById } from '../utils/point';
 import he from 'he';
 
 // $======================== PointView ========================$ //
 
-const createOffersTemplate = (pointOffers) => (pointOffers.map(({ title, price }) => /*html*/`
+const createOffersTemplate = (pointOffers) => (pointOffers.map(({ title, price }) => `
     <li class="event__offer">
       <span class="event__offer-title">${title}</span>
       &plus;&euro;&nbsp;
@@ -18,12 +19,14 @@ const createPointTemplate = (point, allOffers, allDestinations) => {
   const pointOffers = getOffersById(allOffers, point.type, point.offers);
   const pointDestination = getDestinationById(allDestinations, point.destination);
 
-  const date = humanizeDate(dateFrom);
+  const date = humanizeTime(dateFrom, Format.DATE);
+  const startTime = humanizeTime(dateFrom, Format.TIME);
+  const endTime = humanizeTime(dateTo, Format.TIME);
   const duration = dateFrom && dateTo ? humanizeDuration(getDuration(dateFrom, dateTo)) : '';
 
   const offersTemplate = createOffersTemplate(pointOffers);
 
-  return /* html */`
+  return `
     <li class="trip-events__item">
       <div class="event">
         <time class="event__date" datetime="2019-03-18">${date}</time>
@@ -36,9 +39,9 @@ const createPointTemplate = (point, allOffers, allDestinations) => {
 
         <div class="event__schedule">
           <p class="event__time">
-            <time class="event__start-time" datetime="${dateFrom}">${humanizeTime(dateFrom)}</time>
+            <time class="event__start-time" datetime="${startTime}">${startTime}</time>
             &mdash;
-            <time class="event__end-time" datetime="${dateTo}">${humanizeTime(dateTo)}</time>
+            <time class="event__end-time" datetime="${endTime}">${endTime}</time>
           </p>
           <p class="event__duration">${duration}</p>
         </div>

@@ -1,14 +1,9 @@
 import dayjs from 'dayjs';
-import { DATE_FORMAT, TIME_FORMAT, DATE_AND_TIME_FORMAT } from '../const';
 
 // $======================== point utils ========================$ //
 
 // $------------ date and time functions ------------$ //
-const humanizeDate = (date) => date ? dayjs(date).format(DATE_FORMAT) : '';
-
-const humanizeTime = (time) => time ? dayjs(time).format(TIME_FORMAT) : '';
-
-const humanizeDateAndTime = (dateAndTime) => dateAndTime ? dayjs(dateAndTime).format(DATE_AND_TIME_FORMAT) : '';
+const humanizeTime = (value, format) => value ? dayjs(value).format(format) : '';
 
 const humanizeDuration = (duration) => {
   const totalMinutes = Math.floor(duration / 1000 / 60);
@@ -69,9 +64,7 @@ const adjustResetButtonText = (isNewPoint, isDeleting) => {
 
 // &======================== export ========================& //
 export {
-  humanizeDate,
   humanizeTime,
-  humanizeDateAndTime,
   humanizeDuration,
   getDuration,
   isFuturePoint,

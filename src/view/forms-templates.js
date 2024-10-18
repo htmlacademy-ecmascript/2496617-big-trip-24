@@ -5,7 +5,7 @@ import { POINT_EVENT_TYPE_ITEMS } from '../const';
 
 // $------------ createPointTypeTemplate ------------$ //
 
-const createPointTypeItemTemplate = (eventTypeItem, currentType) => /*html*/`
+const createPointTypeItemTemplate = (eventTypeItem, currentType) => `
   <div class="event__type-item">
     <input
       id="event-type-${eventTypeItem}-1"
@@ -19,7 +19,7 @@ const createPointTypeItemTemplate = (eventTypeItem, currentType) => /*html*/`
   </div>
 `;
 
-export const createPointTypeTemplate = (type) => /*html*/`
+export const createPointTypeTemplate = (type) => `
   <div class="event__type-wrapper">
     <label class="event__type  event__type-btn" for="event-type-toggle-1">
       <span class="visually-hidden">Choose event type</span>
@@ -37,12 +37,11 @@ export const createPointTypeTemplate = (type) => /*html*/`
 `;
 
 // $------------ createDestinationsListTemplate ------------$ //
-
 const createDestinationOptionTemplate = (destination) => `
   <option value="${destination.name}"></option>
 `;
 
-export const createDestinationsListTemplate = (allDestinations = []) => /*html*/`
+export const createDestinationsListTemplate = (allDestinations = []) => `
   <datalist id="destination-list-1">
     ${allDestinations.map((destination) => createDestinationOptionTemplate(destination)).join('')}
   </datalist>
@@ -50,8 +49,7 @@ export const createDestinationsListTemplate = (allDestinations = []) => /*html*/
 
 
 // $------------ createOffersContainerTemplate ------------$ //
-
-const createOfferTemplate = ({ id, title, price }, offers = []) => /*html*/`
+const createOfferTemplate = ({ id, title, price }, offers = []) => `
   <div class="event__offer-selector">
   <input
     class="event__offer-checkbox  visually-hidden"
@@ -69,7 +67,7 @@ const createOfferTemplate = ({ id, title, price }, offers = []) => /*html*/`
 `;
 
 
-export const createOffersContainerTemplate = (allOffers, offers) => /*html*/`
+export const createOffersContainerTemplate = (allOffers, offers) => `
   <section class="event__section  event__section--offers">
     <h3 class="event__section-title  event__section-title--offers">Offers</h3>
       <div class="event__available-offers">
@@ -79,12 +77,11 @@ export const createOffersContainerTemplate = (allOffers, offers) => /*html*/`
 `;
 
 // $------------ createPhotosContainerTemplate ------------$ //
-
-const createPhotoItemTemplate = (photoPath) => /*html*/`
-  <img class="event__photo" src="${photoPath}" alt="Event photo">
+const createPhotoItemTemplate = (photoPath) => `
+  <img class="event__photo" src="${photoPath.src}" alt="${photoPath.description}">
 `;
 
-export const createPhotosContainerTemplate = (photosPaths) => /*html*/`
+export const createPhotosContainerTemplate = (photosPaths) => `
   <div class="event__photos-container">
     <div class="event__photos-tape">
     ${photosPaths.map((photoPath) => createPhotoItemTemplate(photoPath)).join('')}
@@ -94,38 +91,31 @@ export const createPhotosContainerTemplate = (photosPaths) => /*html*/`
 
 
 // $------------ createDestinationTemplate ------------$ //
-
 export const createDestinationTemplate = (destination) => {
-
-  if (!destination) {
+  if (!destination || !destination.description) {
     return '';
   }
   const { description, pictures: photoPaths } = destination;
 
-  return /*html*/`
+  return `
     <section class="event__section  event__section--destination">
-      <h3 class="event__section-title  event__section-title--destination">Destination</h3>
+      <h3 class="event__section-title  event__section-title--destination">
+        Destination
+      </h3>
       <p class="event__destination-description">
         ${description}
       </p>
 
-      <div class="event__photos-container">
-        <div class="event__photos-tape">
-          ${photoPaths.map((photoPath) => `
-            <img class="event__photo" src="${photoPath.src}" alt="${photoPath.description}">
-          `).join('')}
-        </div>
-      </div>
+      ${photoPaths.length > 0 ? createPhotosContainerTemplate(photoPaths) : ''}
 
     </section>
   `;
 };
 
 // $------------ createRollUpButtonTemplate ------------$ //
-
 export const createRollUpButtonTemplate = (isNewPoint) =>
   !isNewPoint
-    ? /*html */`
+    ? `
       <button class="event__rollup-btn" type="button">
         <span class="visually-hidden">Open event</span>
       </button>

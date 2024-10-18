@@ -3,8 +3,8 @@ import AbstractView from '../framework/view/abstract-view';
 // $======================== FiltersView ========================$ //
 
 const createFilterItemTemplate = (filter, currentFilter) => {
-  const { type } = filter;
-  return /*html*/`
+  const { type, count } = filter;
+  return `
     <div class="trip-filters__filter">
       <input id="filter-${type}"
         class="trip-filters__filter-input visually-hidden"
@@ -12,6 +12,7 @@ const createFilterItemTemplate = (filter, currentFilter) => {
         name="trip-filter"
         value="${type}"
         ${type === currentFilter ? 'checked' : ''}
+        ${count === 0 ? 'disabled' : ''}
       />
         <label class="trip-filters__filter-label" for="filter-${type}" >
           ${type}
@@ -20,7 +21,7 @@ const createFilterItemTemplate = (filter, currentFilter) => {
   `;
 };
 
-const createFiltersTemplate = (filters, currentFilter) => /*html*/`
+const createFiltersTemplate = (filters, currentFilter) => `
   <div class="trip-main__trip-controls  trip-controls">
     <div class="trip-controls__filters">
       <h2 class="visually-hidden">Filter events</h2>
@@ -61,6 +62,8 @@ export default class FiltersView extends AbstractView {
     const targetParentElement = evt.target.closest('label').parentElement;
     const nearestInput = targetParentElement.querySelector('input');
 
-    this.#handleFilterTypeChange(nearestInput.value);
+    if (!nearestInput.disabled) {
+      this.#handleFilterTypeChange(nearestInput.value);
+    }
   };
 }

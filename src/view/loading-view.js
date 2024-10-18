@@ -2,7 +2,7 @@ import AbstractView from '../framework/view/abstract-view';
 
 // $======================== LoadingView ========================$ //
 
-const createLoadingTemplate = () => /* html */`
+const createLoadingTemplate = () => `
   <p class="trip-events__msg">Loading...</p>
 `;
 

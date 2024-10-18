@@ -5,12 +5,11 @@ import { NoPointsTextType } from '../const';
 
 const createNoPointsTemplate = (filterType) => {
   const noPointTextValue = NoPointsTextType[filterType];
-  return /*html*/`
+  return `
     <p class="trip-events__msg">
       ${noPointTextValue}
     </p>`;
 };
-
 
 export default class NoPointsView extends AbstractView {
   #filterType = null;

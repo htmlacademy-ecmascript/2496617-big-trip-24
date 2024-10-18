@@ -9,20 +9,26 @@ export default class NewPointPresenter {
   #pointsListComponent = null;
   #editFormComponent = null;
 
-  #destinationsModel = null;
-  #offersModel = null;
+  #pointsModel = null;
 
   #handleDestroy = null;
   #handleDataChange = null;
 
   // @------------ CONSTRUCTOR ------------@ //
-  constructor({ pointsListComponent, handleDataChange, handleDestroy, destinationsModel, offersModel }) {
+  constructor({ pointsListComponent, handleDataChange, handleDestroy, pointsModel }) {
     this.#pointsListComponent = pointsListComponent;
     this.#handleDataChange = handleDataChange;
     this.#handleDestroy = handleDestroy;
 
-    this.#offersModel = offersModel;
-    this.#destinationsModel = destinationsModel;
+    this.#pointsModel = pointsModel;
+  }
+
+  #removeEscKeydownEventListener() {
+    document.removeEventListener('keydown', this.#handleEscKeyDown);
+  }
+
+  #addEscKeydownEventListener() {
+    document.addEventListener('keydown', this.#handleEscKeyDown);
   }
 
   // @------------ INIT ------------@ //
@@ -36,16 +42,15 @@ export default class NewPointPresenter {
       handleDeleteClick: this.#handleDeleteClick,
       handleFormClose: this.#handleDeleteClick,
 
-      allDestinations: this.#destinationsModel.destinations,
-      allOffers: this.#offersModel.offers,
+      allDestinations: this.#pointsModel.destinations,
+      allOffers: this.#pointsModel.offers,
 
       isNew: true,
     });
 
-
     render(this.#editFormComponent, this.#pointsListComponent, RenderPosition.AFTERBEGIN);
 
-    document.addEventListener('keydown', this.#onEscKeydown);
+    document.addEventListener('keydown', this.#handleEscKeyDown);
   }
 
   destroy() {
@@ -56,7 +61,7 @@ export default class NewPointPresenter {
     this.#handleDestroy();
     remove(this.#editFormComponent);
     this.#editFormComponent = null;
-    document.removeEventListener('keydown', this.#onEscKeydown);
+    this.#removeEscKeydownEventListener();
   }
 
   setSaving() {
@@ -68,6 +73,8 @@ export default class NewPointPresenter {
 
   setAborting() {
     const resetFormState = () => {
+      this.#addEscKeydownEventListener();
+
       this.#editFormComponent.updateElement({
         isDisabled: false,
         isSaving: false,
@@ -84,16 +91,19 @@ export default class NewPointPresenter {
       UpdateType.MINOR,
       point
     );
+    this.#removeEscKeydownEventListener();
   };
 
   #handleDeleteClick = () => {
     this.destroy();
+    this.#removeEscKeydownEventListener();
   };
 
-  #onEscKeydown = (evt) => {
+  #handleEscKeyDown = (evt) => {
     if (isEscapeKey(evt)) {
       evt.preventDefault();
       this.destroy();
     }
+    this.#removeEscKeydownEventListener();
   };
 }

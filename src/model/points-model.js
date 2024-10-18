@@ -4,8 +4,12 @@ import { UpdateType } from '../const';
 
 export default class PointsModel extends Observable {
   #points = [];
+  #offers = [];
+  #destinations = [];
 
   #pointsApiService = null;
+
+  isLoaded = true;
 
   // @------------ CONSTRUCTOR ------------@ //
   constructor({ pointsApiService }) {
@@ -13,8 +17,17 @@ export default class PointsModel extends Observable {
     this.#pointsApiService = pointsApiService;
   }
 
+  // @------------ GETTERS ------------@ //
+  get offers() {
+    return this.#offers;
+  }
+
   get points() {
     return this.#points;
+  }
+
+  get destinations() {
+    return this.#destinations;
   }
 
   #adaptToClient(point) {
@@ -98,11 +111,17 @@ export default class PointsModel extends Observable {
   // @------------ INIT ------------@ //
   async init() {
     try {
+      this.#offers = await this.#pointsApiService.offers;
+      this.#destinations = await this.#pointsApiService.destinations;
       const points = await this.#pointsApiService.points;
       this.#points = points.map(this.#adaptToClient);
     } catch (error) {
+      this.#offers = [];
+      this.#destinations = [];
       this.#points = [];
+      this.isLoaded = false;
+    } finally {
+      this._notify(UpdateType.INIT);
     }
-    this._notify(UpdateType.INIT);
   }
 }
