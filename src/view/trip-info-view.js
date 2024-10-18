@@ -36,7 +36,7 @@ const createTripInfoTemplate = (points, allDestinations, allOffers) => {
     return total + point.basePrice + offersTotal;
   }, 0);
 
-  return /*html*/`
+  return `
     <section class="trip-main__trip-info  trip-info">
     <div class="trip-info__main">
       <h1 class="trip-info__title">${createTripInfoTitle()}</h1>

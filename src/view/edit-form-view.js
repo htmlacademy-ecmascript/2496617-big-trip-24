@@ -30,7 +30,7 @@ const createEditFormTemplate = (point, allOffers, allDestinations, isNew) => {
   const rollUpButtonTemplate = createRollUpButtonTemplate(isNew);
   const resetButtonText = adjustResetButtonText(isNew, isDeleting);
 
-  return /*html*/`
+  return `
     <li class="trip-events__item">
       <form class="event event--edit" action="#" method="post">
         <header class="event__header">
@@ -112,7 +112,7 @@ const createEditFormTemplate = (point, allOffers, allDestinations, isNew) => {
 
         </header>
 
-          ${offersByType.length !== 0 ? offersContainerTemplate : ''}
+          ${offersByType.length > 0 ? offersContainerTemplate : ''}
 
           ${destinationTemplate}
 

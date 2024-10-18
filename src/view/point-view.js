@@ -5,7 +5,7 @@ import he from 'he';
 
 // $======================== PointView ========================$ //
 
-const createOffersTemplate = (pointOffers) => (pointOffers.map(({ title, price }) => /*html*/`
+const createOffersTemplate = (pointOffers) => (pointOffers.map(({ title, price }) => `
     <li class="event__offer">
       <span class="event__offer-title">${title}</span>
       &plus;&euro;&nbsp;
@@ -26,7 +26,7 @@ const createPointTemplate = (point, allOffers, allDestinations) => {
 
   const offersTemplate = createOffersTemplate(pointOffers);
 
-  return /* html */`
+  return `
     <li class="trip-events__item">
       <div class="event">
         <time class="event__date" datetime="2019-03-18">${date}</time>

@@ -4,7 +4,7 @@ import AbstractView from '../framework/view/abstract-view';
 
 const createFilterItemTemplate = (filter, currentFilter) => {
   const { type, count } = filter;
-  return /*html*/`
+  return `
     <div class="trip-filters__filter">
       <input id="filter-${type}"
         class="trip-filters__filter-input visually-hidden"
@@ -21,7 +21,7 @@ const createFilterItemTemplate = (filter, currentFilter) => {
   `;
 };
 
-const createFiltersTemplate = (filters, currentFilter) => /*html*/`
+const createFiltersTemplate = (filters, currentFilter) => `
   <div class="trip-main__trip-controls  trip-controls">
     <div class="trip-controls__filters">
       <h2 class="visually-hidden">Filter events</h2>

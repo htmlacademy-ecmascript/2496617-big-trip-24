@@ -58,6 +58,6 @@ function handleNewPointButtonClick() {
 }
 
 function handleNewPointDestroy() {
-  newPointButtonComponent.element.disabled = false;
   mainPresenter.cancelNewPointCreation();
+  newPointButtonComponent.element.disabled = false;
 }

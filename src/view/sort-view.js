@@ -3,7 +3,7 @@ import AbstractView from '../framework/view/abstract-view';
 
 // $======================== SortView ========================$ //
 
-const createSortItemTemplate = (sortType, currentSortType) => /*html*/`
+const createSortItemTemplate = (sortType, currentSortType) => `
   <div class="trip-sort__item  trip-sort__item--${sortType}">
     <input
       id="sort-${sortType}"
@@ -19,7 +19,7 @@ const createSortItemTemplate = (sortType, currentSortType) => /*html*/`
   </div>
 `;
 
-const createSortTemplate = (currentSortType) => /*html*/`
+const createSortTemplate = (currentSortType) => `
   <form class="trip-events__trip-sort  trip-sort" action="#" method="get">
     ${Object.values(SortType).map((sortType) => createSortItemTemplate(sortType, currentSortType)).join('')}
   </form>
