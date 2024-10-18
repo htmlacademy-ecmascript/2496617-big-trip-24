@@ -150,6 +150,7 @@ export default class MainPresenter {
 
   renderNewPointButton() {
     this.#newPointButtonComponent = new NewPointButtonView({
+      isLoaded: this.#pointsModel.isLoaded,
       handleNewPointButtonClick: this.#handleNewPointButtonClick,
     });
     render(this.#newPointButtonComponent, this.#headerContainer);

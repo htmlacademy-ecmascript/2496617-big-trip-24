@@ -6,7 +6,7 @@ const createFailedLoadTemplate = () => `
   <p class="trip-events__msg">Failed to load latest route information</p>
 `;
 
-export default class LoadingView extends AbstractView {
+export default class FailedLoadView extends AbstractView {
   get template() {
     return createFailedLoadTemplate();
   }
