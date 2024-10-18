@@ -8,6 +8,7 @@ export default class TripInfoPresenter {
   #headerContainer = null;
   #pointsModel = null;
 
+  // @------------ CONSTRUCTOR ------------@ //
   constructor({ headerContainer, pointsModel }) {
     this.#headerContainer = headerContainer;
     this.#pointsModel = pointsModel;
@@ -15,10 +16,12 @@ export default class TripInfoPresenter {
     this.#pointsModel.addObserver(this.#handleModelEvent);
   }
 
+  // @------------ GETTERS ------------@ //
   get points() {
     return this.#pointsModel.points;
   }
 
+  // @------------ INIT ------------@ //
   init() {
     if (!this.#pointsModel.isLoaded) {
       return;

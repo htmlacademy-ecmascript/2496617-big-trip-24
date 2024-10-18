@@ -17,6 +17,7 @@ export default class PointsModel extends Observable {
     this.#pointsApiService = pointsApiService;
   }
 
+  // @------------ GETTERS ------------@ //
   get offers() {
     return this.#offers;
   }
