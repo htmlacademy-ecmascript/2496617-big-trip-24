@@ -8,6 +8,7 @@ import { sortByDay, sortByTime, sortByPrice } from '../utils/point';
 import PointsListView from '../view/points-list-view';
 import SortView from '../view/sort-view';
 import NoPointsView from '../view/no-points-view';
+import NewPointButtonView from '../view/new-point-button-view';
 import LoadingView from '../view/loading-view.js';
 import FailedLoadView from '../view/failed-load-view.js';
 
@@ -21,12 +22,14 @@ import { filter } from '../utils/filter.js';
 
 export default class MainPresenter {
   #pointsContainer = null;
+  #headerContainer = null;
 
   #pointsModel = null;
   #filtersModel = null;
 
   #sortComponent = null;
   #noPointsComponent = null;
+  #newPointButtonComponent = null;
   #pointsListComponent = new PointsListView();
   #loadingComponent = new LoadingView();
   #failedLoadComponent = new FailedLoadView();
@@ -45,8 +48,9 @@ export default class MainPresenter {
   });
 
   // @------------ CONSTRUCTOR ------------@ //
-  constructor({ pointsContainer, pointsModel, filtersModel, handleNewPointDestroy }) {
+  constructor({ pointsContainer, headerContainer, pointsModel, filtersModel }) {
     this.#pointsContainer = pointsContainer;
+    this.#headerContainer = headerContainer;
     this.#pointsModel = pointsModel;
     this.#filtersModel = filtersModel;
 
@@ -57,7 +61,7 @@ export default class MainPresenter {
       pointsListComponent: this.#pointsListComponent.element,
       pointsModel: this.#pointsModel,
       handleDataChange: this.#handleViewAction,
-      handleDestroy: handleNewPointDestroy,
+      handleDestroy: this.#handleNewPointDestroy,
     });
   }
 
@@ -144,6 +148,13 @@ export default class MainPresenter {
     render(this.#failedLoadComponent, this.#pointsContainer);
   }
 
+  renderNewPointButton() {
+    this.#newPointButtonComponent = new NewPointButtonView({
+      handleNewPointButtonClick: this.#handleNewPointButtonClick,
+    });
+    render(this.#newPointButtonComponent, this.#headerContainer);
+  }
+
   // @------------ CLEAR/DELETE ------------@ //
   #removeSort() {
     remove(this.#sortComponent);
@@ -206,6 +217,16 @@ export default class MainPresenter {
 
     this.#clearPointsList();
     this.#renderPointsList();
+  };
+
+  #handleNewPointButtonClick = () => {
+    this.createPoint();
+    this.#newPointButtonComponent.element.disabled = true;
+  };
+
+  #handleNewPointDestroy = () => {
+    this.cancelNewPointCreation();
+    this.#newPointButtonComponent.element.disabled = false;
   };
 
   #handleViewAction = async (actionType, updateType, update) => {
